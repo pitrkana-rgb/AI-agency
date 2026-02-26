@@ -1,151 +1,159 @@
-import { ChevronRightIcon } from "lucide-react";
-import { Button } from "../../../../components/ui/button";
-import { Card, CardContent } from "../../../../components/ui/card";
+import { CheckIcon, ChevronRightIcon } from "lucide-react";
 
 const pricingPlans = [
   {
     name: "Webdesign",
-    description:
-      "Moderní, rychlý a srozumitelný web, který od první sekundy vysvětlí, co děláte a proč by to mělo zajímat vaše klienty.",
+    description: "Moderní, rychlý a srozumitelný web, který od první sekundy vysvětlí, co děláte a proč by to mělo zajímat vaše klienty.",
     price: "od 24 900 Kč",
-    period: "",
-    discount: null,
     features: [
       "UX konzultace a návrh struktury webu",
       "Design na míru včetně mobilní verze",
       "Implementace v moderním frontendu",
       "Základní SEO a měření návštěvnosti",
     ],
-    iconSrc: "/feature-icon.svg",
     highlighted: false,
-    borderRadius: "rounded-[20px_0px_0px_20px]",
-    nameColor: "text-white",
-    nameSize: "text-lg",
-    nameBold: "font-normal",
+    cta: "Chci web",
   },
   {
     name: "AI Agenti & Automatizace",
-    description:
-      "Návrh a implementace AI agentů a automatizací, které šetří čas vašemu týmu a zvyšují kvalitu služeb.",
+    description: "Návrh a implementace AI agentů a automatizací, které šetří čas vašemu týmu a zvyšují kvalitu služeb.",
     price: "od 29 900 Kč",
-    period: "",
-    discount: null,
     features: [
       "Workshop a mapování příležitostí pro AI",
       "Návrh konkrétního AI agenta nebo automatizace",
       "Napojení na vaše nástroje a data",
       "Nastavení metrik a průběžná optimalizace",
     ],
-    iconSrc: "/feature-icon-2.svg",
     highlighted: true,
-    borderRadius: "rounded-[0px_20px_20px_0px]",
-    nameColor: "text-[#ff531f]",
-    nameSize: "text-3xl",
-    nameBold: "font-bold",
+    cta: "Chci AI řešení",
   },
 ];
 
-export const SubscriptionPlansSection = (): JSX.Element => {
-  return (
-    <section className="flex flex-col w-full max-w-[1199px] items-center gap-[45px] relative mx-auto px-4">
-      <header className="flex flex-col max-w-[780px] items-center gap-5 relative">
-        <h2 className="relative flex items-center justify-center max-w-[600px] [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[64px] text-center tracking-[0] leading-[64px]">
+export const SubscriptionPlansSection = (): JSX.Element => (
+  <section style={{ width: "100%", backgroundColor: "#000", padding: "96px 0 120px" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: "64px" }}>
+        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,4.5vw,56px)", color: "#fff", margin: "0 0 20px", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
           Vyberte službu
         </h2>
-
-        <p className="relative flex items-center justify-center [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-colorwhitewhite-7 text-xl text-center tracking-[0] leading-6">
-          Ať už potřebujete nový web, AI agenty nebo kombinaci obojího, vybereme
-          společně formu spolupráce, která dává smysl vašemu týmu i rozpočtu.
+        <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
+          Ať už potřebujete nový web, AI agenty nebo kombinaci obojího, vybereme společně formu spolupráce, která dává smysl vašemu týmu i rozpočtu.
         </p>
-      </header>
-
-      <div className="flex flex-col items-center gap-[25px] relative w-full">
-        <div className="flex items-stretch relative w-full">
-          {pricingPlans.map((plan, index) => (
-            <Card
-              key={plan.name}
-              className={`flex flex-col flex-1 items-center gap-[35px] px-[30px] py-5 relative bg-[#1b1b1c] border ${
-                plan.highlighted
-                  ? "border-[none] before:content-[''] before:absolute before:inset-0 before:p-[3px] before:rounded-[20px] before:[background:linear-gradient(180deg,rgba(255,112,68,1)_0%,rgba(100,24,0,1)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none"
-                  : "border-solid border-[#ffffff1a]"
-              } ${plan.borderRadius}`}
-            >
-              <CardContent className="flex flex-col w-full gap-[35px] p-0">
-                <div className="flex flex-col items-start gap-6 px-8 py-0 relative w-full">
-                  <h3
-                    className={`relative flex items-center justify-center w-fit [font-family:'Sk-Modernist-Bold',Helvetica] ${plan.nameBold} ${plan.nameColor} ${plan.nameSize} tracking-[0] leading-[normal] whitespace-nowrap`}
-                  >
-                    {plan.name}
-                  </h3>
-
-                  <p className="relative flex items-center justify-center w-fit [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-[#ffffffbf] text-base tracking-[0] leading-6 whitespace-pre-line">
-                    {plan.description}
-                  </p>
-
-                  <div className="inline-flex items-center gap-2 relative">
-                    <span className="relative flex items-center justify-center w-fit [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[40px] tracking-[-1.60px] leading-[normal] whitespace-nowrap">
-                      {plan.price}
-                    </span>
-
-                    <span className="relative flex items-center justify-center w-fit [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-[#ffffffbf] text-base tracking-[0] leading-6 whitespace-nowrap">
-                      {plan.period}
-                    </span>
-
-                    {plan.discount && (
-                      <Badge className="inline-flex items-center justify-center gap-2.5 px-2 py-[5px] relative bg-[#ff531f] rounded-3xl border-none hover:bg-[#ff531f]">
-                        <span className="relative flex items-center justify-center [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-xs tracking-[0] leading-[14px] whitespace-nowrap">
-                          {plan.discount}
-                        </span>
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-
-                <div className="relative w-full h-px bg-[linear-gradient(90deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_100%)]" />
-
-                <div className="flex flex-col items-start gap-[15px] px-8 py-0 w-full">
-                  <p className="flex items-center justify-center [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-[#ffffffbf] text-base tracking-[0] leading-6 w-full">
-                    What&apos;s included
-                  </p>
-
-                  <ul className="flex flex-col items-start gap-3.5 relative w-full">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li
-                        key={featureIndex}
-                        className="flex items-start gap-3 relative w-full"
-                      >
-                        <img
-                          className="relative w-6 h-6 flex-shrink-0"
-                          alt="Feature icon"
-                          src={plan.iconSrc}
-                        />
-
-                        <span className="relative flex items-center justify-center flex-1 [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-[#ffffffbf] text-base tracking-[0] leading-6">
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="inline-flex flex-col items-start relative rounded-[10px]">
-                  <Button className="inline-flex items-center gap-3 px-5 py-2.5 relative bg-dark-modecontainer-background rounded-lg border-none shadow-shadow-blur-sm backdrop-blur-[10px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(10px)_brightness(100%)] before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-lg before:[background:linear-gradient(30deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none hover:bg-dark-modecontainer-background transition-transform duration-300 hover:scale-[1.03]">
-                    <span className="relative flex items-center justify-center w-fit [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-white text-lg tracking-[0] leading-[normal]">
-                      {plan.name === "Webdesign" ? "Chci web" : "Chci AI řešení"}
-                    </span>
-
-                    <ChevronRightIcon className="relative w-6 h-6" />
-                  </Button>
-
-                  <div className="absolute w-[calc(100%_+_20px)] h-[calc(100%_+_20px)] -top-2.5 -left-2.5 rounded-[10px] blur-[10px] [background:conic-gradient(from_164deg_at_50%_50%,rgba(255,84,31,1)_26%,rgba(255,84,31,1)_52%,rgba(255,84,31,1)_76%,rgba(255,84,31,1)_100%)] opacity-20 pointer-events-none" />
-
-                  <div className="absolute w-full h-full top-0 left-0 rounded-lg border-none before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-lg before:[background:linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(255,255,255,0.5)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none pointer-events-none" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
       </div>
-    </section>
-  );
-};
+
+      {/* Cards */}
+      <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "24px", alignItems: "stretch" }}>
+        {pricingPlans.map(plan => (
+          <div
+            key={plan.name}
+            className="pricing-card"
+            style={{
+              position: "relative",
+              borderRadius: "24px",
+              padding: plan.highlighted ? "3px" : "0",
+              background: plan.highlighted
+                ? "linear-gradient(145deg, #FF6A2A, #FF3C00 60%, #6B21A8)"
+                : "transparent",
+              transition: "transform 250ms ease, box-shadow 250ms ease",
+            }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-8px)"; el.style.boxShadow = plan.highlighted ? "0 32px 64px rgba(255,90,31,0.3)" : "0 24px 48px rgba(0,0,0,0.5)"; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = ""; el.style.boxShadow = ""; }}
+          >
+            {plan.highlighted && (
+              <div style={{
+                position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)",
+                background: "linear-gradient(135deg,#FF6A2A,#FF3C00)",
+                borderRadius: "999px", padding: "4px 16px",
+                fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "12px", color: "#fff",
+                letterSpacing: "0.06em", textTransform: "uppercase" as const,
+                whiteSpace: "nowrap", zIndex: 2,
+              }}>
+                Populární
+              </div>
+            )}
+
+            <div style={{
+              background: "#0D0D0D",
+              borderRadius: plan.highlighted ? "21px" : "24px",
+              border: plan.highlighted ? "none" : "1px solid rgba(255,255,255,0.08)",
+              padding: "40px",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "32px",
+            }}>
+              {/* Plan name */}
+              <div>
+                <h3 style={{
+                  fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
+                  fontSize: plan.highlighted ? "26px" : "22px",
+                  color: plan.highlighted ? "#FF5A1F" : "#fff",
+                  marginBottom: "12px",
+                }}>
+                  {plan.name}
+                </h3>
+                <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, margin: 0 }}>
+                  {plan.description}
+                </p>
+              </div>
+
+              {/* Price */}
+              <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "40px", color: "#fff", letterSpacing: "-0.03em", lineHeight: 1 }}>
+                {plan.price}
+              </div>
+
+              {/* Divider */}
+              <div style={{ height: "1px", background: "linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.15),rgba(255,255,255,0))" }} />
+
+              {/* Features */}
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "14px", flex: 1 }}>
+                {plan.features.map(f => (
+                  <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                    <div style={{
+                      width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0, marginTop: "1px",
+                      background: "rgba(255,90,31,0.15)", border: "1px solid rgba(255,90,31,0.4)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <CheckIcon style={{ width: "11px", height: "11px", color: "#FF5A1F", strokeWidth: 3 }} />
+                    </div>
+                    <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA */}
+              <button
+                type="button"
+                className="pricing-cta"
+                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  padding: "14px 28px",
+                  background: plan.highlighted ? "linear-gradient(135deg,#FF6A2A,#FF3C00)" : "rgba(255,255,255,0.06)",
+                  border: plan.highlighted ? "none" : "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: "12px",
+                  fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "16px",
+                  color: "#fff", cursor: "pointer",
+                  transition: "filter 250ms ease, transform 250ms ease",
+                  boxShadow: plan.highlighted ? "0 12px 30px rgba(255,90,31,0.35)" : "none",
+                }}
+                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
+              >
+                {plan.cta}
+                <ChevronRightIcon style={{ width: "18px", height: "18px" }} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <style>{`
+      @media(max-width:768px){ .pricing-grid{ grid-template-columns:1fr !important; } }
+      @media(prefers-reduced-motion:reduce){ .pricing-card,.pricing-cta{ transition:none !important; } }
+      .pricing-cta:focus-visible{ outline:2px solid #FF5A1F; outline-offset:3px; }
+    `}</style>
+  </section>
+);

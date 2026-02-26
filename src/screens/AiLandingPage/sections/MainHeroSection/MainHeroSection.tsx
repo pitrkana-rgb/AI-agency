@@ -1,45 +1,21 @@
 import { StarIcon } from "lucide-react";
 
-/* ── SVG avatar fallbacks (no broken images) ──────────────────────── */
+/* ── Avatar initials SVG ─────────────────────────────────────────── */
 const AvatarSvg = ({
   initials,
   from,
   to,
-}: {
-  initials: string;
-  from: string;
-  to: string;
-}) => (
-  <svg
-    width="44"
-    height="44"
-    viewBox="0 0 44 44"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
+}: { initials: string; from: string; to: string }) => (
+  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
     <defs>
-      <linearGradient id={`grad-${initials}`} x1="0" y1="0" x2="1" y2="1">
+      <linearGradient id={`g-${initials}`} x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor={from} />
         <stop offset="100%" stopColor={to} />
       </linearGradient>
-      <clipPath id={`clip-${initials}`}>
-        <circle cx="22" cy="22" r="20" />
-      </clipPath>
     </defs>
     <circle cx="22" cy="22" r="22" fill="#111" />
-    <circle cx="22" cy="22" r="20" fill={`url(#grad-${initials})`} />
-    <text
-      x="22"
-      y="27"
-      textAnchor="middle"
-      fontFamily="'Space Grotesk', sans-serif"
-      fontWeight="700"
-      fontSize="14"
-      fill="white"
-    >
-      {initials}
-    </text>
+    <circle cx="22" cy="22" r="20" fill={`url(#g-${initials})`} />
+    <text x="22" y="27" textAnchor="middle" fontFamily="Space Grotesk,sans-serif" fontWeight="700" fontSize="14" fill="white">{initials}</text>
   </svg>
 );
 
@@ -51,6 +27,52 @@ const avatars = [
   { initials: "AK", from: "#F59E0B", to: "#b45309" },
 ];
 
+/* ── Scroll indicator ─────────────────────────────────────────────── */
+const ScrollIndicator = () => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "8px",
+      marginTop: "56px",
+    }}
+  >
+    <span
+      style={{
+        fontFamily: "'Space Grotesk', sans-serif",
+        fontSize: "12px",
+        fontWeight: 400,
+        color: "rgba(255,255,255,0.4)",
+        letterSpacing: "0.1em",
+        textTransform: "uppercase" as const,
+      }}
+    >
+      Scroll
+    </span>
+    <div
+      style={{
+        width: "24px",
+        height: "40px",
+        border: "1.5px solid rgba(255,255,255,0.2)",
+        borderRadius: "12px",
+        display: "flex",
+        justifyContent: "center",
+        paddingTop: "6px",
+      }}
+    >
+      <div className="animate-scroll-dot"
+        style={{
+          width: "4px",
+          height: "8px",
+          backgroundColor: "#FF5A1F",
+          borderRadius: "2px",
+        }}
+      />
+    </div>
+  </div>
+);
+
 export const MainHeroSection = (): JSX.Element => {
   return (
     <section
@@ -61,11 +83,45 @@ export const MainHeroSection = (): JSX.Element => {
         paddingBottom: "0",
       }}
     >
+      {/* Particle grid overlay */}
       <div
-        className="relative z-10 flex flex-col items-center mx-auto px-4 animate-fade-in"
-        style={{ maxWidth: "900px", textAlign: "center" }}
+        className="pointer-events-none absolute inset-0"
+        style={{ zIndex: 1 }}
+        aria-hidden="true"
       >
-        {/* ── Rating pill ─────────────────────────────────────────────── */}
+        {/* Subtle grid lines */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+          maskImage: "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
+        }} />
+        {/* Orange glow left */}
+        <div style={{
+          position: "absolute", top: "10%", left: "-5%",
+          width: "500px", height: "500px",
+          background: "radial-gradient(circle, rgba(255,90,31,0.18) 0%, transparent 70%)",
+          filter: "blur(40px)",
+        }} />
+        {/* Purple glow right */}
+        <div style={{
+          position: "absolute", top: "5%", right: "-5%",
+          width: "400px", height: "400px",
+          background: "radial-gradient(circle, rgba(120,80,255,0.12) 0%, transparent 70%)",
+          filter: "blur(60px)",
+        }} />
+      </div>
+
+      {/* Hero content */}
+      <div
+        className="relative z-10 flex flex-col items-center animate-fade-in"
+        style={{ maxWidth: "900px", textAlign: "center", padding: "0 24px" }}
+      >
+        {/* Rating pill */}
         <div
           className="inline-flex items-center gap-4"
           style={{
@@ -80,126 +136,90 @@ export const MainHeroSection = (): JSX.Element => {
           role="img"
           aria-label="Hodnocení 5.0 z 5 – 117 spokojených klientů"
         >
-          {/* Avatar stack */}
           <div className="flex items-center" style={{ marginRight: "4px" }}>
             {avatars.map((av, i) => (
-              <div
-                key={av.initials}
-                style={{
-                  marginLeft: i === 0 ? 0 : "-12px",
-                  border: "2px solid #111",
-                  borderRadius: "50%",
-                  boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
-                  lineHeight: 0,
-                  zIndex: avatars.length - i,
-                  position: "relative",
-                }}
-              >
+              <div key={av.initials} style={{
+                marginLeft: i === 0 ? 0 : "-12px",
+                border: "2px solid #111",
+                borderRadius: "50%",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+                lineHeight: 0,
+                zIndex: avatars.length - i,
+                position: "relative",
+              }}>
                 <AvatarSvg initials={av.initials} from={av.from} to={av.to} />
               </div>
             ))}
           </div>
-
-          {/* Stars + text */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-0.5">
-              {Array.from({ length: 5 }).map((_, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static icon list
-                <StarIcon key={index} fill="#FF5A1F" className="w-4 h-4 text-[#FF5A1F]" />
+              {Array.from({ length: 5 }).map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: static
+                <StarIcon key={i} fill="#FF5A1F" className="w-4 h-4 text-[#FF5A1F]" />
               ))}
             </div>
             <div className="flex flex-col items-start">
-              <p
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 600,
-                  fontSize: "14px",
-                  color: "#FFFFFF",
-                  lineHeight: 1.3,
-                  margin: 0,
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "14px", color: "#fff", lineHeight: 1.3, margin: 0, whiteSpace: "nowrap" }}>
                 Hodnocení 5.0 / 5
               </p>
-              <p
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 400,
-                  fontSize: "13px",
-                  color: "rgba(255,255,255,0.65)",
-                  lineHeight: 1.3,
-                  margin: 0,
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "13px", color: "rgba(255,255,255,0.65)", lineHeight: 1.3, margin: 0, whiteSpace: "nowrap" }}>
                 117+ spokojených klientů
               </p>
             </div>
           </div>
         </div>
 
-        {/* ── Headline ─────────────────────────────────────────────────── */}
-        <h1
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 800,
-            fontSize: "clamp(34px, 7vw, 62px)",
-            lineHeight: 1.07,
-            color: "#FFFFFF",
-            margin: "0 0 24px 0",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          <span style={{ color: "#FFFFFF" }}>Využijte s námi sílu </span>
-          <span
-            style={{
-              color: "#FF5A1F",
-              textShadow: "0 0 24px rgba(255,90,31,0.35)",
-            }}
-          >
-            AI
-          </span>
-          <span style={{ color: "#FFFFFF" }}> pro váš business</span>
+        {/* Headline */}
+        <h1 style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontWeight: 800,
+          fontSize: "clamp(38px, 7vw, 68px)",
+          lineHeight: 1.05,
+          color: "#FFFFFF",
+          margin: "0 0 24px 0",
+          letterSpacing: "-0.02em",
+        }}>
+          <span>Využijte s námi sílu </span>
+          <span style={{
+            background: "linear-gradient(135deg, #FF6A2A 0%, #FFB347 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            filter: "drop-shadow(0 0 24px rgba(255,90,31,0.5))",
+          }}>AI</span>
+          <span> pro váš business</span>
         </h1>
 
-        {/* ── Paragraph ────────────────────────────────────────────────── */}
-        <p
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 400,
-            fontSize: "clamp(16px, 2.2vw, 19px)",
-            lineHeight: 1.6,
-            color: "rgba(255,255,255,0.75)",
-            maxWidth: "720px",
-            margin: "0 auto 36px auto",
-          }}
-        >
+        {/* Paragraph */}
+        <p style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontWeight: 400,
+          fontSize: "clamp(16px, 2.2vw, 19px)",
+          lineHeight: 1.65,
+          color: "rgba(255,255,255,0.72)",
+          maxWidth: "680px",
+          margin: "0 auto 36px auto",
+        }}>
           Navrhujeme moderní weby, automatizujeme procesy a stavíme šité na míru
           AI agenty, kteří pracují pro váš tým 24/7 – od prvního nápadu až po
           nasazení do provozu.
         </p>
 
-        {/* ── CTA Buttons ───────────────────────────────────────────────── */}
-        <div
-          className="flex flex-wrap items-center justify-center"
-          style={{ gap: "16px" }}
-        >
-          {/* Primary CTA */}
+        {/* CTAs */}
+        <div className="flex flex-wrap items-center justify-center" style={{ gap: "16px" }}>
           <button
             id="hero-primary-cta"
             type="button"
-            className="animate-pulse-glow"
+            className="animate-pulse-glow hero-primary-btn"
             onClick={() => {
-              const el = document.getElementById("contact");
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
             style={{
               background: "linear-gradient(135deg, #FF6A2A 0%, #FF3C00 100%)",
               color: "#FFFFFF",
               border: "none",
               borderRadius: "12px",
-              padding: "14px 28px",
+              padding: "15px 32px",
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 600,
               fontSize: "16px",
@@ -207,66 +227,69 @@ export const MainHeroSection = (): JSX.Element => {
               transition: "transform 0.25s ease, filter 0.25s ease",
               whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-3px)";
-              (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.1)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)";
-              (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1)";
-            }}
-            onMouseDown={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.97)";
-            }}
-            onMouseUp={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-3px)";
-            }}
+            onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-3px)"; b.style.filter = "brightness(1.1)"; }}
+            onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = ""; b.style.filter = ""; }}
+            onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.97)"; }}
+            onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-3px)"; }}
           >
             Kontaktujte nás
           </button>
 
-          {/* Secondary CTA */}
           <button
             id="hero-secondary-cta"
             type="button"
+            className="hero-secondary-btn"
             onClick={() => {
-              const el = document.getElementById("features");
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              document.getElementById("features")?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
             style={{
-              background: "#000000",
+              background: "rgba(255,255,255,0.05)",
               color: "#FFFFFF",
               border: "1px solid rgba(255,255,255,0.2)",
               borderRadius: "12px",
-              padding: "14px 28px",
+              padding: "15px 32px",
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 500,
               fontSize: "16px",
               cursor: "pointer",
               transition: "background 0.25s ease, border-color 0.25s ease, transform 0.25s ease",
               whiteSpace: "nowrap",
+              backdropFilter: "blur(8px)",
             }}
-            onMouseEnter={(e) => {
-              const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.background = "#111111";
-              btn.style.borderColor = "rgba(255,255,255,0.4)";
-            }}
-            onMouseLeave={(e) => {
-              const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.background = "#000000";
-              btn.style.borderColor = "rgba(255,255,255,0.2)";
-            }}
-            onMouseDown={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.98)";
-            }}
-            onMouseUp={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-            }}
+            onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.1)"; b.style.borderColor = "rgba(255,255,255,0.4)"; }}
+            onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.05)"; b.style.borderColor = "rgba(255,255,255,0.2)"; }}
+            onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.98)"; }}
+            onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
           >
             Naše služby
           </button>
         </div>
+
+        <ScrollIndicator />
       </div>
+
+      <style>{`
+        @keyframes scroll-dot {
+          0%, 100% { transform: translateY(0); opacity: 1; }
+          50% { transform: translateY(12px); opacity: 0.3; }
+        }
+        .animate-scroll-dot {
+          animation: scroll-dot 1.8s ease-in-out infinite;
+        }
+        @media (max-width: 640px) {
+          .hero-primary-btn, .hero-secondary-btn {
+            width: 100%;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-scroll-dot { animation: none; }
+        }
+        #hero-primary-cta:focus-visible,
+        #hero-secondary-cta:focus-visible {
+          outline: 2px solid #FF5A1F;
+          outline-offset: 3px;
+        }
+      `}</style>
     </section>
   );
 };

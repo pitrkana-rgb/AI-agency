@@ -1,106 +1,100 @@
-import { Separator } from "../../../../components/ui/separator";
+import { GithubIcon, TwitterIcon, LinkedinIcon } from "lucide-react";
 
-const usefulLinks = [
-  { label: "About" },
-  { label: "Services" },
-  { label: "Team" },
-  { label: "Prices" },
+const navLinks = [
+  { label: "Domů", id: "hero" },
+  { label: "Služby", id: "features" },
+  { label: "Ceník", id: "pricing" },
+  { label: "FAQ", id: "faq" },
+  { label: "Kontakt", id: "contact" },
 ];
 
-const helpLinks = [
-  { label: "Customer Support" },
-  { label: "Terms & Conditions" },
-  { label: "Privacy Policy" },
-  { label: "Contact Us" },
-];
+const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-const contactInfo = [
-  { text: "27 Division St, New York,\nNY 10002, USA" },
-  { text: "+123 324 2653" },
-  { text: "username@mail.com" },
-];
+export const SiteFooterSection = (): JSX.Element => (
+  <footer style={{ width: "100%", backgroundColor: "#000", position: "relative", overflow: "hidden" }}>
+    {/* Orange gradient top border */}
+    <div style={{ height: "1px", background: "linear-gradient(90deg,transparent 0%,#FF5A1F 40%,rgba(255,90,31,0.3) 70%,transparent 100%)" }} />
 
-export const SiteFooterSection = (): JSX.Element => {
-  return (
-    <footer className="flex flex-col w-full items-start gap-2.5 px-[101px] py-[66px] bg-[#ffffff0f]">
-      <div className="w-full max-w-[1237px] mx-auto">
-        <div className="grid grid-cols-4 gap-8 mb-[52px]">
-          <div className="flex flex-col gap-[21px]">
-            <h3 className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[32px] tracking-[-0.95px] leading-[41.6px] whitespace-nowrap">
-              About Us
-            </h3>
-            <p className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-neutral-02 text-lg tracking-[0] leading-[27px]">
-              We&apos;re a team of designers, engineers, and innovators building
-              AI tools that empower anyone to turn imagination into stunning
-              visuals—faster, smarter, and effortlessly.
-            </p>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "56px 24px 40px" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "48px", flexWrap: "wrap", marginBottom: "48px" }}>
+
+        {/* Brand */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "300px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#FF5A1F" strokeWidth="1.5" />
+              <rect x="6.5" y="6.5" width="7" height="7" rx="1.5" fill="#FF5A1F" opacity="0.9" />
+              <line x1="10" y1="1" x2="10" y2="6.5" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+              <line x1="10" y1="13.5" x2="10" y2="19" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+              <line x1="1" y1="10" x2="6.5" y2="10" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+              <line x1="13.5" y1="10" x2="19" y2="10" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="10" cy="10" r="1.5" fill="white" />
+            </svg>
+            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "20px", color: "#fff", letterSpacing: "0.02em" }}>AI-agency</span>
           </div>
-
-          <div className="flex flex-col gap-[22.91px]">
-            <h4 className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-[#ff531f] text-2xl tracking-[-0.48px] leading-[33.6px] whitespace-nowrap">
-              Useful Links
-            </h4>
-            <nav className="flex flex-col gap-[15.27px]">
-              {usefulLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-neutral-02 text-lg tracking-[0] leading-[27px] whitespace-nowrap hover:text-white transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-
-          <div className="flex flex-col gap-[22.91px]">
-            <h4 className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-[#ff531f] text-2xl tracking-[-0.48px] leading-[33.6px] whitespace-nowrap">
-              Help
-            </h4>
-            <nav className="flex flex-col gap-[15.27px]">
-              {helpLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-neutral-02 text-lg tracking-[0] leading-[27px] whitespace-nowrap hover:text-white transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-
-          <div className="flex flex-col gap-[22.91px]">
-            <h4 className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-[#ff531f] text-2xl tracking-[-0.48px] leading-[33.6px] whitespace-nowrap">
-              Connect With Us
-            </h4>
-            <div className="flex flex-col gap-[22.91px]">
-              {contactInfo.map((info, index) => (
-                <p
-                  key={index}
-                  className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-neutral-02 text-lg tracking-[0] leading-[27px]"
-                  style={{ whiteSpace: index === 0 ? "pre-line" : "nowrap" }}
-                >
-                  {info.text}
-                </p>
-              ))}
-            </div>
+          <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>
+            Navrhujeme moderní weby, automatizujeme procesy a stavíme AI agenty pro váš tým.
+          </p>
+          {/* Social icons */}
+          <div style={{ display: "flex", gap: "12px" }}>
+            {[{ Icon: TwitterIcon, label: "Twitter" }, { Icon: LinkedinIcon, label: "LinkedIn" }, { Icon: GithubIcon, label: "GitHub" }].map(({ Icon, label }) => (
+              <a key={label} href="#" aria-label={label} style={{
+                width: "36px", height: "36px", borderRadius: "8px",
+                background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "background 200ms ease, border-color 200ms ease",
+                color: "rgba(255,255,255,0.6)",
+              }}
+                onMouseEnter={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.background = "rgba(255,90,31,0.15)"; a.style.borderColor = "rgba(255,90,31,0.3)"; a.style.color = "#FF5A1F"; }}
+                onMouseLeave={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.background = "rgba(255,255,255,0.06)"; a.style.borderColor = "rgba(255,255,255,0.08)"; a.style.color = "rgba(255,255,255,0.6)"; }}
+              >
+                <Icon style={{ width: "16px", height: "16px" }} />
+              </a>
+            ))}
           </div>
         </div>
 
-        <Separator className="bg-white/20 h-0.5 mb-[41px]" />
+        {/* Nav links */}
+        <nav style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "13px", letterSpacing: "0.08em", color: "#FF5A1F", textTransform: "uppercase" as const, marginBottom: "4px" }}>Navigace</span>
+          {navLinks.map(link => (
+            <button key={link.id} type="button" onClick={() => scrollTo(link.id)}
+              style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.6)", textAlign: "left", transition: "color 200ms ease" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.6)"; }}
+            >
+              {link.label}
+            </button>
+          ))}
+        </nav>
 
-        <div className="flex items-center justify-between">
-          <p className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-neutral-01 text-lg tracking-[0] leading-[27px] whitespace-nowrap">
-            © 2024 All Right Reserved.
-          </p>
-          <img
-            className="w-[145px] h-[31px]"
-            alt="Social media icons"
-            src="/frame-57.svg"
-          />
+        {/* Contact */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "13px", letterSpacing: "0.08em", color: "#FF5A1F", textTransform: "uppercase" as const, marginBottom: "4px" }}>Kontakt</span>
+          <button type="button" onClick={() => scrollTo("contact")}
+            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.6)", textAlign: "left", transition: "color 200ms ease" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.6)"; }}
+          >
+            Napište nám
+          </button>
         </div>
       </div>
-    </footer>
-  );
-};
+
+      {/* Bottom bar */}
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+        <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "14px", color: "rgba(255,255,255,0.35)", margin: 0 }}>
+          © 2025 AI-agency. Všechna práva vyhrazena.
+        </p>
+        <div style={{ display: "flex", gap: "24px" }}>
+          {["Zásady ochrany soukromí", "Podmínky užití"].map(t => (
+            <a key={t} href="#" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "13px", color: "rgba(255,255,255,0.35)", textDecoration: "none", transition: "color 200ms ease" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.7)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.35)"; }}
+            >{t}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </footer>
+);

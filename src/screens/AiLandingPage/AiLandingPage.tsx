@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
+import { MenuIcon, XIcon } from "lucide-react";
 import { AiDesignFeaturesSection } from "./sections/AiDesignFeaturesSection/AiDesignFeaturesSection";
 import { CompanyMilestonesSection } from "./sections/CompanyMilestonesSection/CompanyMilestonesSection";
 import { FrequentlyAskedQuestionsSection } from "./sections/FrequentlyAskedQuestionsSection";
@@ -52,6 +53,7 @@ const AiChipIcon = () => (
 
 export const AiLandingPage = (): JSX.Element => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -98,6 +100,17 @@ export const AiLandingPage = (): JSX.Element => {
       className="relative w-full min-h-screen overflow-x-hidden"
       style={{ backgroundColor: "#000000", fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
     >
+      {/* ── Noise texture overlay ───────────────────────────────────── */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed", inset: 0, zIndex: 9999, pointerEvents: "none",
+          opacity: 0.025,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "128px 128px",
+        }}
+      />
       {/* ── Top hero background: zooming image + bottom fade ─────────── */}
       <div
         className="absolute top-0 left-0 w-full pointer-events-none overflow-hidden"
@@ -132,31 +145,33 @@ export const AiLandingPage = (): JSX.Element => {
           : "mt-5"
           }`}
       >
-        <nav className="flex items-center justify-between gap-10 py-5">
-          {/* Logo */}
-          <button
-            type="button"
-            onClick={() => scrollToSection("hero")}
-            className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A1F] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
-            aria-label="AI-agency – zpět na začátek"
-          >
-            <AiChipIcon />
-            <span
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 600,
-                fontSize: "20px",
-                letterSpacing: "0.02em",
-                color: "#FFFFFF",
-                lineHeight: 1,
-              }}
+        <nav className="grid grid-cols-2 md:grid-cols-3 items-center py-5">
+          {/* Logo - Left column */}
+          <div className="flex justify-start">
+            <button
+              type="button"
+              onClick={() => scrollToSection("hero")}
+              className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A1F] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
+              aria-label="AI-agency – zpět na začátek"
             >
-              AI-agency
-            </span>
-          </button>
+              <AiChipIcon />
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 600,
+                  fontSize: "20px",
+                  letterSpacing: "0.02em",
+                  color: "#FFFFFF",
+                  lineHeight: 1,
+                }}
+              >
+                AI-agency
+              </span>
+            </button>
+          </div>
 
-          {/* Navigation links */}
-          <div className="hidden md:inline-flex items-center gap-8">
+          {/* Navigation links - Center column (Desktop only) */}
+          <div className="hidden md:flex justify-center items-center gap-8">
             {navigationItems.map((item, index) => (
               <button
                 key={`nav-${index}`}
@@ -183,28 +198,125 @@ export const AiLandingPage = (): JSX.Element => {
             ))}
           </div>
 
-          {/* Header CTA button */}
-          <Button
-            type="button"
-            id="header-cta-btn"
-            onClick={() => scrollToSection("contact")}
-            style={{
-              background: "linear-gradient(135deg, #FF6A2A 0%, #FF3C00 100%)",
-              color: "#FFFFFF",
-              borderRadius: "999px",
-              padding: "12px 22px",
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 600,
-              fontSize: "15px",
-              border: "none",
-              transition: "filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
-              boxShadow: "0 4px 20px rgba(255,90,31,0.35)",
-            }}
-            className="hover:brightness-105 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#FF5A1F]"
-          >
-            Napište nám
-          </Button>
+          {/* CTA & Hamburger - Right column */}
+          <div className="flex justify-end items-center gap-4">
+            {/* Header CTA – Desktop only */}
+            <div className="hidden md:block">
+              <Button
+                type="button"
+                id="header-cta-btn"
+                onClick={() => scrollToSection("contact")}
+                style={{
+                  background: "linear-gradient(135deg, #FF6A2A 0%, #FF3C00 100%)",
+                  color: "#FFFFFF",
+                  borderRadius: "999px",
+                  padding: "12px 22px",
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 600,
+                  fontSize: "15px",
+                  border: "none",
+                  transition: "filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
+                  boxShadow: "0 4px 20px rgba(255,90,31,0.35)",
+                }}
+                className="hover:brightness-105 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#FF5A1F]"
+              >
+                Napište nám
+              </Button>
+            </div>
+
+            {/* Hamburger button (mobile only) */}
+            <button
+              type="button"
+              id="hamburger-btn"
+              aria-label={menuOpen ? "Zavřít menu" : "Otevřít menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(o => !o)}
+              className="flex md:hidden items-center justify-center"
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#fff",
+                padding: "8px",
+              }}
+            >
+              {menuOpen ? <XIcon size={24} /> : <MenuIcon size={24} />}
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile drawer */}
+        <div
+          aria-label="Mobile navigation"
+          className="md:hidden"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            pointerEvents: menuOpen ? "all" : "none",
+          }}
+        >
+          {/* Backdrop */}
+          <div
+            onClick={() => setMenuOpen(false)}
+            style={{
+              position: "absolute", inset: 0,
+              background: "rgba(0,0,0,0.7)",
+              opacity: menuOpen ? 1 : 0,
+              transition: "opacity 300ms ease",
+              backdropFilter: "blur(4px)",
+            }}
+          />
+          {/* Drawer panel */}
+          <div style={{
+            position: "absolute", top: 0, right: 0, bottom: 0,
+            width: "280px",
+            background: "#0A0A0A",
+            borderLeft: "1px solid rgba(255,255,255,0.08)",
+            padding: "24px",
+            transform: menuOpen ? "translateX(0)" : "translateX(100%)",
+            transition: "transform 300ms ease",
+            display: "flex", flexDirection: "column", gap: "8px",
+          }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "24px" }}>
+              <button type="button" onClick={() => setMenuOpen(false)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.6)", padding: "4px" }}>
+                <XIcon size={20} />
+              </button>
+            </div>
+            {navigationItems.map(item => (
+              <button
+                key={item.targetId}
+                type="button"
+                onClick={() => { scrollToSection(item.targetId); setMenuOpen(false); }}
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500,
+                  fontSize: "18px", color: item.isActive ? "#FF5A1F" : "rgba(255,255,255,0.8)",
+                  textAlign: "left", padding: "12px 0",
+                  borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  transition: "color 200ms ease",
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => { scrollToSection("contact"); setMenuOpen(false); }}
+              style={{
+                marginTop: "24px",
+                background: "linear-gradient(135deg,#FF6A2A,#FF3C00)",
+                color: "#fff", border: "none", borderRadius: "999px",
+                padding: "14px 24px",
+                fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "16px",
+                cursor: "pointer",
+              }}
+            >
+              Napište nám
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* ── Main content ─────────────────────────────────────────────── */}
