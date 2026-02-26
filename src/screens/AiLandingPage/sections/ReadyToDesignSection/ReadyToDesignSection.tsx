@@ -21,16 +21,18 @@ export const ReadyToDesignSection = (): JSX.Element => {
 
           <CardContent className="relative z-10 flex flex-col items-center gap-[35px] px-4 sm:px-8 md:px-[181px] py-14">
             <h2 className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-4xl sm:text-5xl md:text-[64px] text-center tracking-[0] leading-normal max-w-[789px]">
-              Ready to Design Smarter?
+              Připraveni povýšit váš business s námi?
             </h2>
 
             <p className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-[#ffffffcc] text-lg sm:text-xl text-center tracking-[0] leading-[22.4px] max-w-[618px]">
-              Whether you&#39;re a freelancer, a team, or a growing agency—our
-              tools adapt to your workflow. Design faster. Deliver better.
+              Ať už jste menší tým nebo rostoucí firma, můžeme začít nezávaznou
+              konzultací, jednorázovým workshopem nebo konkrétním projektem.
+              Společně vybereme tempo i rozsah spolupráce tak, aby vám dávala
+              smysl dlouhodobě.
             </p>
 
-            <Button className="inline-flex items-center justify-center gap-3 px-[34px] py-[15px] bg-[#ff531f] hover:bg-[#ff531f]/90 rounded-[10px] text-white [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-xl">
-              Get Started
+            <Button className="inline-flex items-center justify-center gap-3 px-[34px] py-[15px] bg-gradient-to-r from-[#ff7a3b] to-[#ff531f] hover:from-[#ff8950] hover:to-[#ff531f] rounded-[10px] text-white [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-xl shadow-[0_0_25px_rgba(255,83,31,0.6)] hover:shadow-[0_0_40px_rgba(255,83,31,0.9)] transition-transform duration-300 hover:scale-[1.05]">
+              Nezávazně nás kontaktujte
               <ArrowRightIcon className="w-[23px] h-[16px]" />
             </Button>
           </CardContent>

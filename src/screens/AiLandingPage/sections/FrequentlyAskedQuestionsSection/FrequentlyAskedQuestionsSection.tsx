@@ -7,40 +7,43 @@ import {
 
 const faqData = [
   {
-    question: "What is this platform used for?",
+    question: "Jak probíhá první spolupráce?",
     answer:
-      "It's an AI-powered design assistant that helps you generate, customize, and export creative assets in seconds—whether for personal projects, brand work, or commercial use.",
+      "Začínáme krátkým online callem, kde společně pojmenujeme cíle, aktuální situaci a možné překážky. Na základě toho navrhneme konkrétní další kroky – od jednorázového workshopu po dlouhodobější spolupráci. Vše dostanete přehledně sepsané.",
   },
   {
-    question: "What happens if I hit my free generation limit?",
-    answer: "",
+    question: "Je pro spolupráci potřeba mít jasno v zadání?",
+    answer:
+      "Nemusíte mít hotový brief ani přesně vědět, jaké AI řešení potřebujete. Pomůžeme vám od úplného začátku – společně zmapujeme příležitosti, ověříme nápady na malých experimentech a teprve potom se pouštíme do větší implementace.",
   },
   {
-    question: "Do I need design experience to use it?",
-    answer: "",
+    question: "Jaké technologie a nástroje používáte?",
+    answer:
+      "Vycházíme z vašeho stávajícího stacku a procesů. Pracujeme s moderním webovým frontendem, nástroji pro automatizaci (např. Make, n8n, Zapier) a s AI modely, které dávají smysl pro daný use‑case. Vždy dbáme na bezpečné zacházení s daty.",
   },
   {
-    question: "Can I collaborate with my team?",
-    answer: "",
+    question: "Dokážete pomoct i menším firmám nebo freelancerům?",
+    answer:
+      "Ano. Často začínáme právě s menšími týmy, kde má každá hodina navíc velký dopad. Umíme navrhnout řešení, které je finančně i časově realistické – od jednoduchého AI agenta přes chytré formuláře až po kompletní redesign webu.",
   },
   {
-    question: "Is it really free to use?",
-    answer: "",
+    question: "Jaká je orientační cena a doba dodání?",
+    answer:
+      "U webů se většina projektů pohybuje od 24 900 Kč výše, u AI agentů a automatizací od 29 900 Kč. Délka spolupráce bývá typicky 3–8 týdnů podle rozsahu. Konkrétní odhad vždy dostanete po úvodní konzultaci ještě před tím, než se do projektu pustíme.",
   },
 ];
 
 export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
   return (
-    <section className="w-full max-w-[892px] mx-auto flex flex-col items-center gap-[76px] px-4">
+    <section className="w-full max-w-[892px] mx-auto flex flex-col items-center gap-[76px] px-4 mt-24">
       <header className="flex flex-col w-full max-w-[830px] items-center gap-[29px]">
         <h2 className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[64px] text-center tracking-[0] leading-[64px]">
-          Frequently Asked <br />
-          Questions
+          Často kladené dotazy
         </h2>
 
         <p className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-colorwhitewhite-7 text-xl text-center tracking-[0] leading-[28.6px]">
-          Got questions? We've got answers. Find everything you need to know
-          about using our platform, plans, and features.
+          Zajímá vás, jak spolupráce probíhá v praxi? Připravili jsme odpovědi
+          na otázky, které od klientů dostáváme nejčastěji.
         </p>
       </header>
 
@@ -52,11 +55,12 @@ export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
       >
         {faqData.map((faq, index) => (
           <AccordionItem
+            // biome-ignore lint/suspicious/noArrayIndexKey: static list
             key={`item-${index}`}
             value={`item-${index}`}
             className="border-b-[1.19px] border-[#ffffff1a] pb-0"
           >
-            <AccordionTrigger className="flex items-start justify-between p-[23.85px] hover:no-underline [&[data-state=open]>img]:rotate-180">
+            <AccordionTrigger className="flex items-start justify-between p-[23.85px] hover:no-underline [&[data-state=open]>img]:rotate-180 transition-all duration-200">
               <span className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-colorwhitewhite text-xl tracking-[0] leading-[28.6px] text-left">
                 {faq.question}
               </span>
@@ -66,16 +70,15 @@ export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
                 src="/faq-toggle-icon.svg"
               />
             </AccordionTrigger>
-            {faq.answer && (
-              <AccordionContent className="px-[23.85px] pb-[23.85px]">
-                <p className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-colorwhitewhite-9 text-lg tracking-[-0.06px] leading-[23.9px]">
-                  {faq.answer}
-                </p>
-              </AccordionContent>
-            )}
+            <AccordionContent className="px-[23.85px] pb-[23.85px]">
+              <p className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-colorwhitewhite-9 text-lg tracking-[-0.06px] leading-[23.9px]">
+                {faq.answer}
+              </p>
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
     </section>
   );
 };
+

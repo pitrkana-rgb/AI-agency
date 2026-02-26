@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { AiDesignFeaturesSection } from "./sections/AiDesignFeaturesSection/AiDesignFeaturesSection";
 import { CompanyMilestonesSection } from "./sections/CompanyMilestonesSection/CompanyMilestonesSection";
@@ -7,96 +8,245 @@ import { ReadyToDesignSection } from "./sections/ReadyToDesignSection";
 import { SiteFooterSection } from "./sections/SiteFooterSection/SiteFooterSection";
 import { SubscriptionPlansSection } from "./sections/SubscriptionPlansSection/SubscriptionPlansSection";
 import { UserTestimonialsSection } from "./sections/UserTestimonialsSection";
+import { ClientTestimonialsSection } from "./sections/ClientTestimonialsSection";
+import { ContactSection } from "./sections/ContactSection/ContactSection";
 
 const navigationItems = [
-  { label: "Home", isActive: true },
-  { label: "Services", isActive: false },
-  { label: "Contact us", isActive: false },
-  { label: "About us", isActive: false },
+  { label: "Domů", targetId: "hero", isActive: true },
+  { label: "Služby", targetId: "features", isActive: false },
+  { label: "Ceník", targetId: "pricing", isActive: false },
+  { label: "FAQ", targetId: "faq", isActive: false },
+  { label: "Kontakt", targetId: "contact", isActive: false },
 ];
 
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+/** Minimal AI chip / neural node icon */
+const AiChipIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Outer ring */}
+    <circle cx="10" cy="10" r="9" stroke="#FF5A1F" strokeWidth="1.5" />
+    {/* Inner hexagon-ish chip body */}
+    <rect x="6.5" y="6.5" width="7" height="7" rx="1.5" fill="#FF5A1F" opacity="0.9" />
+    {/* Circuit lines */}
+    <line x1="10" y1="1" x2="10" y2="6.5" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="10" y1="13.5" x2="10" y2="19" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="1" y1="10" x2="6.5" y2="10" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="13.5" y1="10" x2="19" y2="10" stroke="#FF5A1F" strokeWidth="1.5" strokeLinecap="round" />
+    {/* Center dot */}
+    <circle cx="10" cy="10" r="1.5" fill="white" />
+  </svg>
+);
+
 export const AiLandingPage = (): JSX.Element => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll<HTMLElement>(
+      "[data-animate-on-scroll]",
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-up");
+            entry.target.classList.remove("opacity-0", "translate-y-6");
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    sections.forEach((section) => {
+      section.classList.add("opacity-0", "translate-y-6");
+      observer.observe(section);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="relative w-full min-h-screen bg-[#010101] overflow-hidden">
-      <img
-        className="absolute top-[calc(50.00%_-_1350px)] left-[calc(50.00%_-_562px)] w-[1282px] h-[1201px] pointer-events-none"
-        alt="Dots"
-        src="/dots.svg"
-      />
-
-      <div className="absolute top-[2722px] left-[-164px] w-[1483px] h-[925px] pointer-events-none">
-        <img
-          className="absolute top-0 left-[calc(50.00%_-_578px)] w-[1319px] h-[925px] object-cover"
-          alt="Image"
-          src="/image-88.png"
+    <div
+      className="relative w-full min-h-screen overflow-x-hidden"
+      style={{ backgroundColor: "#000000", fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
+    >
+      {/* ── Top hero background: zooming image + bottom fade ─────────── */}
+      <div
+        className="absolute top-0 left-0 w-full pointer-events-none overflow-hidden"
+        style={{ height: "900px", zIndex: 0 }}
+        aria-hidden="true"
+      >
+        {/* Animated zoom layer — scaled slightly oversized so edges never peek */}
+        <div
+          className="animate-bg-zoom absolute"
+          style={{
+            inset: "-5%",
+            backgroundImage: `url('/background.png')`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
         />
-
-        <div className="absolute top-[595px] left-0 w-[1483px] h-[330px] bg-[linear-gradient(0deg,rgba(1,1,1,1)_7%,rgba(1,1,1,0)_100%)]" />
-
-        <div className="absolute top-[126px] left-[1027px] w-[582px] h-[330px] rotate-90 bg-[linear-gradient(0deg,rgba(1,1,1,1)_7%,rgba(1,1,1,0)_100%)]" />
+        {/* Gradient fade overlay — sits on top, not animated */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to bottom, transparent 70%, #000000 100%)",
+          }}
+        />
       </div>
 
-      <div className="absolute top-[4235px] left-[850px] w-[940px] h-[983px] rounded-[470px/491.5px] blur-[200px] [background:conic-gradient(from_180deg_at_50%_50%,rgba(250,84,36,0.3)_24%,rgba(194,44,0,0.3)_51%,rgba(152,35,0,0.3)_76%,rgba(251,30,30,0.3)_100%)] pointer-events-none" />
-
-      <nav className="inline-flex items-center gap-[244px] absolute top-[50px] left-[calc(50.00%_-_601px)] z-50">
-        <img
-          className="relative w-[54px] h-[40.32px]"
-          alt="Logo"
-          src="/logo.png"
-        />
-
-        <div className="inline-flex items-start gap-[65px] relative flex-[0_0_auto]">
-          {navigationItems.map((item, index) => (
-            <div
-              key={`nav-${index}`}
-              className="flex flex-col items-center relative"
+      {/* ── Fixed Header ─────────────────────────────────────────────── */}
+      <header
+        style={{ zIndex: 50 }}
+        className={`fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[1280px] px-6 transition-all duration-300 ${isScrolled
+          ? "backdrop-blur-xl bg-black/60 border border-white/5 rounded-2xl mt-4 shadow-lg"
+          : "mt-5"
+          }`}
+      >
+        <nav className="flex items-center justify-between gap-10 py-5">
+          {/* Logo */}
+          <button
+            type="button"
+            onClick={() => scrollToSection("hero")}
+            className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A1F] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-md"
+            aria-label="AI-agency – zpět na začátek"
+          >
+            <AiChipIcon />
+            <span
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 600,
+                fontSize: "20px",
+                letterSpacing: "0.02em",
+                color: "#FFFFFF",
+                lineHeight: 1,
+              }}
             >
-              <div className="relative w-fit mt-[-1.00px] ml-[-0.50px] mr-[-0.50px] [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[22px] tracking-[0] leading-[normal] whitespace-nowrap cursor-pointer hover:opacity-80 transition-opacity">
-                {item.label}
-              </div>
+              AI-agency
+            </span>
+          </button>
 
-              {item.isActive && (
-                <div className="relative self-stretch w-full h-0.5 bg-[#ff531f] rounded-[1.5px]" />
-              )}
-            </div>
-          ))}
-        </div>
+          {/* Navigation links */}
+          <div className="hidden md:inline-flex items-center gap-8">
+            {navigationItems.map((item, index) => (
+              <button
+                key={`nav-${index}`}
+                type="button"
+                onClick={() => scrollToSection(item.targetId)}
+                className="nav-link-underline flex flex-col items-center group focus-visible:outline-none"
+                data-active={item.isActive ? "true" : "false"}
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 500,
+                    fontSize: "15px",
+                    color: item.isActive ? "#FFFFFF" : "rgba(255,255,255,0.85)",
+                    transition: "color 0.2s ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  className="group-hover:!text-white"
+                >
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </div>
 
-        <Button className="inline-flex items-center justify-center px-[35px] py-[15px] relative flex-[0_0_auto] bg-[#ff531f] hover:bg-[#ff531f]/90 rounded-[10px] overflow-hidden border-0">
-          <span className="relative flex items-center justify-center w-fit mt-[-1.00px] [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-xl tracking-[0] leading-[19.2px] whitespace-nowrap">
-            Login
-          </span>
-        </Button>
-      </nav>
+          {/* Header CTA button */}
+          <Button
+            type="button"
+            id="header-cta-btn"
+            onClick={() => scrollToSection("contact")}
+            style={{
+              background: "linear-gradient(135deg, #FF6A2A 0%, #FF3C00 100%)",
+              color: "#FFFFFF",
+              borderRadius: "999px",
+              padding: "12px 22px",
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 600,
+              fontSize: "15px",
+              border: "none",
+              transition: "filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
+              boxShadow: "0 4px 20px rgba(255,90,31,0.35)",
+            }}
+            className="hover:brightness-105 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#FF5A1F]"
+          >
+            Napište nám
+          </Button>
+        </nav>
+      </header>
 
-      <div className="absolute top-[692px] left-[calc(50.00%_-_720px)] w-[1440px] h-[372px] bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_100%)] pointer-events-none" />
+      {/* ── Main content ─────────────────────────────────────────────── */}
+      <main className="relative" style={{ zIndex: 1 }}>
+        <section id="hero">
+          <MainHeroSection />
+        </section>
 
-      <div className="absolute top-[3726px] left-[-204px] w-[423px] h-[226px] rounded-[117.24px] border-[23.45px] border-solid border-[#ff9676] rotate-90 pointer-events-none" />
+        <section id="trust" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <UserTestimonialsSection />
+        </section>
 
-      <div className="absolute top-[calc(50.00%_+_1114px)] right-[-347px] w-[445px] h-[445px] rounded-[1172.35px] border-[23.45px] border-solid border-[#ff531f] pointer-events-none" />
+        <section id="features" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <AiDesignFeaturesSection />
+        </section>
 
-      <div className="absolute left-[-413px] bottom-[957px] w-[637px] h-[226px] rounded-[117.24px] border-[23.45px] border-solid border-[#f6f6f6] pointer-events-none" />
+        <section id="timeline" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <CompanyMilestonesSection />
+        </section>
 
-      <img
-        className="absolute top-[4124px] left-[531px] w-[909px] h-[1316px] pointer-events-none"
-        alt="Line"
-        src="/line-20.svg"
-      />
+        <section data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <ClientTestimonialsSection />
+        </section>
 
-      <img
-        className="absolute top-[3959px] left-[490px] w-[950px] h-[1370px] pointer-events-none"
-        alt="Line"
-        src="/line-21.svg"
-      />
+        <section id="pricing" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <SubscriptionPlansSection />
+        </section>
 
-      <MainHeroSection />
-      <UserTestimonialsSection />
-      <AiDesignFeaturesSection />
-      <CompanyMilestonesSection />
-      <SubscriptionPlansSection />
-      <FrequentlyAskedQuestionsSection />
-      <ReadyToDesignSection />
-      <SiteFooterSection />
+        <section id="faq" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <FrequentlyAskedQuestionsSection />
+        </section>
+
+        <section data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <ReadyToDesignSection />
+        </section>
+
+        <section id="contact" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+          <ContactSection />
+        </section>
+
+        <SiteFooterSection />
+      </main>
     </div>
   );
 };

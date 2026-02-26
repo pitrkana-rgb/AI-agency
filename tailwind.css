@@ -19,13 +19,11 @@
   --neutral-01: rgba(255, 255, 255, 1);
   --neutral-02: rgba(188, 188, 188, 1);
   --shadow-blur-sm:
-    0px 10px 10px 0px rgba(0, 0, 0, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.05), 0px 1px 0px 0px rgba(
+    0px 10px 10px 0px rgba(0, 0, 0, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.05), 0px 1px 0px 0px rgba(0,
       0,
       0,
-      0,
-      0.05
-    );
-  --text-font-family: "Inter", Helvetica;
+      0.05);
+  --text-font-family: "Space Grotesk", "Inter", sans-serif;
   --text-font-size: 16px;
   --text-font-style: normal;
   --text-font-weight: 400;
@@ -33,6 +31,10 @@
   --text-line-height: 24px;
   --textgrey: rgba(143, 142, 142, 1);
   --theme-colorsprimary: rgba(242, 63, 93, 1);
+  /* Brand accent */
+  --accent-primary: #FF5A1F;
+  --accent-gradient-from: #FF6A2A;
+  --accent-gradient-to: #FF3C00;
 }
 
 :root {
@@ -45,6 +47,27 @@
 
 .animate-fade-up {
   animation: fade-up 1s var(--animation-delay, 0s) ease forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-out infinite;
+}
+
+/* Nav link underline hover animation */
+.nav-link-underline::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 0;
+  background: var(--accent-primary, #FF5A1F);
+  border-radius: 1px;
+  margin-top: 3px;
+  transition: width 0.25s ease;
+}
+
+.nav-link-underline:hover::after,
+.nav-link-underline[data-active="true"]::after {
+  width: 100%;
 }
 
 .animate-marquee {
@@ -109,7 +132,50 @@
   }
 }
 
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 12px 30px rgba(255, 90, 31, 0.35), 0 0 0 0 rgba(255, 90, 31, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 12px 30px rgba(255, 90, 31, 0.35), 0 0 0 14px rgba(255, 90, 31, 0);
+  }
+
+  100% {
+    box-shadow: 0 12px 30px rgba(255, 90, 31, 0.35), 0 0 0 0 rgba(255, 90, 31, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow {
+    animation: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.animate-bg-zoom {
+  animation: bg-zoom 10s ease-in-out infinite;
+}
+
+@keyframes bg-zoom {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
 @keyframes shimmer {
+
   0%,
   90%,
   to {
@@ -221,6 +287,14 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: #000000;
+  }
+
+  /* Global accessible focus ring */
+  :focus-visible {
+    outline: 2px solid #FF5A1F;
+    outline-offset: 2px;
   }
 }
