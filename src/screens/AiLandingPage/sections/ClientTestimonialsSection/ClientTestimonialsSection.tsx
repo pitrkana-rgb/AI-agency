@@ -65,8 +65,11 @@ const TestimonialCard = ({ t, i }: { t: typeof testimonials[0]; i: number }) => 
 
 const row1 = [...testimonials, ...testimonials];
 
+import { SectionDivider } from "../../components/SectionDivider";
+
 export const ClientTestimonialsSection = (): JSX.Element => (
-  <section style={{ width: "100%", backgroundColor: "#000", padding: "96px 0" }}>
+  <section style={{ width: "100%", backgroundColor: "#000", padding: "96px 0", marginTop: "-50px" }}>
+    <SectionDivider />
     {/* Header */}
     <div style={{ maxWidth: "1200px", margin: "0 auto 56px", padding: "0 24px" }}>
       <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(28px,4vw,48px)", color: "#fff", marginBottom: "16px", letterSpacing: "-0.02em", lineHeight: 1.1 }}>

@@ -34,8 +34,8 @@ const ScrollIndicator = () => (
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: "8px",
-      marginTop: "56px",
+      gap: "4px",
+      marginTop: "48px",
     }}
   >
     <span
@@ -50,25 +50,10 @@ const ScrollIndicator = () => (
     >
       Scroll
     </span>
-    <div
-      style={{
-        width: "24px",
-        height: "40px",
-        border: "1.5px solid rgba(255,255,255,0.2)",
-        borderRadius: "12px",
-        display: "flex",
-        justifyContent: "center",
-        paddingTop: "6px",
-      }}
-    >
-      <div className="animate-scroll-dot"
-        style={{
-          width: "4px",
-          height: "8px",
-          backgroundColor: "#FF5A1F",
-          borderRadius: "2px",
-        }}
-      />
+    <div className="animate-bounce" style={{ color: "#FF5A1F" }}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 9 6 6 6-6" />
+      </svg>
     </div>
   </div>
 );
@@ -79,8 +64,9 @@ export const MainHeroSection = (): JSX.Element => {
       className="relative w-full flex items-center justify-center"
       style={{
         minHeight: "100vh",
-        paddingTop: "88px",
+        paddingTop: "44px",
         paddingBottom: "0",
+        marginBottom: "-520px",
       }}
     >
       {/* Particle grid overlay */}
@@ -119,7 +105,7 @@ export const MainHeroSection = (): JSX.Element => {
       {/* Hero content */}
       <div
         className="relative z-10 flex flex-col items-center animate-fade-in"
-        style={{ maxWidth: "900px", textAlign: "center", padding: "0 24px" }}
+        style={{ maxWidth: "900px", textAlign: "center", padding: "0 24px", marginTop: "-300px" }}
       >
         {/* Rating pill */}
         <div
@@ -131,7 +117,7 @@ export const MainHeroSection = (): JSX.Element => {
             border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: "999px",
             padding: "10px 18px",
-            marginBottom: "40px",
+            marginBottom: "32px",
           }}
           role="img"
           aria-label="Hodnocení 5.0 z 5 – 117 spokojených klientů"
@@ -176,7 +162,7 @@ export const MainHeroSection = (): JSX.Element => {
           fontSize: "clamp(38px, 7vw, 68px)",
           lineHeight: 1.05,
           color: "#FFFFFF",
-          margin: "0 0 24px 0",
+          margin: "0 0 16px 0",
           letterSpacing: "-0.02em",
         }}>
           <span>Využijte s námi sílu </span>
@@ -198,7 +184,7 @@ export const MainHeroSection = (): JSX.Element => {
           lineHeight: 1.65,
           color: "rgba(255,255,255,0.72)",
           maxWidth: "680px",
-          margin: "0 auto 36px auto",
+          margin: "0 auto 32px auto",
         }}>
           Navrhujeme moderní weby, automatizujeme procesy a stavíme šité na míru
           AI agenty, kteří pracují pro váš tým 24/7 – od prvního nápadu až po
@@ -240,7 +226,7 @@ export const MainHeroSection = (): JSX.Element => {
             type="button"
             className="hero-secondary-btn"
             onClick={() => {
-              document.getElementById("features")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
             style={{
               background: "rgba(255,255,255,0.05)",
@@ -276,7 +262,7 @@ export const MainHeroSection = (): JSX.Element => {
         .animate-scroll-dot {
           animation: scroll-dot 1.8s ease-in-out infinite;
         }
-        @media (max-width: 640px) {
+        @media (max-width: 480px) {
           .hero-primary-btn, .hero-secondary-btn {
             width: 100%;
           }

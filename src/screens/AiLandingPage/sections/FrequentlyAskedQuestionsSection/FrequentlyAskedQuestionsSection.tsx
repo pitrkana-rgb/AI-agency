@@ -9,11 +9,14 @@ const faqData = [
   { question: "Jaká je orientační cena a doba dodání?", answer: "U webů se většina projektů pohybuje od 24 900 Kč výše, u AI agentů a automatizací od 29 900 Kč. Délka spolupráce bývá typicky 3–8 týdnů podle rozsahu. Konkrétní odhad vždy dostanete po úvodní konzultaci ještě před tím, než se do projektu pustíme." },
 ];
 
+import { SectionDivider } from "../../components/SectionDivider";
+
 export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section style={{ width: "100%", backgroundColor: "#000", padding: "96px 0 120px" }}>
+    <section id="faq" style={{ width: "100%", backgroundColor: "#000", padding: "96px 0 120px", marginTop: "-50px", marginBottom: "-80px" }}>
+      <SectionDivider />
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}

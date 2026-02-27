@@ -7,12 +7,15 @@ const steps = [
   { num: "04", title: "Škálování & automatizace", description: "Napojíme nástroje, nastavíme metriky a vytrénujeme vaše AI agenty tak, aby se z experimentu stala dlouhodobá konkurenční výhoda.", icon: CogIcon },
 ];
 
+import { SectionDivider } from "../../components/SectionDivider";
+
 export const AiDesignFeaturesSection = (): JSX.Element => (
-  <section id="features" style={{ width: "100%", backgroundColor: "#000", padding: "96px 0 120px" }}>
+  <section id="features" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}>
+    <SectionDivider />
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
 
       {/* Section badge + headline */}
-      <div style={{ marginBottom: "72px", textAlign: "center" }}>
+      <div style={{ marginBottom: "56px", textAlign: "center" }}>
         <span style={{
           display: "inline-block", background: "rgba(255,90,31,0.12)", border: "1px solid rgba(255,90,31,0.3)",
           borderRadius: "999px", padding: "6px 16px", fontFamily: "'Space Grotesk',sans-serif",
@@ -34,8 +37,8 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
       <div className="stepper-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "0", position: "relative" }}>
         {/* Connecting gradient line */}
         <div style={{
-          position: "absolute", top: "32px", left: "12.5%", right: "12.5%", height: "1px",
-          background: "linear-gradient(90deg, #FF5A1F 0%, rgba(255,90,31,0.3) 50%, rgba(255,90,31,0.1) 100%)",
+          position: "absolute", top: "36px", left: "12.5%", right: "12.5%", height: "2px",
+          background: "linear-gradient(90deg, #FF5A1F 0%, rgba(255,90,31,0.4) 50%, rgba(255,90,31,0.1) 100%)",
           zIndex: 0,
         }} className="stepper-line" />
 
@@ -51,7 +54,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
               <div
                 className="step-circle"
                 style={{
-                  width: "64px", height: "64px", borderRadius: "50%",
+                  width: "72px", height: "72px", borderRadius: "50%",
                   background: "linear-gradient(135deg,#FF6A2A,#FF3C00)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   marginBottom: "24px", flexShrink: 0,
@@ -62,7 +65,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
                 onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.boxShadow = "0 0 0 12px rgba(255,90,31,0.15)"; el.style.transform = "scale(1.08)"; }}
                 onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.boxShadow = "0 0 0 0 rgba(255,90,31,0.4)"; el.style.transform = ""; }}
               >
-                <Icon style={{ width: "24px", height: "24px", color: "#fff" }} strokeWidth={1.75} />
+                <Icon style={{ width: "40px", height: "40px", color: "#fff" }} strokeWidth={1.75} />
                 <span style={{
                   position: "absolute", top: "-6px", right: "-6px",
                   width: "22px", height: "22px", borderRadius: "50%",
@@ -88,13 +91,13 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
 
     <style>{`
       @media(max-width:768px){
-        .stepper-grid{ grid-template-columns:repeat(2,1fr) !important; gap:40px !important; }
+        .stepper-grid{ grid-template-columns:repeat(2,1fr) !important; gap:48px 24px !important; }
         .stepper-line{ display:none !important; }
       }
       @media(max-width:480px){
-        .stepper-grid{ grid-template-columns:1fr !important; }
-        .step-block{ align-items:flex-start !important; text-align:left !important; flex-direction:row !important; gap:20px; }
-        .step-circle{ margin-bottom:0 !important; flex-shrink:0; }
+        .stepper-grid{ grid-template-columns:1fr !important; gap:40px !important; }
+        .step-block{ align-items:center !important; text-align:center !important; }
+        .step-circle{ margin-bottom:16px !important; }
       }
       @media(prefers-reduced-motion:reduce){ .step-circle{ transition:none !important; } }
     `}</style>

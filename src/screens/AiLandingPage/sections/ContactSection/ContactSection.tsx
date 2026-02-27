@@ -36,17 +36,17 @@ const FloatingField = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={focused ? placeholder : ""}
-        rows={multiline ? 4 : undefined}
+        rows={multiline ? 5 : undefined}
         style={{
-          background: "rgba(255,255,255,0.04)",
-          border: `1px solid ${focused ? "#FF5A1F" : error ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.1)"}`,
-          borderRadius: "12px",
-          padding: active ? (multiline ? "28px 16px 12px" : "24px 16px 8px") : "16px",
-          fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "#fff",
+          background: "rgba(255,255,255,0.03)",
+          border: `1px solid ${focused ? "#FF5A1F" : error ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.08)"}`,
+          borderRadius: "14px",
+          padding: active ? (multiline ? "32px 20px 16px" : "28px 20px 10px") : "20px",
+          fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "16px", color: "#fff",
           outline: "none", resize: "none", width: "100%",
           boxSizing: "border-box" as const,
-          transition: "border-color 200ms ease",
-          boxShadow: focused ? "0 0 0 3px rgba(255,90,31,0.12)" : "none",
+          transition: "border-color 200ms ease, box-shadow 200ms ease",
+          boxShadow: focused ? "0 0 0 4px rgba(255,90,31,0.1)" : "none",
         }}
       />
       {error && <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "rgba(248,113,113,0.9)", paddingLeft: "4px" }}>{error}</span>}
@@ -87,9 +87,9 @@ export const ContactSection = (): JSX.Element => {
   };
 
   return (
-    <section style={{ width: "100%", backgroundColor: "#000", padding: "96px 0 120px" }}>
+    <section id="contact" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
-        <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "start" }}>
+        <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center" }}>
 
           {/* Left: headline + trust */}
           <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
@@ -137,8 +137,8 @@ export const ContactSection = (): JSX.Element => {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                <div className="form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
                   <FloatingField id="f-name" label="Jméno" value={form.name} onChange={set("name")} error={errors.name} placeholder="Jan Novák" />
                   <FloatingField id="f-email" label="Email" type="email" value={form.email} onChange={set("email")} error={errors.email} placeholder="jan@firma.cz" />
                 </div>

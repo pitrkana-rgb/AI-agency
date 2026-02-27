@@ -1,76 +1,215 @@
-import { Card, CardContent } from "../../../../components/ui/card";
+import { useRef, useEffect, useState } from "react";
 
 const milestones = [
   {
-    number: "2024",
-    title: "Založení studia",
-    description: "Kombinujeme webdesign, automatizaci a AI agenty.",
-    image: "/images.png",
+    year: "1",
+    title: "Vytvoření studia",
+    description: "Začali jsme jako malé studio zaměřené na moderní weby a chytrá digitální řešení. Od prvního dne jsme stavěli na kvalitním designu, technické preciznosti a důrazu na reálný přínos pro klienta. Pevné základy nám umožnily růst rychle, ale systematicky.",
+    image: "/Studio.png",
+    stats: "Start",
   },
   {
-    number: "38+",
-    title: "Realizovaných AI projektů",
-    description: "Od proof‑of‑conceptů po dlouhodobě škálovaná řešení.",
-    image: "/images-1.png",
+    year: "2",
+    title: "Realizované weby",
+    description: "Navrhli a spustili jsme desítky moderních webových projektů – od prezentačních stránek po komplexní firemní platformy. Každý web stavíme na výkonu, konverzích a škálovatelnosti. Design propojujeme s byznysovým cílem, ne pouze s estetikou.",
+    image: "/Web_designs.png",
+    stats: "Design",
   },
   {
-    number: "15+",
-    title: "Oborů, ve kterých působíme",
-    description: "E‑commerce, SaaS, služby, výroba a další.",
-    image: "/images-2.png",
+    year: "3",
+    title: "Realizované automatizace",
+    description: "Implementujeme AI řešení, která šetří čas a zvyšují efektivitu. Od chatbotů pro zákaznickou podporu, přes generování obsahu, až po inteligentní vyhledávání a procesní automatizace. Technologie nasazujeme prakticky – s měřitelným dopadem na provoz i tržby.",
+    image: "/Automation.png",
+    stats: "AI & Automatizace",
   },
   {
-    number: "4",
+    year: "4",
     title: "Lidé v core týmu",
-    description: "Seniorní product, design, vývoj a automatizace.",
-    image: "/group-187.png",
+    description: "Náš tým tvoří specialisté na UX, vývoj a AI integrace. Kombinujeme technickou odbornost s byznysovým přesahem. Jsme kompaktní, rychlí v rozhodování a schopní dodat řešení bez zbytečné složitosti.",
+    image: "/Team_members.png",
+    stats: "Core Tým",
   },
 ];
 
-export const CompanyMilestonesSection = (): JSX.Element => {
+const MilestoneCard = ({ milestone, index }: { milestone: typeof milestones[0]; index: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.2 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const isEven = index % 2 === 0;
+
   return (
-    <section className="flex flex-col w-full max-w-[1245px] mx-auto items-center gap-[49px] px-4 py-16">
-      <header className="flex items-start gap-[27px] w-full">
-        <div className="opacity-60 [font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-base tracking-[-0.48px] leading-[39.7px] text-white whitespace-nowrap">
-          2025
+    <div
+      ref={ref}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        position: "relative",
+        marginBottom: "80px",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateX(0)" : `translateX(${isEven ? "-40px" : "40px"})`,
+        transition: "all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)",
+      }}
+      className="milestone-row"
+    >
+      {/* Content wrapper */}
+      <div className="milestone-content" style={{
+        display: "flex",
+        width: "100%",
+        maxWidth: "1100px",
+        gap: "48px",
+        alignItems: "center",
+        flexDirection: isEven ? "row" : "row-reverse" as any,
+      }}>
+        {/* Image side */}
+        <div style={{ flex: 1, position: "relative" }}>
+          <div style={{
+            position: "relative",
+            borderRadius: "24px",
+            overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.1)",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+          }}>
+            <img
+              src={milestone.image}
+              alt={milestone.title}
+              style={{ width: "100%", height: "300px", objectFit: "cover", display: "block" }}
+            />
+            {/* Overlay gradient */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)",
+            }} />
+          </div>
+          {/* Floating stat inside image */}
+          <div style={{
+            position: "absolute", bottom: "20px", left: "20px",
+            padding: "8px 16px", background: "rgba(0,0,0,0.7)",
+            backdropFilter: "blur(8px)", borderRadius: "12px",
+            border: "1px solid rgba(255,90,31,0.3)",
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: "12px", color: "#FF5A1F",
+            textTransform: "uppercase", letterSpacing: "0.1em",
+          }}>
+            {milestone.stats}
+          </div>
         </div>
 
-        <div className="flex-1 [font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[28px] tracking-[-0.84px] leading-[39.2px]">
-          Začínali jsme jako malé studio pro weby a automatizace. Dnes navrhujeme
-          a implementujeme AI řešení, která šetří čas, zvyšují tržby a uvolňují
-          ruce vašim týmům.
+        {/* Text side */}
+        <div style={{ flex: 1, textAlign: isEven ? "left" : "right" }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: "80px", height: "80px", borderRadius: "50%",
+            background: "linear-gradient(135deg, #FF6A2A, #FF3C00)",
+            boxShadow: "0 0 30px rgba(255,90,31,0.4)",
+            marginBottom: "24px",
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "24px", color: "#fff",
+          }}>
+            {milestone.year}
+          </div>
+          <h3 style={{
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "32px",
+            color: "#fff", marginBottom: "16px",
+          }}>
+            {milestone.title}
+          </h3>
+          <p style={{
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 400, fontSize: "17px",
+            lineHeight: 1.6, color: "rgba(255,255,255,0.7)", margin: 0,
+          }}>
+            {milestone.description}
+          </p>
         </div>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-        {milestones.map((milestone, index) => (
-          <Card
-            // biome-ignore lint/suspicious/noArrayIndexKey: statická mapa
-            key={index}
-            className="bg-transparent border-none"
-          >
-            <CardContent className="p-0 flex flex-col gap-3">
-              <div className="[font-family:'Sk-Modernist-Bold',Helvetica] font-bold text-white text-[67.1px] tracking-[-3.36px] leading-[74.6px] whitespace-nowrap">
-                {milestone.number}
-              </div>
-
-              <div className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-white text-[22.4px] tracking-[-0.67px] leading-[29.8px] whitespace-nowrap">
-                {milestone.title}
-              </div>
-
-              <div className="[font-family:'Sk-Modernist-Regular',Helvetica] font-normal text-textgrey text-[14.9px] tracking-[-0.45px] leading-[20.5px]">
-                {milestone.description}
-              </div>
-
-              <img
-                className="w-full h-auto mt-4"
-                alt={milestone.title}
-                src={milestone.image}
-              />
-            </CardContent>
-          </Card>
-        ))}
       </div>
-    </section>
+    </div>
   );
 };
+
+import { SectionDivider } from "../../components/SectionDivider";
+
+export const CompanyMilestonesSection = (): JSX.Element => (
+  <section id="timeline" style={{ width: "100%", backgroundColor: "#000", padding: "100px 0", marginTop: "-50px", marginBottom: "-100px" }}>
+    <SectionDivider />
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: "80px" }}>
+        <span style={{
+          display: "inline-block", background: "rgba(255,90,31,0.12)", border: "1px solid rgba(255,90,31,0.3)",
+          borderRadius: "999px", padding: "6px 16px", fontFamily: "'Space Grotesk',sans-serif",
+          fontWeight: 500, fontSize: "13px", letterSpacing: "0.06em", color: "#FF5A1F",
+          textTransform: "uppercase" as const, marginBottom: "24px",
+        }}>
+          Náš příběh
+        </span>
+        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,5vw,56px)", lineHeight: 1.1, color: "#fff", margin: "0 auto 32px", letterSpacing: "-0.02em", maxWidth: "800px" }}>
+          Od malého studia k vašemu partnerovi pro <span style={{ background: "linear-gradient(135deg,#FF6A2A,#FFB347)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>AI revoluci</span>
+        </h2>
+
+        {/* Intro text glass card */}
+        <div style={{
+          background: "rgba(255,255,255,0.03)",
+          backdropFilter: "blur(12px)",
+          borderLeft: "4px solid #FF5A1F",
+          borderRadius: "12px",
+          padding: "32px",
+          maxWidth: "800px",
+          margin: "0 auto",
+          textAlign: "left",
+          marginBottom: "-50px",
+        }}>
+          <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "19px", lineHeight: 1.6, color: "rgba(255,255,255,0.85)", margin: 0 }}>
+            Začínali jsme jako malé studio zaměřené na weby a automatizace.
+            Dnes navrhujeme a implementujeme AI řešení, která šetří čas, zvyšují tržby
+            a uvolňují ruce vašim týmům pro práci, která má skutečný smysl.
+          </p>
+        </div>
+      </div>
+
+      {/* Timeline items */}
+      <div style={{ position: "relative", marginTop: "120px" }}>
+        {/* Vertical line through center */}
+        <div style={{
+          position: "absolute", top: "0", bottom: "0", left: "50%", transform: "translateX(-50%)",
+          width: "4px", background: "linear-gradient(180deg, #FF5A1F 0%, rgba(255,90,31,0.1) 100%)",
+          zIndex: 0,
+        }} className="timeline-line" />
+
+        {milestones.map((m, i) => (
+          <MilestoneCard key={m.year} milestone={m} index={i} />
+        ))}
+      </div>
+    </div>
+
+    <style>{`
+      @media(max-width:992px){
+        .timeline-line { left: 40px !important; transform: none !important; }
+        .milestone-content { 
+          flex-direction: column !important; 
+          align-items: flex-start !important;
+          text-align: left !important;
+          padding-left: 80px;
+        }
+        .milestone-content > div { width: 100% !important; text-align: left !important; }
+        .milestone-row { align-items: flex-start !important; }
+      }
+      @media(max-width:480px) {
+        .milestone-content { padding-left: 60px; }
+        .timeline-line { left: 30px !important; }
+      }
+    `}</style>
+  </section>
+);
