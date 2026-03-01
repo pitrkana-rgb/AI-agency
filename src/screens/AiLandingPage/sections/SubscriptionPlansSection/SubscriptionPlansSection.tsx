@@ -4,27 +4,29 @@ const pricingPlans = [
   {
     name: "Webdesign",
     description: "Moderní, rychlý a srozumitelný web, který od první sekundy vysvětlí, co děláte a proč by to mělo zajímat vaše klienty.",
-    price: "od 24 900 Kč",
+    price: "od 9 900 Kč",
     features: [
-      "UX konzultace a návrh struktury webu",
-      "Design na míru včetně mobilní verze",
-      "Implementace v moderním frontendu",
-      "Základní SEO a měření návštěvnosti",
+      "Konzultace a návrh řešení zdarma včetně frontend implementace",
+      "Kompletní web standardně dodán do 14 dnů",
+      "Responzivní zpracování včetně plně optimalizované mobilní verze",
+      "Možnost napojení na interní systémy a aplikace třetích stran",
+      "Zahrnutý následný technický support a údržba",
     ],
-    highlighted: false,
+    highlighted: true,
     cta: "Chci web",
   },
   {
     name: "AI Agenti & Automatizace",
     description: "Návrh a implementace AI agentů a automatizací, které šetří čas vašemu týmu a zvyšují kvalitu služeb.",
-    price: "od 29 900 Kč",
+    price: "Individuální",
     features: [
-      "Workshop a mapování příležitostí pro AI",
-      "Návrh konkrétního AI agenta nebo automatizace",
-      "Napojení na vaše nástroje a data",
-      "Nastavení metrik a průběžná optimalizace",
+      "Bezplatná vstupní konzultace a analýza proveditelnosti",
+      "Vývoj AI chatbotů",
+      "Automatizace procesů a workflow (interní i zákaznické)",
+      "Plánovací a rezervační systémy",
+      "AI agenti pro podporu, obchod a HR",
     ],
-    highlighted: true,
+    highlighted: false,
     cta: "Chci AI řešení",
   },
 ];
@@ -171,7 +173,6 @@ export const SubscriptionPlansSection = (): JSX.Element => {
       <style>{`
       @media(max-width:768px){
         .pricing-grid{ grid-template-columns:1fr !important; gap: 48px !important; }
-        .popular-card { order: -1; }
       }
       @media(prefers-reduced-motion:reduce){ .pricing-card,.pricing-cta{ transition:none !important; } }
       .pricing-cta:focus-visible{ outline:2px solid #FF5A1F; outline-offset:3px; }

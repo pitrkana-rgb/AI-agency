@@ -2,21 +2,21 @@ import { useRef, useEffect, useState } from "react";
 
 const milestones = [
   {
-    year: "1",
+    year: "2025",
     title: "Vytvoření studia",
     description: "Začali jsme jako malé studio zaměřené na moderní weby a chytrá digitální řešení. Od prvního dne jsme stavěli na kvalitním designu, technické preciznosti a důrazu na reálný přínos pro klienta. Pevné základy nám umožnily růst rychle, ale systematicky.",
     image: "/Studio.png",
     stats: "Start",
   },
   {
-    year: "2",
+    year: "30+",
     title: "Realizované weby",
     description: "Navrhli a spustili jsme desítky moderních webových projektů – od prezentačních stránek po komplexní firemní platformy. Každý web stavíme na výkonu, konverzích a škálovatelnosti. Design propojujeme s byznysovým cílem, ne pouze s estetikou.",
     image: "/Web_designs.png",
     stats: "Design",
   },
   {
-    year: "3",
+    year: "50+",
     title: "Realizované automatizace",
     description: "Implementujeme AI řešení, která šetří čas a zvyšují efektivitu. Od chatbotů pro zákaznickou podporu, přes generování obsahu, až po inteligentní vyhledávání a procesní automatizace. Technologie nasazujeme prakticky – s měřitelným dopadem na provoz i tržby.",
     image: "/Automation.png",
@@ -143,7 +143,7 @@ import { SectionDivider } from "../../components/SectionDivider";
 export const CompanyMilestonesSection = (): JSX.Element => (
   <section id="timeline" style={{ width: "100%", backgroundColor: "#000", padding: "100px 0", marginTop: "-50px", marginBottom: "-100px" }}>
     <SectionDivider />
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }} className="milestones-container">
 
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: "80px" }}>
@@ -196,19 +196,21 @@ export const CompanyMilestonesSection = (): JSX.Element => (
 
     <style>{`
       @media(max-width:992px){
-        .timeline-line { left: 40px !important; transform: none !important; }
+        .milestones-container { padding: 0 16px !important; }
+        .timeline-line { left: 0px !important; transform: none !important; }
         .milestone-content { 
           flex-direction: column !important; 
           align-items: flex-start !important;
           text-align: left !important;
-          padding-left: 80px;
+          padding-left: 20px;
         }
         .milestone-content > div { width: 100% !important; text-align: left !important; }
         .milestone-row { align-items: flex-start !important; }
       }
       @media(max-width:480px) {
-        .milestone-content { padding-left: 60px; }
-        .timeline-line { left: 30px !important; }
+        .milestones-container { padding: 0 12px !important; }
+        .milestone-content { padding-left: 16px; }
+        .timeline-line { left: 0px !important; }
       }
     `}</style>
   </section>

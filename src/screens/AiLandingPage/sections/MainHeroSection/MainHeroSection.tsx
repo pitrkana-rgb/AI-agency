@@ -63,9 +63,10 @@ export const MainHeroSection = (): JSX.Element => {
     <section
       className="relative w-full flex items-center justify-center"
       style={{
-        minHeight: "100vh",
+        minHeight: "max(100vh, 1100px)",
         paddingTop: "44px",
         paddingBottom: "0",
+        marginTop: "-50px",
         marginBottom: "-520px",
       }}
     >
@@ -104,12 +105,12 @@ export const MainHeroSection = (): JSX.Element => {
 
       {/* Hero content */}
       <div
-        className="relative z-10 flex flex-col items-center animate-fade-in"
+        className="relative z-10 flex flex-col items-center animate-fade-in hero-content-wrap"
         style={{ maxWidth: "900px", textAlign: "center", padding: "0 24px", marginTop: "-300px" }}
       >
         {/* Rating pill */}
         <div
-          className="inline-flex items-center gap-4"
+          className="inline-flex items-center gap-4 hero-rating-pill"
           style={{
             background: "rgba(0,0,0,0.55)",
             backdropFilter: "blur(8px)",
@@ -156,7 +157,7 @@ export const MainHeroSection = (): JSX.Element => {
         </div>
 
         {/* Headline */}
-        <h1 style={{
+        <h1 className="hero-headline" style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 800,
           fontSize: "clamp(38px, 7vw, 68px)",
@@ -177,7 +178,7 @@ export const MainHeroSection = (): JSX.Element => {
         </h1>
 
         {/* Paragraph */}
-        <p style={{
+        <p className="hero-subheading" style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 400,
           fontSize: "clamp(16px, 2.2vw, 19px)",
@@ -251,7 +252,6 @@ export const MainHeroSection = (): JSX.Element => {
           </button>
         </div>
 
-        <ScrollIndicator />
       </div>
 
       <style>{`
@@ -274,6 +274,33 @@ export const MainHeroSection = (): JSX.Element => {
         #hero-secondary-cta:focus-visible {
           outline: 2px solid #FF5A1F;
           outline-offset: 3px;
+        }
+        /* ── Mobile hero adjustments ────────────── */
+        @media (max-width: 768px) {
+          .hero-rating-pill {
+            display: none !important;
+          }
+          .hero-content-wrap {
+            max-width: 100% !important;
+            padding: 0 20px !important;
+          }
+          .hero-headline {
+            font-size: clamp(28px, 8vw, 42px) !important;
+            max-width: 340px;
+          }
+          .hero-subheading {
+            max-width: 340px !important;
+            font-size: 15px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .hero-headline {
+            font-size: clamp(26px, 7vw, 36px) !important;
+            max-width: 300px;
+          }
+          .hero-subheading {
+            max-width: 300px !important;
+          }
         }
       `}</style>
     </section>

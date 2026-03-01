@@ -69,7 +69,7 @@ const StatCard = ({ label, value, suffix, delay }: Omit<typeof statsData[0], "de
 };
 
 export const UserTestimonialsSection = (): JSX.Element => (
-  <section style={{ width: "100%", backgroundColor: "transparent", padding: "60px 0" }}>
+  <section style={{ width: "100%", backgroundColor: "transparent", padding: "110px 0 60px" }}>
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "24px" }} className="stats-grid">
         {statsData.map((s, i) => <StatCard key={s.label} {...s} delay={i * 100} />)}
