@@ -1,13 +1,35 @@
-import { MessageCircleIcon, CheckCircle2Icon, Code2Icon, CogIcon } from "lucide-react";
+import { SectionDivider } from "../../components/SectionDivider";
 
 const steps = [
-  { num: "01", title: "Bezplatná konzultace", description: "Nezávazně projdeme váš web nebo projektový záměr, identifikujeme konverzní příležitosti a navrhneme konkrétní možnosti využití AI pro zvýšení výkonu.", icon: MessageCircleIcon },
-  { num: "02", title: "Návrh řešení", description: "Připravíme strategii a strukturu webu a během přibližně 3 dnů vytvoříme bezplatnou frontendovou verzi, abyste si mohli ověřit směr a podobu řešení ještě před plnou realizací.", icon: CheckCircle2Icon },
-  { num: "03", title: "Vývoj a implementace", description: "Po schválení konceptu web dokončíme nebo modernizujeme, implementujeme AI nástroje a nastavíme měření výkonu i konverzí.", icon: Code2Icon },
-  { num: "04", title: "Optimalizace a rozvoj", description: "Na základě dat web průběžně optimalizujeme, rozšiřujeme AI funkce a dlouhodobě zvyšujeme jeho obchodní přínos.", icon: CogIcon },
+  {
+    num: "01",
+    title: "Konzultace",
+    description: "Domluvte si zdarma konzultaci, kde probereme vaši vizi.",
+    img: "/Konzultace_Icon.png",
+    alt: "Konzultace icon",
+  },
+  {
+    num: "02",
+    title: "Návrh",
+    description: "Do 3 dnů připravíme zdarma funkční front-end verzi webu.",
+    img: "/Navrh_Icon.png",
+    alt: "Návrh icon",
+  },
+  {
+    num: "03",
+    title: "Implementace",
+    description: "Díky AI standardně dodáme hotový web do 14 dnů.",
+    img: "/Implementace_Icon.png",
+    alt: "Implementace icon",
+  },
+  {
+    num: "04",
+    title: "Optimalizace",
+    description: "Sledujeme fungování webu a navrhujeme další zlepšení.",
+    img: "/Optimalizace_Icon.png",
+    alt: "Optimalizace icon",
+  },
 ];
-
-import { SectionDivider } from "../../components/SectionDivider";
 
 export const AiDesignFeaturesSection = (): JSX.Element => (
   <section id="features" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}>
@@ -25,50 +47,55 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
         </p>
       </div>
 
-      {/* Horizontal stepper */}
+      {/* Desktop: horizontal stepper (4 columns) | Mobile: stacked rows */}
       <div className="stepper-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "0", position: "relative" }}>
-        {/* Connecting gradient line */}
-        <div style={{
-          position: "absolute", top: "36px", left: "12.5%", right: "12.5%", height: "2px",
-          background: "linear-gradient(90deg, #FF5A1F 0%, rgba(255,90,31,0.4) 50%, rgba(255,90,31,0.1) 100%)",
-          zIndex: 0,
-        }} className="stepper-line" />
 
-        {steps.map((step, i) => {
-          const Icon = step.icon;
-          return (
+        {/* Connecting gradient line — desktop only */}
+        <div
+          className="stepper-line"
+          style={{
+            position: "absolute", top: "54px", left: "12.5%", right: "12.5%", height: "2px",
+            background: "linear-gradient(90deg, #FF5A1F 0%, rgba(255,90,31,0.4) 50%, rgba(255,90,31,0.1) 100%)",
+            zIndex: 0,
+          }}
+        />
+
+        {steps.map((step) => (
+          <div
+            key={step.num}
+            className="step-block"
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 16px", position: "relative", zIndex: 1 }}
+          >
+            {/* Icon image container */}
             <div
-              key={step.num}
-              className="step-block"
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 16px", position: "relative", zIndex: 1 }}
+              className="step-img-wrap"
+              style={{
+                width: "108px", height: "108px",
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, rgba(255,106,42,0.15), rgba(255,90,31,0.08))",
+                border: "1px solid rgba(255,90,31,0.25)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                marginBottom: "24px", flexShrink: 0,
+                position: "relative",
+                transition: "box-shadow 250ms ease, transform 250ms ease",
+              }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.boxShadow = "0 0 0 12px rgba(255,90,31,0.12)"; el.style.transform = "scale(1.08)"; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.boxShadow = ""; el.style.transform = ""; }}
             >
-              {/* Numbered circle */}
-              <div
-                className="step-circle"
+              <img
+                src={step.img}
+                alt={step.alt}
                 style={{
-                  width: "72px", height: "72px", borderRadius: "50%",
-                  background: "linear-gradient(135deg,#FF6A2A,#FF3C00)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  marginBottom: "24px", flexShrink: 0,
-                  boxShadow: "0 0 0 0 rgba(255,90,31,0.4)",
-                  transition: "box-shadow 250ms ease, transform 250ms ease",
-                  position: "relative",
+                  width: "96px", height: "96px",
+                  objectFit: "contain",
+                  filter: "drop-shadow(0 0 12px rgba(255,106,42,0.35))",
+                  borderRadius: "12px",
                 }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.boxShadow = "0 0 0 12px rgba(255,90,31,0.15)"; el.style.transform = "scale(1.08)"; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.boxShadow = "0 0 0 0 rgba(255,90,31,0.4)"; el.style.transform = ""; }}
-              >
-                <Icon style={{ width: "40px", height: "40px", color: "#fff" }} strokeWidth={1.75} />
-                <span style={{
-                  position: "absolute", top: "-6px", right: "-6px",
-                  width: "22px", height: "22px", borderRadius: "50%",
-                  background: "#000", border: "1px solid rgba(255,90,31,0.5)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "10px", color: "#FF5A1F",
-                }}>
-                  {i + 1}
-                </span>
-              </div>
+              />
 
+            </div>
+
+            <div className="step-text">
               <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "18px", color: "#fff", marginBottom: "12px", lineHeight: 1.3 }}>
                 {step.title}
               </h3>
@@ -76,31 +103,62 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
                 {step.description}
               </p>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
 
     <style>{`
-      @media(max-width:768px){
-        .stepper-grid{ grid-template-columns:repeat(2,1fr) !important; gap:32px 16px !important; }
+      /* ── Mobile: 2-col row layout per step ── */
+      @media(max-width:767px){
+        .stepper-grid{
+          grid-template-columns: 1fr !important;
+          gap: 12px !important;
+        }
+        .stepper-line{ display:none !important; }
+
+        .step-block{
+          flex-direction: row !important;
+          align-items: center !important;
+          text-align: left !important;
+          padding: 16px !important;
+          gap: 16px !important;
+          background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+          border: 1px solid rgba(255,255,255,0.08);
+          border-left: 2px solid rgba(255,90,31,0.3) !important;
+          border-radius: 16px;
+        }
+
+        .step-img-wrap{
+          width: 64px !important;
+          height: 64px !important;
+          min-width: 64px !important;
+          margin-bottom: 0 !important;
+          flex-shrink: 0;
+        }
+
+        .step-img-wrap img{
+          width: 48px !important;
+          height: 48px !important;
+        }
+
+        .step-text h3{
+          font-size: 15px !important;
+          margin-bottom: 4px !important;
+        }
+        .step-text p{
+          font-size: 13px !important;
+        }
+      }
+
+      /* Tablet: 2×2 grid, still vertical cards */
+      @media(min-width:768px) and (max-width:1023px){
+        .stepper-grid{ grid-template-columns:repeat(2,1fr) !important; gap:32px 24px !important; }
         .stepper-line{ display:none !important; }
         .step-block{ padding: 0 8px !important; }
-        .step-circle{ width:48px !important; height:48px !important; margin-bottom:12px !important; }
-        .step-circle svg { width:28px !important; height:28px !important; }
       }
-      @media(max-width:480px){
-        .stepper-grid{ grid-template-columns:1fr !important; gap:12px !important; }
-        .step-block{ align-items:flex-start !important; text-align:left !important; flex-direction:row !important; gap:12px !important; }
-        .step-circle{ margin-bottom:0 !important; flex-shrink:0; }
-        .step-text h3 { font-size:15px !important; margin-bottom:6px !important; }
-        .step-text p { font-size:13px !important; }
-      }
-      @media(max-width:768px){
-        .stepper-section-heading { font-size:22px !important; margin-bottom:8px !important; }
-        .stepper-section-subtitle { font-size:13px !important; margin-bottom:32px !important; }
-      }
-      @media(prefers-reduced-motion:reduce){ .step-circle{ transition:none !important; } }
+
+      @media(prefers-reduced-motion:reduce){ .step-img-wrap{ transition:none !important; } }
     `}</style>
   </section>
 );

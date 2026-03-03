@@ -56,12 +56,12 @@ const StatCard = ({ label, value, suffix, delay }: Omit<typeof statsData[0], "de
       onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.borderColor = "rgba(255,255,255,0.08)"; el.style.transform = ""; el.style.boxShadow = ""; }}
     >
       {/* Orange accent line top */}
-      <div style={{ position: "absolute", top: 0, left: "32px", right: "32px", height: "2px", background: "linear-gradient(90deg, #FF5A1F, transparent)", borderRadius: "1px" }} />
+      <div className="stat-accent-line" style={{ position: "absolute", top: 0, left: "32px", right: "32px", height: "2px", background: "linear-gradient(90deg, #FF5A1F, transparent)", borderRadius: "1px" }} />
 
-      <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 500, fontSize: "12px", letterSpacing: "0.1em", color: "#FF5A1F", textTransform: "uppercase" as const }}>
+      <span className="stat-label" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 500, fontSize: "12px", letterSpacing: "0.1em", color: "#FF5A1F", textTransform: "uppercase" as const }}>
         {label}
       </span>
-      <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(40px,5vw,56px)", color: "#fff", lineHeight: 1, letterSpacing: "-0.03em" }}>
+      <div className="stat-value" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(40px,5vw,56px)", color: "#fff", lineHeight: 1, letterSpacing: "-0.03em" }}>
         {count.toLocaleString("cs")}{suffix}
       </div>
     </div>
@@ -76,9 +76,12 @@ export const UserTestimonialsSection = (): JSX.Element => (
       </div>
     </div>
     <style>{`
-      @media(max-width:768px){ 
-        .stats-grid{ grid-template-columns:1fr !important; gap: 16px !important; }
-        .stat-card { padding: 16px 32px !important; }
+      @media(max-width:767px){
+        .stats-grid{ grid-template-columns: repeat(3,1fr) !important; gap: 8px !important; }
+        .stat-card { padding: 12px 10px !important; border-radius: 12px !important; gap: 4px !important; }
+        .stat-accent-line { left: 10px !important; right: 10px !important; }
+        .stat-label { font-size: 9px !important; letter-spacing: 0.05em !important; }
+        .stat-value { font-size: 22px !important; }
         .stats-section { padding-top: 60px !important; }
       }
       @media(prefers-reduced-motion:reduce){ .stat-card{ transition:none !important; } }
