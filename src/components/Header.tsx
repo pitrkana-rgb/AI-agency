@@ -60,7 +60,7 @@ export const Header = () => {
                     : "mt-5"
                     }`}
             >
-                <nav className="grid grid-cols-2 md:grid-cols-3 items-center py-5">
+                <nav className="grid grid-cols-2 md:grid-cols-3 items-center py-5 header-nav">
                     <div className="flex justify-start">
                         <button
                             type="button"
@@ -71,6 +71,7 @@ export const Header = () => {
                             <img
                                 src="/Company_logo.png"
                                 alt="AI-agency logo"
+                                className="header-logo"
                                 style={{ height: "54px", width: "auto", display: "block" }}
                             />
                         </button>

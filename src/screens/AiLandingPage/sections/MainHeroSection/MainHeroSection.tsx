@@ -61,7 +61,7 @@ const ScrollIndicator = () => (
 export const MainHeroSection = (): JSX.Element => {
   return (
     <section
-      className="relative w-full flex items-center justify-center"
+      className="relative w-full flex items-center justify-center hero-section-mobile"
       style={{
         minHeight: "max(100vh, 1100px)",
         paddingTop: "44px",
@@ -257,47 +257,34 @@ export const MainHeroSection = (): JSX.Element => {
           0%, 100% { transform: translateY(0); opacity: 1; }
           50% { transform: translateY(12px); opacity: 0.3; }
         }
-        .animate-scroll-dot {
-          animation: scroll-dot 1.8s ease-in-out infinite;
-        }
-        @media (max-width: 480px) {
-          .hero-primary-btn, .hero-secondary-btn {
-            width: 100%;
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .animate-scroll-dot { animation: none; }
-        }
-        #hero-primary-cta:focus-visible,
-        #hero-secondary-cta:focus-visible {
-          outline: 2px solid #FF5A1F;
-          outline-offset: 3px;
+        .animate-scroll-dot { animation: scroll-dot 1.8s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .animate-scroll-dot { animation: none; } }
+        #hero-primary-cta:focus-visible, #hero-secondary-cta:focus-visible {
+          outline: 2px solid #FF5A1F; outline-offset: 3px;
         }
         /* ── Mobile hero adjustments ────────────── */
         @media (max-width: 768px) {
-          .hero-rating-pill {
-            display: none !important;
-          }
+          .hero-rating-pill { display: none !important; }
           .hero-content-wrap {
             max-width: 100% !important;
-            padding: 0 20px !important;
+            padding: 0 16px !important;
+            margin-top: -180px !important;
           }
           .hero-headline {
-            font-size: clamp(28px, 8vw, 42px) !important;
-            max-width: 340px;
+            font-size: 26px !important;
+            line-height: 1.15 !important;
+            max-width: 320px;
+            margin-bottom: 10px !important;
           }
           .hero-subheading {
-            max-width: 340px !important;
-            font-size: 15px !important;
+            max-width: 320px !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            margin-bottom: 20px !important;
           }
-        }
-        @media (max-width: 480px) {
-          .hero-headline {
-            font-size: clamp(26px, 7vw, 36px) !important;
-            max-width: 300px;
-          }
-          .hero-subheading {
-            max-width: 300px !important;
+          .hero-primary-btn, .hero-secondary-btn {
+            padding: 10px 20px !important;
+            font-size: 14px !important;
           }
         }
       `}</style>

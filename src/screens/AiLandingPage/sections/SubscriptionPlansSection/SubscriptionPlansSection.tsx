@@ -172,7 +172,16 @@ export const SubscriptionPlansSection = (): JSX.Element => {
       </div>
       <style>{`
       @media(max-width:768px){
-        .pricing-grid{ grid-template-columns:1fr !important; gap: 48px !important; }
+        .pricing-grid{ grid-template-columns:1fr !important; gap:12px !important; }
+        .popular-card{ transform: scale(1) !important; }
+        .pricing-section-heading { font-size: 22px !important; margin-bottom: 8px !important; }
+        .pricing-section-subtitle { font-size: 13px !important; }
+        .pricing-card-inner { padding: 16px !important; gap: 20px !important; }
+        .pricing-card-inner h3 { font-size: 18px !important; }
+        .pricing-card-inner p { font-size: 13px !important; }
+        .pricing-price { font-size: 22px !important; }
+        .pricing-feature-text { font-size: 10px !important; }
+        .pricing-cta { padding: 10px 16px !important; font-size: 14px !important; }
       }
       @media(prefers-reduced-motion:reduce){ .pricing-card,.pricing-cta{ transition:none !important; } }
       .pricing-cta:focus-visible{ outline:2px solid #FF5A1F; outline-offset:3px; }

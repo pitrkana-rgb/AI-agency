@@ -106,6 +106,16 @@ export const ClientTestimonialsSection = (): JSX.Element => (
     <style>{`
       @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
       @keyframes marquee-reverse { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+      @media(max-width:768px){
+        .testimonials-section { padding: 48px 0 !important; }
+        .testimonials-heading { font-size: 22px !important; margin-bottom: 10px !important; }
+        .testimonials-subtitle { font-size: 13px !important; }
+        .testimonials-header { margin-bottom: 32px !important; }
+        .testimonial-card { width: 280px !important; padding: 14px !important; gap: 12px !important; }
+        .testimonial-avatar { width: 28px !important; height: 28px !important; font-size: 11px !important; }
+        .testimonial-name { font-size: 13px !important; }
+        .testimonial-role { font-size: 11px !important; }
+      }
       @media(prefers-reduced-motion:reduce){ .marquee-inner{ animation:none !important; } }
     `}</style>
   </section>

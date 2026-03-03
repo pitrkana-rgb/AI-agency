@@ -104,6 +104,16 @@ export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
 
       <style>{`
         .faq-trigger:focus-visible{ outline:2px solid #FF5A1F; outline-offset:2px; border-radius:4px; }
+        @media(max-width:768px){
+          .faq-section { padding: 48px 0 60px !important; }
+          .faq-heading { font-size: 22px !important; margin-bottom: 8px !important; }
+          .faq-subtitle { font-size: 13px !important; }
+          .faq-header { margin-bottom: 32px !important; }
+          .faq-trigger { padding: 12px 0 !important; }
+          .faq-question { font-size: 15px !important; }
+          .faq-answer { font-size: 13px !important; padding-bottom: 14px !important; line-height: 1.6 !important; }
+          .faq-icon { width: 26px !important; height: 26px !important; }
+        }
         @media(prefers-reduced-motion:reduce){ div[style*="max-height"]{ transition:none !important; } }
       `}</style>
     </section>

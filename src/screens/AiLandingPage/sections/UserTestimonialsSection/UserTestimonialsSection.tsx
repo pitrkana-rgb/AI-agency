@@ -69,14 +69,18 @@ const StatCard = ({ label, value, suffix, delay }: Omit<typeof statsData[0], "de
 };
 
 export const UserTestimonialsSection = (): JSX.Element => (
-  <section style={{ width: "100%", backgroundColor: "transparent", padding: "110px 0 60px" }}>
+  <section className="stats-section" style={{ width: "100%", backgroundColor: "transparent", padding: "110px 0 60px" }}>
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "24px" }} className="stats-grid">
         {statsData.map((s, i) => <StatCard key={s.label} {...s} delay={i * 100} />)}
       </div>
     </div>
     <style>{`
-      @media(max-width:768px){ .stats-grid{ grid-template-columns:1fr !important; gap: 16px !important; } }
+      @media(max-width:768px){ 
+        .stats-grid{ grid-template-columns:1fr !important; gap: 16px !important; }
+        .stat-card { padding: 16px 32px !important; }
+        .stats-section { padding-top: 60px !important; }
+      }
       @media(prefers-reduced-motion:reduce){ .stat-card{ transition:none !important; } }
       .stat-card:focus-visible{ outline:2px solid #FF5A1F; outline-offset:4px; }
     `}</style>

@@ -31,8 +31,8 @@ export const SiteFooterSection = (): JSX.Element => {
       {/* Orange gradient top border */}
       <div style={{ height: "1px", background: "linear-gradient(90deg,transparent 0%,#FF5A1F 40%,rgba(255,90,31,0.3) 70%,transparent 100%)" }} />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "56px 24px 40px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "48px", flexWrap: "wrap", marginBottom: "48px" }}>
+      <div className="footer-wrapper" style={{ maxWidth: "1200px", margin: "0 auto", padding: "56px 24px 40px" }}>
+        <div className="footer-top" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "48px", flexWrap: "wrap", marginBottom: "48px" }}>
 
           {/* Brand */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "300px" }}>
@@ -107,6 +107,14 @@ export const SiteFooterSection = (): JSX.Element => {
           </div>
         </div>
       </div>
+      <style>{`
+        @media(max-width:768px){
+          .footer-wrapper { padding: 32px 16px 24px !important; }
+          .footer-top { gap: 24px !important; margin-bottom: 28px !important; }
+          .footer-logo { height: 32px !important; }
+          .header-logo { height: 32px !important; }
+        }
+      `}</style>
     </footer>
   );
 };

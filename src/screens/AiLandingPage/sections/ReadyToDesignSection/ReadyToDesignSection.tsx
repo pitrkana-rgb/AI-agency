@@ -76,7 +76,14 @@ export const ReadyToDesignSection = (): JSX.Element => {
       </div>
       <style>{`
       #ready-cta-btn:focus-visible{ outline:2px solid #FF5A1F; outline-offset:3px; }
-      @media(max-width:768px){ div[style*="padding: 80px 64px"]{ padding:40px 24px !important; } }
+      @media(max-width:768px){
+        .cta-inner { padding: 36px 20px !important; }
+        .cta-heading { font-size: 22px !important; line-height: 1.2 !important; }
+        .cta-subtitle { font-size: 14px !important; }
+        .cta-badge-label { font-size: 12px !important; }
+        #ready-cta-btn { padding: 12px 24px !important; font-size: 15px !important; }
+        .cta-badges { gap: 12px !important; }
+      }
       @media(prefers-reduced-motion:reduce){ #ready-cta-btn{ transition:none !important; } }
     `}</style>
     </section>

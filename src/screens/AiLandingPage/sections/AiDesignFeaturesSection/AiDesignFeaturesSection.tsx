@@ -83,13 +83,22 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
 
     <style>{`
       @media(max-width:768px){
-        .stepper-grid{ grid-template-columns:repeat(2,1fr) !important; gap:48px 24px !important; }
+        .stepper-grid{ grid-template-columns:repeat(2,1fr) !important; gap:32px 16px !important; }
         .stepper-line{ display:none !important; }
+        .step-block{ padding: 0 8px !important; }
+        .step-circle{ width:48px !important; height:48px !important; margin-bottom:12px !important; }
+        .step-circle svg { width:28px !important; height:28px !important; }
       }
       @media(max-width:480px){
-        .stepper-grid{ grid-template-columns:1fr !important; gap:40px !important; }
-        .step-block{ align-items:center !important; text-align:center !important; }
-        .step-circle{ margin-bottom:16px !important; }
+        .stepper-grid{ grid-template-columns:1fr !important; gap:12px !important; }
+        .step-block{ align-items:flex-start !important; text-align:left !important; flex-direction:row !important; gap:12px !important; }
+        .step-circle{ margin-bottom:0 !important; flex-shrink:0; }
+        .step-text h3 { font-size:15px !important; margin-bottom:6px !important; }
+        .step-text p { font-size:13px !important; }
+      }
+      @media(max-width:768px){
+        .stepper-section-heading { font-size:22px !important; margin-bottom:8px !important; }
+        .stepper-section-subtitle { font-size:13px !important; margin-bottom:32px !important; }
       }
       @media(prefers-reduced-motion:reduce){ .step-circle{ transition:none !important; } }
     `}</style>
