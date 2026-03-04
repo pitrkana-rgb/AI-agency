@@ -4,7 +4,7 @@ const milestones = [
   {
     year: "2025",
     title: "Vytvoření studia",
-    description: "PK-Digital vzniklo v roce 2025 na základě více než 10 let zkušeností s prací s daty, digitálním designem a technologiemi. Postupně se k analytice a návrhu systémů přirozeně přidala i oblast AI nástrojů a automatizace, která dnes zásadně mění způsob, jak fungují weby i podnikání. Studio vzniklo s cílem propojit data, design a AI do praktických řešení, která mají reálný dopad na výkon webů a online projektů.",
+    description: "PK-Digital stojí na více než 10 letech zkušeností s analýzou dat a jejich vizualizací. Dnes se zaměřujeme na tvorbu moderních webových stránek a AI řešení, kde propojujeme data, design a technologie tak, aby weby nejen dobře vypadaly, ale také skutečně fungovaly a přinášely výsledky.",
     image: "/Studio.png",
     stats: "Start",
   },
@@ -25,7 +25,7 @@ const milestones = [
   {
     year: "PK",
     title: "Kdo stojí za PK-Digital",
-    description: "Jmenuji se Petr Kaňa a dlouhodobě se věnuji práci s daty, analytikou a návrhu digitálních řešení. Během své kariéry jsem pracoval na projektech zaměřených na datovou analytiku, reporting, optimalizaci procesů a technologický design. Dnes tyto zkušenosti propojuji s moderními technologiemi a AI, abych vytvářel efektivní digitální řešení pro podnikatele, jednotlivce i firmy.",
+    description: "Jmenuji se Petr Kaňa a více než 10 let se věnuji práci s daty, analytikou a návrhu digitálních řešení. Pomáhám lidem a projektům lépe pochopit jejich data a jak je správně vizualizovat. Dnes tyto zkušenosti propojuji s AI, abych vytvářel jedinečné moderní webové stránky.",
     image: "/Team_members.png",
     stats: "Core Tým",
   },

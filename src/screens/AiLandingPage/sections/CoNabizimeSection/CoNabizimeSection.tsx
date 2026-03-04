@@ -24,6 +24,7 @@ const slides = [
             "Technický support",
         ],
         cta: "Chci web",
+        image: "/FC_Ivancice.png",
     },
     {
         id: "modernizace-webu",
@@ -39,6 +40,7 @@ const slides = [
             "Průběžná správa a údržba",
         ],
         cta: "Chci modernizaci",
+        image: "/profitherm.png",
     },
     {
         id: "integrace-ai",
@@ -54,6 +56,7 @@ const slides = [
             "Automatizace procesů",
         ],
         cta: "Zjistit více",
+        image: "/AI.png",
     },
 ];
 
@@ -146,11 +149,13 @@ export const CoNabizimeSection = (): JSX.Element => {
                     }}
                     className="offer-panel"
                 >
-                    {/* Left — image placeholder */}
+                    {/* Left — image or placeholder */}
                     <div
                         className="offer-image-col"
                         style={{
-                            background: "linear-gradient(145deg, rgba(255,106,42,0.08), rgba(255,90,31,0.03))",
+                            background: slide.image
+                                ? "#000"
+                                : "linear-gradient(145deg, rgba(255,106,42,0.08), rgba(255,90,31,0.03))",
                             borderRight: "1px solid rgba(255,255,255,0.06)",
                             display: "flex", alignItems: "center", justifyContent: "center",
                             minHeight: "460px",
@@ -158,32 +163,51 @@ export const CoNabizimeSection = (): JSX.Element => {
                             overflow: "hidden",
                         }}
                     >
-                        {/* Decorative glow blob */}
-                        <div style={{
-                            position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
-                            width: "260px", height: "260px",
-                            background: "radial-gradient(circle, rgba(255,90,31,0.18) 0%, transparent 70%)",
-                            pointerEvents: "none",
-                        }} />
-                        <div style={{
-                            display: "flex", flexDirection: "column", alignItems: "center", gap: "16px",
-                            position: "relative", zIndex: 1,
-                        }}>
-                            <div style={{
-                                width: "80px", height: "80px", borderRadius: "20px",
-                                background: "rgba(255,90,31,0.12)",
-                                border: "1px dashed rgba(255,90,31,0.3)",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                            }}>
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" />
-                                    <path d="M3 9h18M9 21V9" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                                </svg>
-                            </div>
-                            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                                Obrázek bude přidán
-                            </span>
-                        </div>
+                        {slide.image ? (
+                            /* Real image — cover the entire column */
+                            <img
+                                src={slide.image}
+                                alt={slide.title}
+                                style={{
+                                    position: "absolute",
+                                    inset: 0,
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                    display: "block",
+                                }}
+                            />
+                        ) : (
+                            /* Placeholder */
+                            <>
+                                <div style={{
+                                    position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+                                    width: "260px", height: "260px",
+                                    background: "radial-gradient(circle, rgba(255,90,31,0.18) 0%, transparent 70%)",
+                                    pointerEvents: "none",
+                                }} />
+                                <div style={{
+                                    display: "flex", flexDirection: "column", alignItems: "center", gap: "16px",
+                                    position: "relative", zIndex: 1,
+                                }}>
+                                    <div style={{
+                                        width: "80px", height: "80px", borderRadius: "20px",
+                                        background: "rgba(255,90,31,0.12)",
+                                        border: "1px dashed rgba(255,90,31,0.3)",
+                                        display: "flex", alignItems: "center", justifyContent: "center",
+                                    }}>
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" />
+                                            <path d="M3 9h18M9 21V9" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" strokeLinecap="round" />
+                                        </svg>
+                                    </div>
+                                    <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                                        Obrázek bude přidán
+                                    </span>
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Right — content */}
