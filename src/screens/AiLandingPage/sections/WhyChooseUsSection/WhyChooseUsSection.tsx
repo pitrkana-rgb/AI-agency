@@ -114,9 +114,11 @@ const ThemCard = () => (
 );
 
 const cards = [<PkCard key="pk" />, <ThemCard key="them" />];
+const SWIPE_THRESHOLD = 50;
 
 export const WhyChooseUsSection = (): JSX.Element => {
     const ref = useRef<HTMLDivElement>(null);
+    const touchStartX = useRef<number>(0);
     const [visible, setVisible] = useState(false);
     const [mobileIdx, setMobileIdx] = useState(0);
     const navigate = useNavigate();
@@ -133,6 +135,16 @@ export const WhyChooseUsSection = (): JSX.Element => {
     }, []);
 
     const goTo = (idx: number) => setMobileIdx(Math.max(0, Math.min(cards.length - 1, idx)));
+
+    const onTouchStart = (e: any) => {
+        touchStartX.current = e.touches[0].clientX;
+    };
+    const onTouchEnd = (e: any) => {
+        const endX = e.changedTouches[0].clientX;
+        const delta = touchStartX.current - endX;
+        if (delta > SWIPE_THRESHOLD) goTo(mobileIdx + 1);
+        else if (delta < -SWIPE_THRESHOLD) goTo(mobileIdx - 1);
+    };
 
     return (
         <section
@@ -197,9 +209,9 @@ export const WhyChooseUsSection = (): JSX.Element => {
                     <ThemCard />
                 </div>
 
-                {/* ── Mobile: JS carousel with dots + arrows ── */}
+                {/* ── Mobile: JS carousel with dots + arrows + touch swipe ── */}
                 <div className="why-mobile-carousel">
-                    <div style={{ padding: "12px 0 4px" }}>
+                    <div style={{ padding: "12px 0 4px" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
                         {cards[mobileIdx]}
                     </div>
 

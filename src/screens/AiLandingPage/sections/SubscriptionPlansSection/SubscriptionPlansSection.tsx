@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
 
 const pricingPlans = [
@@ -152,11 +152,24 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
   </div>
 );
 
+const SWIPE_THRESHOLD = 50;
+
 export const SubscriptionPlansSection = (): JSX.Element => {
   const navigate = useNavigate();
   const [mobileIdx, setMobileIdx] = useState(0);
+  const touchStartX = useRef<number>(0);
 
   const goTo = (idx: number) => setMobileIdx(Math.max(0, Math.min(pricingPlans.length - 1, idx)));
+
+  const onTouchStart = (e: any) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: any) => {
+    const endX = e.changedTouches[0].clientX;
+    const delta = touchStartX.current - endX;
+    if (delta > SWIPE_THRESHOLD) goTo(mobileIdx + 1);
+    else if (delta < -SWIPE_THRESHOLD) goTo(mobileIdx - 1);
+  };
 
   return (
     <section id="pricing" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px" }}>
@@ -180,10 +193,10 @@ export const SubscriptionPlansSection = (): JSX.Element => {
           ))}
         </div>
 
-        {/* Mobile carousel (hidden on desktop) */}
+        {/* Mobile carousel (hidden on desktop) — touch swipe enabled */}
         <div className="pricing-mobile-carousel">
           {/* Single card with extra top padding so badge is visible */}
-          <div style={{ padding: "20px 0 4px", position: "relative" }}>
+          <div style={{ padding: "20px 0 4px", position: "relative" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
             <PricingCard plan={pricingPlans[mobileIdx]} navigate={navigate} />
           </div>
 

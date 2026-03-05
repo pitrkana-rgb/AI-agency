@@ -24,7 +24,7 @@ const slides = [
             "Technický support",
         ],
         cta: "Chci web",
-        image: "/FC_Ivancice.png",
+        image: "/New.web-promotion.png",
     },
     {
         id: "modernizace-webu",
@@ -40,7 +40,7 @@ const slides = [
             "Průběžná správa a údržba",
         ],
         cta: "Chci modernizaci",
-        image: "/profitherm.png",
+        image: "/profitherm.png?v=2",
     },
     {
         id: "integrace-ai",
@@ -60,10 +60,13 @@ const slides = [
     },
 ];
 
+const SWIPE_THRESHOLD = 50;
+
 export const CoNabizimeSection = (): JSX.Element => {
     const [active, setActive] = useState(0);
     const [animating, setAnimating] = useState(false);
     const trackRef = useRef<HTMLDivElement>(null);
+    const touchStartX = useRef<number>(0);
     const navigate = useNavigate();
 
     const goTo = (idx: number) => {
@@ -82,6 +85,16 @@ export const CoNabizimeSection = (): JSX.Element => {
         window.addEventListener("keydown", handler);
         return () => window.removeEventListener("keydown", handler);
     }, [active]);
+
+    const onTouchStart = (e: any) => {
+        touchStartX.current = e.touches[0].clientX;
+    };
+    const onTouchEnd = (e: any) => {
+        const endX = e.changedTouches[0].clientX;
+        const delta = touchStartX.current - endX;
+        if (delta > SWIPE_THRESHOLD) goTo(Math.min(active + 1, slides.length - 1));
+        else if (delta < -SWIPE_THRESHOLD) goTo(Math.max(active - 1, 0));
+    };
 
     const slide = slides[active];
 
@@ -132,7 +145,7 @@ export const CoNabizimeSection = (): JSX.Element => {
                     ))}
                 </div>
 
-                {/* Slide panel */}
+                {/* Slide panel — touch swipe on mobile */}
                 <div
                     ref={trackRef}
                     style={{
@@ -148,6 +161,8 @@ export const CoNabizimeSection = (): JSX.Element => {
                         transition: "opacity 300ms ease, transform 300ms ease",
                     }}
                     className="offer-panel"
+                    onTouchStart={onTouchStart}
+                    onTouchEnd={onTouchEnd}
                 >
                     {/* Left — image or placeholder */}
                     <div
