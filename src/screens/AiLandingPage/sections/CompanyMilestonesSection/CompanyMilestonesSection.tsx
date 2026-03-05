@@ -95,17 +95,6 @@ const MilestoneCard = ({ milestone, index }: { milestone: typeof milestones[0]; 
               background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)",
             }} />
           </div>
-          {/* Floating stat inside image */}
-          <div style={{
-            position: "absolute", bottom: "20px", left: "20px",
-            padding: "8px 16px", background: "rgba(0,0,0,0.7)",
-            backdropFilter: "blur(8px)", borderRadius: "12px",
-            border: "1px solid rgba(255,90,31,0.3)",
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: "12px", color: "#FF5A1F",
-            textTransform: "uppercase", letterSpacing: "0.1em",
-          }}>
-            {milestone.stats}
-          </div>
         </div>
 
         {/* Text side */}
@@ -141,7 +130,7 @@ const MilestoneCard = ({ milestone, index }: { milestone: typeof milestones[0]; 
 import { SectionDivider } from "../../components/SectionDivider";
 
 export const CompanyMilestonesSection = (): JSX.Element => (
-  <section id="timeline" style={{ width: "100%", backgroundColor: "#000", padding: "100px 0", marginTop: "-50px", marginBottom: "-100px" }}>
+  <section id="timeline" style={{ width: "100%", backgroundColor: "#000", padding: "100px 0", marginTop: "-50px", marginBottom: "0px" }}>
     <SectionDivider />
     <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }} className="milestones-container">
 
@@ -150,23 +139,6 @@ export const CompanyMilestonesSection = (): JSX.Element => (
         <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,5vw,56px)", lineHeight: 1.1, color: "#fff", margin: "0 auto 32px", letterSpacing: "-0.02em", maxWidth: "800px" }}>
           Kdo <span style={{ background: "linear-gradient(135deg,#FF6A2A,#FFB347)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>jsme</span>
         </h2>
-
-        {/* Intro text glass card */}
-        <div style={{
-          background: "rgba(255,255,255,0.03)",
-          backdropFilter: "blur(12px)",
-          borderLeft: "4px solid #FF5A1F",
-          borderRadius: "12px",
-          padding: "32px",
-          maxWidth: "800px",
-          margin: "0 auto",
-          textAlign: "left",
-          marginBottom: "-50px",
-        }}>
-          <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "19px", lineHeight: 1.6, color: "rgba(255,255,255,0.85)", margin: 0 }}>
-            Vytváříme moderní weby a digitální řešení, která propojují technologii, uživatelský zážitek a reálné obchodní výsledky.
-          </p>
-        </div>
       </div>
 
       {/* Timeline items */}

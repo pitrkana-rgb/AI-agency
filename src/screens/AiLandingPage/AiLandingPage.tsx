@@ -66,6 +66,8 @@ export const AiLandingPage = (): JSX.Element => {
           muted
           loop
           playsInline
+          preload="metadata"
+          className="hero-video"
           style={{
             position: "absolute",
             inset: 0,
@@ -76,6 +78,9 @@ export const AiLandingPage = (): JSX.Element => {
             display: "block",
           }}
         >
+          {/* Mobile-optimized source (720p, ~2 Mbps) */}
+          <source src="/Background_video_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+          {/* Desktop / fallback source */}
           <source src="/Background_video.mov" type="video/mp4" />
           <source src="/Background_video.mov" type="video/quicktime" />
         </video>
