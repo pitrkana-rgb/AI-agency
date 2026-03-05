@@ -143,46 +143,7 @@
   <div id="app"></div>
   <script type="module" src="./src/index.tsx"></script>
 
-  <!-- ═══════════════════════════════════════════════════════════
-         VOICEFLOW CHAT WIDGET
-         Default Voiceflow launcher is used.
-         Black background applied via assistant.stylesheet injection.
-    ════════════════════════════════════════════════════════════════ -->
-  <script type="text/javascript">
-    (function (d, t) {
-      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-      v.onload = function () {
-        window.voiceflow.chat.load({
-          verify: { projectID: '69a84f423f167830b0f18123' },
-          url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production',
-          voice: {
-            url: "https://runtime-api.voiceflow.com"
-          },
-          assistant: {
-            stylesheet: `
-              .vfrc-chat-window,
-              .vfrc-widget--chat,
-              .vfrc-widget,
-              .vfrc-header,
-              .vfrc-footer,
-              .vfrc-message-list,
-              .vfrc-chat {
-                background-color: #000000 !important;
-                background: #000000 !important;
-              }
-              .vfrc-message--from-assistant .vfrc-bubble {
-                background-color: #111111 !important;
-              }
-            `
-          }
-        });
-      }
-      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-      v.type = "text/javascript";
-      s.parentNode.insertBefore(v, s);
-    }(document, 'script'));
-  </script>
+  <!-- Voiceflow chatbot widget disabled (hidden from site) -->
 
 </body>
 
