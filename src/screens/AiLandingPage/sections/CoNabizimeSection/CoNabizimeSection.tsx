@@ -94,7 +94,7 @@ export const CoNabizimeSection = (): JSX.Element => {
             <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
 
                 {/* Head */}
-                <div style={{ textAlign: "center", marginBottom: "56px" }}>
+                <div className="offer-head" style={{ textAlign: "center", marginBottom: "56px" }}>
                     <h2 style={{
                         fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
                         fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1,
@@ -103,7 +103,7 @@ export const CoNabizimeSection = (): JSX.Element => {
                         Co{" "}
                         <span style={{ background: "linear-gradient(135deg,#FF6A2A,#FFB347)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>nabízíme</span>
                     </h2>
-                    <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
+                    <p className="section-sub offer-subheading" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
                         Tři klíčové služby, které pokrývají celý životní cyklus vašeho digitálního projektu.
                     </p>
                 </div>
@@ -254,7 +254,7 @@ export const CoNabizimeSection = (): JSX.Element => {
                             {slide.features.map(f => (
                                 <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                                     <CheckIcon />
-                                    <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
+                                    <span className="offer-bullet" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
                                         {f}
                                     </span>
                                 </li>
@@ -284,7 +284,7 @@ export const CoNabizimeSection = (): JSX.Element => {
                 </div>
 
                 {/* Dot navigation */}
-                <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "28px" }}>
+                <div className="offer-dots" style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "28px" }}>
                     {slides.map((s, i) => (
                         <button
                             key={s.id}
@@ -303,7 +303,7 @@ export const CoNabizimeSection = (): JSX.Element => {
                 </div>
 
                 {/* Arrow navigation */}
-                <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
+                <div className="offer-arrows" style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
                     {[
                         { label: "←", dir: -1 },
                         { label: "→", dir: 1 },
@@ -335,18 +335,26 @@ export const CoNabizimeSection = (): JSX.Element => {
             <style>{`
         @media(max-width: 767px) {
           .offer-tabs { display: none !important; }
+          .offer-head { margin-bottom: 20px !important; }
+          .offer-subheading { display: none !important; }
           .offer-panel {
             grid-template-columns: 1fr !important;
           }
           .offer-image-col {
             border-right: none !important;
             border-bottom: 1px solid rgba(255,255,255,0.06) !important;
-            min-height: 200px !important;
+            min-height: 280px !important;
+          }
+          .offer-image-col img{
+            object-position: top center !important;
           }
           .offer-content-col {
             padding: 32px 24px !important;
             gap: 20px !important;
           }
+          .offer-bullet { font-size: 13px !important; line-height: 1.55 !important; }
+          .offer-dots { margin-top: 18px !important; }
+          .offer-arrows { margin-top: 10px !important; }
         }
         @media(prefers-reduced-motion: reduce) {
           .offer-panel { transition: none !important; }

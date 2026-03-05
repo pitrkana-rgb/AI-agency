@@ -75,7 +75,7 @@ export const ClientTestimonialsSection = (): JSX.Element => (
       <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(28px,4vw,48px)", color: "#fff", marginBottom: "16px", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
         Co o spolupráci říkají klienti
       </h2>
-      <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: 0, maxWidth: "560px" }}>
+      <p className="section-sub" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: 0, maxWidth: "560px" }}>
         Reálné příběhy týmů, kterým pomáháme s webem, automatizací i nasazením AI agentů do každodenního provozu.
       </p>
     </div>

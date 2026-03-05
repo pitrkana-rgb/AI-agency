@@ -70,7 +70,7 @@ const PkCard = () => (
                 {usPoints.map((point, i) => (
                     <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
                         <CheckIcon />
-                        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: "15px", color: "#FFFFFF", lineHeight: 1.45 }}>{point}</span>
+                        <span className="why-bullet" style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: "15px", color: "#FFFFFF", lineHeight: 1.45 }}>{point}</span>
                     </li>
                 ))}
             </ul>
@@ -106,7 +106,7 @@ const ThemCard = () => (
             {themPoints.map((point, i) => (
                 <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
                     <CrossIcon />
-                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.32)", lineHeight: 1.45, fontStyle: "italic" }}>{point}</span>
+                    <span className="why-bullet why-bullet-muted" style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.32)", lineHeight: 1.45, fontStyle: "italic" }}>{point}</span>
                 </li>
             ))}
         </ul>
@@ -162,7 +162,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                 }}
             >
                 {/* Heading */}
-                <div style={{ textAlign: "center", marginBottom: "64px" }}>
+                <div className="why-head" style={{ textAlign: "center", marginBottom: "64px" }}>
                     <h2 style={{
                         fontFamily: "'Space Grotesk', sans-serif",
                         fontWeight: 700,
@@ -181,7 +181,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                             backgroundClip: "text",
                         }}>právě nás</span>
                     </h2>
-                    <p style={{
+                    <p className="section-sub" style={{
                         fontFamily: "'Space Grotesk', sans-serif",
                         fontWeight: 400, fontSize: "18px", lineHeight: 1.6,
                         color: "rgba(255,255,255,0.55)",
@@ -204,7 +204,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                     </div>
 
                     {/* Dots */}
-                    <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "20px" }}>
+                    <div className="why-dots" style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "20px" }}>
                         {cards.map((_, i) => (
                             <button
                                 key={i}
@@ -223,7 +223,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                     </div>
 
                     {/* Arrows */}
-                    <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
+                    <div className="why-arrows" style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
                         {[{ label: "←", dir: -1 }, { label: "→", dir: 1 }].map(({ label, dir }) => (
                             <button
                                 key={label}
@@ -291,6 +291,10 @@ export const WhyChooseUsSection = (): JSX.Element => {
           .why-mobile-carousel > div > div {
             transform: scale(1) !important;
           }
+          .why-head { margin-bottom: 32px !important; }
+          .why-bullet { font-size: 13px !important; line-height: 1.55 !important; }
+          .why-dots { margin-top: 16px !important; }
+          .why-arrows { margin-top: 10px !important; }
         }
         @media(prefers-reduced-motion: reduce) {
           .why-grid-desktop > div { transition: none !important; }

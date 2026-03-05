@@ -1,32 +1,3 @@
-import { StarIcon } from "lucide-react";
-
-/* ── Avatar initials SVG ─────────────────────────────────────────── */
-const AvatarSvg = ({
-  initials,
-  from,
-  to,
-}: { initials: string; from: string; to: string }) => (
-  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-    <defs>
-      <linearGradient id={`g-${initials}`} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor={from} />
-        <stop offset="100%" stopColor={to} />
-      </linearGradient>
-    </defs>
-    <circle cx="22" cy="22" r="22" fill="#111" />
-    <circle cx="22" cy="22" r="20" fill={`url(#g-${initials})`} />
-    <text x="22" y="27" textAnchor="middle" fontFamily="Space Grotesk,sans-serif" fontWeight="700" fontSize="14" fill="white">{initials}</text>
-  </svg>
-);
-
-const avatars = [
-  { initials: "MK", from: "#FF6A2A", to: "#c1440f" },
-  { initials: "LN", from: "#7B61FF", to: "#3b2fc9" },
-  { initials: "PV", from: "#19B9A0", to: "#0d7a6b" },
-  { initials: "JH", from: "#FF5A1F", to: "#a82c00" },
-  { initials: "AK", from: "#F59E0B", to: "#b45309" },
-];
-
 /* ── Scroll indicator ─────────────────────────────────────────────── */
 const ScrollIndicator = () => (
   <div
@@ -108,53 +79,6 @@ export const MainHeroSection = (): JSX.Element => {
         className="relative z-10 flex flex-col items-center animate-fade-in hero-content-wrap"
         style={{ maxWidth: "900px", textAlign: "center", padding: "0 24px", marginTop: "-300px" }}
       >
-        {/* Rating pill */}
-        <div
-          className="inline-flex items-center gap-4 hero-rating-pill"
-          style={{
-            background: "rgba(0,0,0,0.55)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: "999px",
-            padding: "10px 18px",
-            marginBottom: "32px",
-          }}
-          role="img"
-          aria-label="Hodnocení 5.0 z 5 – 117 spokojených klientů"
-        >
-          <div className="flex items-center" style={{ marginRight: "4px" }}>
-            {avatars.map((av, i) => (
-              <div key={av.initials} style={{
-                marginLeft: i === 0 ? 0 : "-12px",
-                border: "2px solid #111",
-                borderRadius: "50%",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
-                lineHeight: 0,
-                zIndex: avatars.length - i,
-                position: "relative",
-              }}>
-                <AvatarSvg initials={av.initials} from={av.from} to={av.to} />
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static
-                <StarIcon key={i} fill="#FF5A1F" className="w-4 h-4 text-[#FF5A1F]" />
-              ))}
-            </div>
-            <div className="flex flex-col items-start">
-              <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "14px", color: "#fff", lineHeight: 1.3, margin: 0, whiteSpace: "nowrap" }}>
-                Hodnocení 5.0 / 5
-              </p>
-              <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "13px", color: "rgba(255,255,255,0.65)", lineHeight: 1.3, margin: 0, whiteSpace: "nowrap" }}>
-                117+ spokojených klientů
-              </p>
-            </div>
-          </div>
-        </div>
 
         {/* Headline */}
         <h1 className="hero-headline" style={{

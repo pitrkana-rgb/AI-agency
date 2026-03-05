@@ -16,12 +16,15 @@ export const ReadyToDesignSection = (): JSX.Element => {
     <section style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-80px" }}>
       <SectionDivider />
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
-        <div style={{
+        <div
+          className="cta-inner"
+          style={{
           position: "relative", borderRadius: "28px", overflow: "hidden",
           background: "linear-gradient(145deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))",
           border: "1px solid rgba(255,255,255,0.08)",
           padding: "80px 64px",
-        }}>
+        }}
+        >
           {/* Radial glow background */}
           <div style={{
             position: "absolute", inset: 0, pointerEvents: "none",
@@ -30,21 +33,21 @@ export const ReadyToDesignSection = (): JSX.Element => {
           {/* Orange grain border top */}
           <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: "1px", background: "linear-gradient(90deg,transparent,#FF5A1F,transparent)" }} />
 
-          <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "32px" }}>
-            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(28px,4vw,56px)", color: "#fff", margin: 0, lineHeight: 1.1, letterSpacing: "-0.02em", maxWidth: "720px" }}>
+          <div className="cta-stack" style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "32px" }}>
+            <h2 className="cta-heading" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(28px,4vw,56px)", color: "#fff", margin: 0, lineHeight: 1.1, letterSpacing: "-0.02em", maxWidth: "720px" }}>
               Připraveni na web, který pracuje za vás?
             </h2>
 
-            <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, maxWidth: "560px" }}>
+            <p className="section-sub cta-subtitle" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, maxWidth: "560px" }}>
               Ať už potřebujete nový web od základu nebo modernizaci toho stávajícího — začněte nezávaznou konzultací zdarma. Prototyp můžete mít už do 3 dnů.
             </p>
 
             {/* Trust badges */}
-            <div style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", justifyContent: "center" }}>
+            <div className="cta-badges" style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", justifyContent: "center" }}>
               {trustBadges.map(({ icon: Icon, label }) => (
                 <div key={label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <Icon style={{ width: "16px", height: "16px", color: "#FF5A1F" }} />
-                  <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 500, fontSize: "14px", color: "rgba(255,255,255,0.65)" }}>{label}</span>
+                  <span className="cta-badge-label" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 500, fontSize: "14px", color: "rgba(255,255,255,0.65)" }}>{label}</span>
                 </div>
               ))}
             </div>
@@ -77,7 +80,8 @@ export const ReadyToDesignSection = (): JSX.Element => {
       <style>{`
       #ready-cta-btn:focus-visible{ outline:2px solid #FF5A1F; outline-offset:3px; }
       @media(max-width:768px){
-        .cta-inner { padding: 36px 20px !important; }
+        .cta-inner { padding: 44px 20px !important; }
+        .cta-stack { gap: 22px !important; }
         .cta-heading { font-size: 22px !important; line-height: 1.2 !important; }
         .cta-subtitle { font-size: 14px !important; }
         .cta-badge-label { font-size: 12px !important; }

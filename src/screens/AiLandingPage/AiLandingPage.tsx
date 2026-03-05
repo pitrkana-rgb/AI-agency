@@ -55,22 +55,36 @@ export const AiLandingPage = (): JSX.Element => {
           backgroundSize: "128px 128px",
         }}
       />
-      {/* ── Top hero background: zooming image + bottom fade ─────────── */}
+      {/* ── Top hero background: looping video + bottom fade ──────────── */}
       <div
         className="absolute top-0 left-0 w-full pointer-events-none overflow-hidden"
         style={{ height: "900px", zIndex: 0 }}
         aria-hidden="true"
       >
-        <div
-          className="animate-bg-zoom absolute"
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
           style={{
-            inset: "-5%",
-            backgroundImage: `url('/background.png')`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            display: "block",
           }}
+        >
+          <source src="/Background_video.mov" type="video/mp4" />
+          <source src="/Background_video.mov" type="video/quicktime" />
+        </video>
+        {/* Dark overlay so text stays readable */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "rgba(0,0,0,0.60)" }}
         />
+        {/* Bottom fade into page */}
         <div
           className="absolute inset-0"
           style={{
@@ -90,31 +104,31 @@ export const AiLandingPage = (): JSX.Element => {
           <UserTestimonialsSection />
         </section>
 
-        <section id="features" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section id="features" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <AiDesignFeaturesSection />
         </section>
 
-        <section id="co-nabizime" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section id="co-nabizime" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <CoNabizimeSection />
         </section>
 
-        <section id="why-us" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section id="why-us" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <WhyChooseUsSection />
         </section>
 
-        <section data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <ClientTestimonialsSection />
         </section>
 
-        <section id="pricing" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section id="pricing" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <SubscriptionPlansSection />
         </section>
 
-        <section id="faq" data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section id="faq" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <FrequentlyAskedQuestionsSection />
         </section>
 
-        <section data-animate-on-scroll style={{ backgroundColor: "#000000" }}>
+        <section data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
           <ReadyToDesignSection />
         </section>
 
@@ -128,6 +142,31 @@ export const AiLandingPage = (): JSX.Element => {
           .hero-section-mobile { margin-top: -200px !important; }
           .hero-content-wrap { margin-top: -220px !important; }
           .stats-section { margin-top: -50px !important; }
+
+          /* ── Unified section subheading size (matches hero mobile: 14px) ── */
+          .section-sub {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          /* ── Reduce section internal padding on mobile to tighten spacing ── */
+          #features > section,
+          #co-nabizime > section,
+          #why-us > section,
+          #pricing > section,
+          #faq > section {
+            padding-top: 40px !important;
+            padding-bottom: 40px !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
+          /* Client testimonials + ReadyToDesign (no ID on wrapper) */
+          .section-mb-mobile > section {
+            padding-top: 40px !important;
+            padding-bottom: 40px !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
         }
       `}</style>
     </div>

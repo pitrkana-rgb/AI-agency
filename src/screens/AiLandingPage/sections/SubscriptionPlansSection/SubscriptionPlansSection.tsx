@@ -121,7 +121,7 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
             }}>
               <CheckIcon style={{ width: "11px", height: "11px", color: "#FF5A1F", strokeWidth: 3 }} />
             </div>
-            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>{f}</span>
+            <span className="pricing-bullet" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>{f}</span>
           </li>
         ))}
       </ul>
@@ -168,7 +168,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
           <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,4.5vw,56px)", color: "#fff", margin: "0 0 20px", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
             Vyberte službu
           </h2>
-          <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
+          <p className="section-sub" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
             Ať už potřebujete nový web od základu nebo modernizaci toho stávajícího, připravíme řešení, které odpovídá vašim cílům i rozpočtu.
           </p>
         </div>
@@ -188,7 +188,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
           </div>
 
           {/* Dots */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "24px" }}>
+          <div className="pricing-dots" style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "24px" }}>
             {pricingPlans.map((_, i) => (
               <button
                 key={i}
@@ -207,7 +207,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
           </div>
 
           {/* Arrows */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
+          <div className="pricing-arrows" style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
             {[{ label: "←", dir: -1 }, { label: "→", dir: 1 }].map(({ label, dir }) => (
               <button
                 key={label}
@@ -242,6 +242,9 @@ export const SubscriptionPlansSection = (): JSX.Element => {
           .pricing-card { transform: scale(1) !important; }
           .popular-card { transform: scale(1) !important; }
           .pricing-cta { padding: 10px 16px !important; font-size: 14px !important; }
+          .pricing-bullet { font-size: 13px !important; line-height: 1.55 !important; }
+          .pricing-dots { margin-top: 18px !important; }
+          .pricing-arrows { margin-top: 10px !important; }
         }
         @media(prefers-reduced-motion:reduce){ .pricing-card,.pricing-cta{ transition:none !important; } }
         .pricing-cta:focus-visible{ outline:2px solid #FF5A1F; outline-offset:3px; }

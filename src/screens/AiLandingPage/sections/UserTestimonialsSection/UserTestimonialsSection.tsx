@@ -81,7 +81,7 @@ export const UserTestimonialsSection = (): JSX.Element => (
         .stat-card { padding: 12px 10px !important; border-radius: 12px !important; gap: 4px !important; }
         .stat-accent-line { left: 10px !important; right: 10px !important; }
         .stat-label { font-size: 9px !important; letter-spacing: 0.05em !important; }
-        .stat-value { font-size: 22px !important; }
+        .stat-value { font-size: 29px !important; }
         .stats-section { padding-top: 60px !important; }
       }
       @media(prefers-reduced-motion:reduce){ .stat-card{ transition:none !important; } }
