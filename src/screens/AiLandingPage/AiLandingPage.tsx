@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AiDesignFeaturesSection } from "./sections/AiDesignFeaturesSection/AiDesignFeaturesSection";
 import { FrequentlyAskedQuestionsSection } from "./sections/FrequentlyAskedQuestionsSection";
 import { MainHeroSection } from "./sections/MainHeroSection";
@@ -12,6 +12,8 @@ import { CoNabizimeSection } from "./sections/CoNabizimeSection/CoNabizimeSectio
 import { Header } from "../../components/Header";
 
 export const AiLandingPage = (): JSX.Element => {
+  const [videoReady, setVideoReady] = useState(false);
+
   useEffect(() => {
     const sections = document.querySelectorAll<HTMLElement>(
       "[data-animate-on-scroll]",
@@ -61,13 +63,31 @@ export const AiLandingPage = (): JSX.Element => {
         style={{ height: "900px", zIndex: 0 }}
         aria-hidden="true"
       >
+        {/* Poster: instant render before video loads */}
+        <div
+          className="hero-video-poster"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: "url(/hero-video-poster.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: videoReady ? 0 : 1,
+            transition: "opacity 0.8s ease-out",
+            pointerEvents: "none",
+          }}
+          aria-hidden="true"
+        />
         <video
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
-          className="hero-video"
+          poster="/hero-video-poster.jpg"
+          className={`hero-video ${videoReady ? "hero-video-visible" : ""}`}
           style={{
             position: "absolute",
             inset: 0,
@@ -76,11 +96,14 @@ export const AiLandingPage = (): JSX.Element => {
             objectFit: "cover",
             objectPosition: "center",
             display: "block",
+            opacity: videoReady ? 1 : 0,
+            transition: "opacity 0.8s ease-out",
           }}
+          onCanPlay={() => setVideoReady(true)}
         >
-          {/* Mobile-optimized source (720p, ~2 Mbps) */}
+          {/* Mobile: Background_video_mobile.mp4 */}
           <source src="/Background_video_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
-          {/* Desktop / fallback source */}
+          {/* Desktop / fallback */}
           <source src="/Background_video.mov" type="video/mp4" />
           <source src="/Background_video.mov" type="video/quicktime" />
         </video>
