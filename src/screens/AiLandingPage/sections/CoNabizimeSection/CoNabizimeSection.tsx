@@ -64,16 +64,12 @@ const SWIPE_THRESHOLD = 50;
 
 export const CoNabizimeSection = (): JSX.Element => {
     const [active, setActive] = useState(0);
-    const [animating, setAnimating] = useState(false);
-    const trackRef = useRef<HTMLDivElement>(null);
     const touchStartX = useRef<number>(0);
     const navigate = useNavigate();
 
     const goTo = (idx: number) => {
-        if (idx === active || animating) return;
-        setAnimating(true);
-        setActive(idx);
-        setTimeout(() => setAnimating(false), 420);
+        if (idx === active) return;
+        setActive(Math.max(0, Math.min(slides.length - 1, idx)));
     };
 
     // Keyboard navigation
@@ -95,8 +91,6 @@ export const CoNabizimeSection = (): JSX.Element => {
         if (delta > SWIPE_THRESHOLD) goTo(Math.min(active + 1, slides.length - 1));
         else if (delta < -SWIPE_THRESHOLD) goTo(Math.max(active - 1, 0));
     };
-
-    const slide = slides[active];
 
     return (
         <section
@@ -145,156 +139,157 @@ export const CoNabizimeSection = (): JSX.Element => {
                     ))}
                 </div>
 
-                {/* Slide panel — touch swipe on mobile */}
-                <div
-                    ref={trackRef}
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: "0",
-                        borderRadius: "24px",
-                        overflow: "hidden",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        boxShadow: "0 32px 80px rgba(0,0,0,0.5)",
-                        opacity: animating ? 0 : 1,
-                        transform: animating ? "scale(0.99)" : "scale(1)",
-                        transition: "opacity 300ms ease, transform 300ms ease",
-                    }}
-                    className="offer-panel"
-                    onTouchStart={onTouchStart}
-                    onTouchEnd={onTouchEnd}
-                >
-                    {/* Left — image or placeholder */}
+                {/* Slide panel — sliding track on mobile, grid on desktop */}
+                <div style={{ overflow: "hidden", width: "100%" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
                     <div
-                        className="offer-image-col"
+                        className="offer-carousel-track"
                         style={{
-                            background: slide.image
-                                ? "#000"
-                                : "linear-gradient(145deg, rgba(255,106,42,0.08), rgba(255,90,31,0.03))",
-                            borderRight: "1px solid rgba(255,255,255,0.06)",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            minHeight: "460px",
-                            position: "relative",
-                            overflow: "hidden",
+                            display: "flex",
+                            width: `${slides.length * 100}%`,
+                            transform: `translateX(${-active * (100 / slides.length)}%)`,
+                            transition: "transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                         }}
                     >
-                        {slide.image ? (
-                            /* Real image — cover the entire column */
-                            <img
-                                src={slide.image}
-                                alt={slide.title}
+                        {slides.map((slide) => (
+                            <div
+                                key={slide.id}
+                                className="offer-panel"
                                 style={{
-                                    position: "absolute",
-                                    inset: 0,
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "cover",
-                                    objectPosition: "center",
-                                    display: "block",
+                                    flex: `0 0 ${100 / slides.length}%`,
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr",
+                                    gap: 0,
+                                    borderRadius: "24px",
+                                    overflow: "hidden",
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    boxShadow: "0 32px 80px rgba(0,0,0,0.5)",
+                                    boxSizing: "border-box",
+                                    minWidth: 0,
                                 }}
-                            />
-                        ) : (
-                            /* Placeholder */
-                            <>
-                                <div style={{
-                                    position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
-                                    width: "260px", height: "260px",
-                                    background: "radial-gradient(circle, rgba(255,90,31,0.18) 0%, transparent 70%)",
-                                    pointerEvents: "none",
-                                }} />
-                                <div style={{
-                                    display: "flex", flexDirection: "column", alignItems: "center", gap: "16px",
-                                    position: "relative", zIndex: 1,
-                                }}>
-                                    <div style={{
-                                        width: "80px", height: "80px", borderRadius: "20px",
-                                        background: "rgba(255,90,31,0.12)",
-                                        border: "1px dashed rgba(255,90,31,0.3)",
+                            >
+                                {/* Left — image or placeholder */}
+                                <div
+                                    className="offer-image-col"
+                                    style={{
+                                        background: slide.image
+                                            ? "#000"
+                                            : "linear-gradient(145deg, rgba(255,106,42,0.08), rgba(255,90,31,0.03))",
+                                        borderRight: "1px solid rgba(255,255,255,0.06)",
                                         display: "flex", alignItems: "center", justifyContent: "center",
-                                    }}>
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" />
-                                            <path d="M3 9h18M9 21V9" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                                        </svg>
-                                    </div>
-                                    <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                                        Obrázek bude přidán
-                                    </span>
+                                        minHeight: "460px",
+                                        position: "relative",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    {slide.image ? (
+                                        <img
+                                            src={slide.image}
+                                            alt={slide.title}
+                                            style={{
+                                                position: "absolute",
+                                                inset: 0,
+                                                width: "100%",
+                                                height: "100%",
+                                                objectFit: "cover",
+                                                objectPosition: "center",
+                                                display: "block",
+                                            }}
+                                        />
+                                    ) : (
+                                        <>
+                                            <div style={{
+                                                position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+                                                width: "260px", height: "260px",
+                                                background: "radial-gradient(circle, rgba(255,90,31,0.18) 0%, transparent 70%)",
+                                                pointerEvents: "none",
+                                            }} />
+                                            <div style={{
+                                                display: "flex", flexDirection: "column", alignItems: "center", gap: "16px",
+                                                position: "relative", zIndex: 1,
+                                            }}>
+                                                <div style={{
+                                                    width: "80px", height: "80px", borderRadius: "20px",
+                                                    background: "rgba(255,90,31,0.12)",
+                                                    border: "1px dashed rgba(255,90,31,0.3)",
+                                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                                }}>
+                                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" />
+                                                        <path d="M3 9h18M9 21V9" stroke="rgba(255,90,31,0.5)" strokeWidth="1.5" strokeLinecap="round" />
+                                                    </svg>
+                                                </div>
+                                                <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                                                    Obrázek bude přidán
+                                                </span>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
-                            </>
-                        )}
-                    </div>
 
-                    {/* Right — content */}
-                    <div
-                        className="offer-content-col"
-                        style={{
-                            background: "#0D0D0D",
-                            padding: "52px 48px",
-                            display: "flex", flexDirection: "column", gap: "28px",
-                        }}
-                    >
-                        {/* Label tag */}
-                        <span style={{
-                            display: "inline-flex", alignSelf: "flex-start",
-                            fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "11px",
-                            color: "#FF5A1F", letterSpacing: "0.12em", textTransform: "uppercase",
-                            background: "rgba(255,90,31,0.12)",
-                            border: "1px solid rgba(255,90,31,0.25)",
-                            borderRadius: "999px", padding: "4px 14px",
-                        }}>
-                            {slide.label}
-                        </span>
-
-                        {/* Title */}
-                        <h3 style={{
-                            fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
-                            fontSize: "clamp(26px,3vw,36px)", lineHeight: 1.15,
-                            color: "#fff", margin: 0, letterSpacing: "-0.02em",
-                        }}>
-                            {slide.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p style={{
-                            fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400,
-                            fontSize: "16px", lineHeight: 1.7,
-                            color: "rgba(255,255,255,0.65)", margin: 0,
-                        }}>
-                            {slide.description}
-                        </p>
-
-                        {/* Feature list */}
-                        <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
-                            {slide.features.map(f => (
-                                <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                                    <CheckIcon />
-                                    <span className="offer-bullet" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
-                                        {f}
+                                {/* Right — content */}
+                                <div
+                                    className="offer-content-col"
+                                    style={{
+                                        background: "#0D0D0D",
+                                        padding: "52px 48px",
+                                        display: "flex", flexDirection: "column", gap: "28px",
+                                    }}
+                                >
+                                    <span style={{
+                                        display: "inline-flex", alignSelf: "flex-start",
+                                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "11px",
+                                        color: "#FF5A1F", letterSpacing: "0.12em", textTransform: "uppercase",
+                                        background: "rgba(255,90,31,0.12)",
+                                        border: "1px solid rgba(255,90,31,0.25)",
+                                        borderRadius: "999px", padding: "4px 14px",
+                                    }}>
+                                        {slide.label}
                                     </span>
-                                </li>
-                            ))}
-                        </ul>
-
-                        {/* CTA */}
-                        <button
-                            type="button"
-                            onClick={() => navigate("/kontakt")}
-                            style={{
-                                alignSelf: "flex-start",
-                                background: "linear-gradient(135deg,#FF6A2A,#FF3C00)",
-                                color: "#fff", border: "none", borderRadius: "12px",
-                                padding: "14px 28px",
-                                fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "15px",
-                                cursor: "pointer",
-                                boxShadow: "0 8px 28px rgba(255,90,31,0.35)",
-                                transition: "filter 200ms ease, transform 200ms ease",
-                            }}
-                            onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
-                            onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
-                        >
-                            {slide.cta}
-                        </button>
+                                    <h3 style={{
+                                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
+                                        fontSize: "clamp(26px,3vw,36px)", lineHeight: 1.15,
+                                        color: "#fff", margin: 0, letterSpacing: "-0.02em",
+                                    }}>
+                                        {slide.title}
+                                    </h3>
+                                    <p style={{
+                                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400,
+                                        fontSize: "16px", lineHeight: 1.7,
+                                        color: "rgba(255,255,255,0.65)", margin: 0,
+                                    }}>
+                                        {slide.description}
+                                    </p>
+                                    <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+                                        {slide.features.map(f => (
+                                            <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                                                <CheckIcon />
+                                                <span className="offer-bullet" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
+                                                    {f}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate("/kontakt")}
+                                        style={{
+                                            alignSelf: "flex-start",
+                                            background: "linear-gradient(135deg,#FF6A2A,#FF3C00)",
+                                            color: "#fff", border: "none", borderRadius: "12px",
+                                            padding: "14px 28px",
+                                            fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "15px",
+                                            cursor: "pointer",
+                                            boxShadow: "0 8px 28px rgba(255,90,31,0.35)",
+                                            transition: "filter 200ms ease, transform 200ms ease",
+                                        }}
+                                        onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
+                                        onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
+                                    >
+                                        {slide.cta}
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -348,6 +343,7 @@ export const CoNabizimeSection = (): JSX.Element => {
             </div>
 
             <style>{`
+        .offer-carousel-track { will-change: transform; }
         @media(max-width: 767px) {
           .offer-tabs { display: none !important; }
           .offer-head { margin-bottom: 20px !important; }
@@ -372,7 +368,7 @@ export const CoNabizimeSection = (): JSX.Element => {
           .offer-arrows { margin-top: 10px !important; }
         }
         @media(prefers-reduced-motion: reduce) {
-          .offer-panel { transition: none !important; }
+          .offer-carousel-track { transition: none !important; }
         }
       `}</style>
         </section>

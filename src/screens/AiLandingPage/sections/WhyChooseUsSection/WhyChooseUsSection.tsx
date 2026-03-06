@@ -36,8 +36,11 @@ const CrossIcon = () => (
 /* ── The two cards as individual components so they can be reused in carousel ── */
 const PkCard = () => (
     <div
+        className="why-card"
         style={{
             position: "relative",
+            width: "100%",
+            minWidth: 0,
             borderRadius: "24px",
             padding: "3px",
             background: "linear-gradient(145deg, #FF6A2A, #FF3C00 60%, #6B21A8)",
@@ -80,7 +83,10 @@ const PkCard = () => (
 
 const ThemCard = () => (
     <div
+        className="why-card"
         style={{
+            width: "100%",
+            minWidth: 0,
             borderRadius: "24px", border: "1px solid rgba(255,255,255,0.08)",
             background: "#0A0A0A", padding: "40px",
             display: "flex", flexDirection: "column", gap: "28px",
@@ -209,10 +215,24 @@ export const WhyChooseUsSection = (): JSX.Element => {
                     <ThemCard />
                 </div>
 
-                {/* ── Mobile: JS carousel with dots + arrows + touch swipe ── */}
+                {/* ── Mobile: sliding track carousel + touch swipe ── */}
                 <div className="why-mobile-carousel">
-                    <div style={{ padding: "12px 0 4px" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-                        {cards[mobileIdx]}
+                    <div style={{ overflow: "hidden", width: "100%" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+                        <div
+                            className="why-carousel-track"
+                            style={{
+                                display: "flex",
+                                width: `${cards.length * 100}%`,
+                                transform: `translateX(${-mobileIdx * (100 / cards.length)}%)`,
+                                transition: "transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                            }}
+                        >
+                            {cards.map((card, i) => (
+                                <div key={i} style={{ flex: `0 0 ${100 / cards.length}%`, minWidth: 0, padding: "20px 0 4px", boxSizing: "border-box" }}>
+                                    {card}
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Dots */}
@@ -297,15 +317,15 @@ export const WhyChooseUsSection = (): JSX.Element => {
 
             <style>{`
         .why-mobile-carousel { display: none; }
-        @media(max-width: 700px) {
+        @media(max-width: 768px) {
           .why-grid-desktop { display: none !important; }
           .why-mobile-carousel { display: block !important; }
-          .why-mobile-carousel > div > div {
-            transform: scale(1) !important;
-          }
+          .why-carousel-track { will-change: transform; }
+          .why-carousel-track > div { min-width: 0; width: 100%; }
+          .why-mobile-carousel .why-card { transform: scale(1) !important; width: 100% !important; max-width: 100% !important; }
           .why-head { margin-bottom: 32px !important; }
           .why-bullet { font-size: 13px !important; line-height: 1.55 !important; }
-          .why-dots { margin-top: 16px !important; }
+          .why-dots { margin-top: 18px !important; }
           .why-arrows { margin-top: 10px !important; }
         }
         @media(prefers-reduced-motion: reduce) {

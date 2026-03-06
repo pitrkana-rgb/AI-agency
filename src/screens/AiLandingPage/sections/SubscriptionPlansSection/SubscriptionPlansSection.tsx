@@ -193,11 +193,28 @@ export const SubscriptionPlansSection = (): JSX.Element => {
           ))}
         </div>
 
-        {/* Mobile carousel (hidden on desktop) — touch swipe enabled */}
+        {/* Mobile carousel (hidden on desktop) — sliding track + touch swipe */}
         <div className="pricing-mobile-carousel">
-          {/* Single card with extra top padding so badge is visible */}
-          <div style={{ padding: "20px 0 4px", position: "relative" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-            <PricingCard plan={pricingPlans[mobileIdx]} navigate={navigate} />
+          <div
+            style={{ overflow: "hidden", width: "100%", marginLeft: 0, marginRight: 0 }}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            <div
+              className="pricing-carousel-track"
+              style={{
+                display: "flex",
+                width: `${pricingPlans.length * 100}%`,
+                transform: `translateX(${-mobileIdx * (100 / pricingPlans.length)}%)`,
+                transition: "transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }}
+            >
+              {pricingPlans.map((plan) => (
+                <div key={plan.name} style={{ flex: `0 0 ${100 / pricingPlans.length}%`, padding: "20px 0 4px", boxSizing: "border-box" }}>
+                  <PricingCard plan={plan} navigate={navigate} />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Dots */}
@@ -252,6 +269,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
         @media(max-width:768px){
           .pricing-grid-desktop { display: none !important; }
           .pricing-mobile-carousel { display: block !important; }
+          .pricing-carousel-track { will-change: transform; }
           .pricing-card { transform: scale(1) !important; }
           .popular-card { transform: scale(1) !important; }
           .pricing-cta { padding: 10px 16px !important; font-size: 14px !important; }
