@@ -26,7 +26,7 @@ const milestones = [
     year: "PK",
     title: "Kdo stojí za PK-Digital",
     description: "Jmenuji se Petr Kaňa a více než 10 let se věnuji práci s daty, analytikou a návrhu digitálních řešení. Pomáhám lidem a projektům lépe pochopit jejich data a jak je správně vizualizovat. Dnes tyto zkušenosti propojuji s AI, abych vytvářel jedinečné moderní webové stránky.",
-    image: "/Team_members.png",
+    image: "/Founder.png",
     stats: "Core Tým",
   },
 ];
@@ -137,7 +137,7 @@ export const CompanyMilestonesSection = (): JSX.Element => (
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: "80px" }}>
         <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,5vw,56px)", lineHeight: 1.1, color: "#fff", margin: "0 auto 32px", letterSpacing: "-0.02em", maxWidth: "800px" }}>
-          Kdo <span style={{ background: "linear-gradient(135deg,#0ABDC6,#00E5FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>jsme</span>
+          Kdo <span style={{ background: "linear-gradient(135deg,#E040FB,#00E5FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>jsme</span>
         </h2>
       </div>
 

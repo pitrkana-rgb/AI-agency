@@ -62,7 +62,9 @@ const PkCard = () => (
         }}
     >
         <div style={{
-            background: "#0D0D0D", borderRadius: "21px", padding: "40px",
+            borderRadius: "21px", padding: "40px",
+            background: "#0D0D0D",
+            border: "1px solid rgba(255,255,255,0.08)",
             height: "100%", display: "flex", flexDirection: "column", gap: "28px", boxSizing: "border-box",
         }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingBottom: "24px", borderBottom: "1px solid rgba(0,229,255,0.18)" }}>
@@ -87,8 +89,10 @@ const ThemCard = () => (
         style={{
             width: "100%",
             minWidth: 0,
-            borderRadius: "24px", border: "1px solid rgba(255,255,255,0.08)",
-            background: "#0A0A0A", padding: "40px",
+            borderRadius: "24px",
+            padding: "40px",
+            background: "#0D0D0D",
+            border: "1px solid rgba(255,255,255,0.08)",
             display: "flex", flexDirection: "column", gap: "28px",
             transition: "transform 250ms ease, box-shadow 250ms ease",
             height: "100%", boxSizing: "border-box",

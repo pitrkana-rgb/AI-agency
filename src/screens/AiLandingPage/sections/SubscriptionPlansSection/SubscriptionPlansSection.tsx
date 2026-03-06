@@ -77,9 +77,9 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
     )}
 
     <div style={{
-      background: "#0D1B2A",
+      background: "#0D0D0D",
       borderRadius: plan.highlighted ? "21px" : "24px",
-      border: plan.highlighted ? "none" : "1px solid rgba(0,229,255,0.12)",
+      border: "1px solid rgba(255,255,255,0.08)",
       padding: "40px",
       height: "100%",
       display: "flex",
