@@ -62,13 +62,6 @@ export const MainHeroSection = (): JSX.Element => {
           maskImage: "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
           WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
         }} />
-        {/* Orange glow left */}
-        <div style={{
-          position: "absolute", top: "10%", left: "-5%",
-          width: "500px", height: "500px",
-          background: "radial-gradient(circle, rgba(255,90,31,0.18) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }} />
         {/* Purple glow right */}
         <div style={{
           position: "absolute", top: "5%", right: "-5%",

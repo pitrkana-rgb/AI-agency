@@ -123,40 +123,40 @@ export const AiLandingPage = (): JSX.Element => {
 
       <Header />
 
-      <main className="relative" style={{ zIndex: 1 }}>
+      <main className="relative">
         <section id="hero">
           <MainHeroSection />
         </section>
 
-        <section id="trust" data-animate-on-scroll style={{ backgroundColor: "transparent" }}>
+        <section id="trust" data-animate-on-scroll>
           <UserTestimonialsSection />
         </section>
 
-        <section id="features" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section id="features" data-animate-on-scroll className="section-mb-mobile">
           <AiDesignFeaturesSection />
         </section>
 
-        <section id="co-nabizime" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section id="co-nabizime" data-animate-on-scroll className="section-mb-mobile">
           <CoNabizimeSection />
         </section>
 
-        <section id="why-us" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section id="why-us" data-animate-on-scroll className="section-mb-mobile">
           <WhyChooseUsSection />
         </section>
 
-        <section data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section data-animate-on-scroll className="section-mb-mobile">
           <ClientTestimonialsSection />
         </section>
 
-        <section id="pricing" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section id="pricing" data-animate-on-scroll className="section-mb-mobile">
           <SubscriptionPlansSection />
         </section>
 
-        <section id="faq" data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section id="faq" data-animate-on-scroll className="section-mb-mobile">
           <FrequentlyAskedQuestionsSection />
         </section>
 
-        <section data-animate-on-scroll className="section-mb-mobile" style={{ backgroundColor: "#000000" }}>
+        <section data-animate-on-scroll className="section-mb-mobile">
           <ReadyToDesignSection />
         </section>
 
