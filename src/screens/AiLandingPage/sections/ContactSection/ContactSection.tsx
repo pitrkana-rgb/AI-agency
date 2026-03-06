@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Phone, MapPin, Building2, FileText, Mail, Landmark, Inbox, CheckCircle2, ChevronDown, Send
 } from "lucide-react";
+import { supabase } from "../../../../lib/supabase";
 
 const PROJECT_TYPE_OPTIONS = ["Tvorba webových stránek", "Modernizace webu", "Integrace AI"];
 
@@ -193,7 +194,7 @@ export const ContactSection = (): JSX.Element => {
     if (!validate()) return;
     setLoading(true);
     setSubmitError(null);
-    const payload = {
+    const row = {
       name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
@@ -203,12 +204,8 @@ export const ContactSection = (): JSX.Element => {
       message: form.description.trim(),
     };
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("Request failed");
+      const { error } = await supabase.from("leads").insert([row]);
+      if (error) throw error;
       setForm(init);
       setSubmitted(true);
     } catch {
