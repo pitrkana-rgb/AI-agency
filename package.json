@@ -9,6 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.0",
     "clsx": "2.1.1",
     "lucide-react": "^0.453.0",
     "react": "^18.2.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@types/react": "18.3.28",
+    "@vercel/node": "^3.2.0",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "5.1.4",
     "esbuild": "0.27.3",
