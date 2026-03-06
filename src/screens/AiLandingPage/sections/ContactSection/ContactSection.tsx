@@ -168,10 +168,12 @@ export const ContactSection = (): JSX.Element => {
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const set = (f: keyof FormState) => (v: string) => {
     setForm(p => ({ ...p, [f]: v }));
     if (errors[f]) setErrors(p => ({ ...p, [f]: undefined }));
+    if (submitError) setSubmitError(null);
   };
 
   const validate = () => {
@@ -186,15 +188,34 @@ export const ContactSection = (): JSX.Element => {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (ev: React.FormEvent) => {
+  const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
+    setSubmitError(null);
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      company: form.company.trim(),
+      project_type: form.projectType,
+      budget: form.budget.trim(),
+      message: form.description.trim(),
+    };
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Request failed");
       setForm(init);
-    }, 1200);
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Odeslání se nepodařilo. Zkuste to prosím znovu.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -218,8 +239,8 @@ export const ContactSection = (): JSX.Element => {
                 }}>
                   <CheckCircle2 color="#22C55E" size={40} />
                 </div>
-                <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "28px", color: "#fff", marginBottom: "12px" }}>Děkujeme!</h3>
-                <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "17px", color: "rgba(255,255,255,0.6)", marginBottom: "32px" }}>Vaše poptávka byla přijata. Ozveme se vám do 24 hodin.</p>
+                <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "28px", color: "#fff", marginBottom: "12px" }}>Děkujeme za odeslání.</h3>
+                <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "17px", color: "rgba(255,255,255,0.6)", marginBottom: "32px" }}>Ozveme se do 24 hodin.</p>
                 <button type="button" onClick={() => setSubmitted(false)} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", padding: "12px 24px", borderRadius: "12px", cursor: "pointer", fontFamily: "'Space Grotesk',sans-serif" }}>Odeslat další zprávu</button>
               </div>
             ) : (
@@ -237,6 +258,11 @@ export const ContactSection = (): JSX.Element => {
                   <FloatingField id="f-budget" label="Rozpočet" value={form.budget} onChange={set("budget")} placeholder="např. 50 000 Kč" />
                 </div>
                 <FloatingField id="f-desc" label="Napište nám, co poptáváte (povinné)" value={form.description} onChange={set("description")} error={errors.description} placeholder="Stručně popište váš projekt nebo dotaz..." multiline />
+                {submitError && (
+                  <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "14px", color: "#F87171", margin: 0 }} role="alert">
+                    {submitError}
+                  </p>
+                )}
                 <button
                   type="submit"
                   disabled={loading}
@@ -261,7 +287,7 @@ export const ContactSection = (): JSX.Element => {
                     e.currentTarget.style.boxShadow = "0 16px 40px rgba(255,90,31,0.3)";
                   }}
                 >
-                  {loading ? <div style={{ width: "22px", height: "22px", border: "3px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} /> : <><Send size={20} /> Odeslat poptávku</>}
+                  {loading ? "Odesílám..." : <><Send size={20} /> Odeslat poptávku</>}
                 </button>
               </form>
             )}
