@@ -87,7 +87,7 @@ export const MainHeroSection = (): JSX.Element => {
           margin: "0 0 16px 0",
           letterSpacing: "-0.02em",
         }}>
-          <span>Získejte moderní web nové generace díky síle </span>
+          Získejte web nové generace s{" "}
           <span style={{
             background: "linear-gradient(135deg, #E040FB 0%, #00E5FF 100%)",
             WebkitBackgroundClip: "text",
@@ -95,6 +95,14 @@ export const MainHeroSection = (): JSX.Element => {
             backgroundClip: "text",
             filter: "drop-shadow(0 0 20px rgba(0,229,255,0.35))",
           }}>AI</span>
+          , který{" "}
+          <span style={{
+            background: "linear-gradient(135deg, #E040FB 0%, #00E5FF 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            filter: "drop-shadow(0 0 20px rgba(0,229,255,0.35))",
+          }}>přemění návštěvníky v zákazníky</span>
         </h1>
 
         {/* Paragraph */}
@@ -107,8 +115,7 @@ export const MainHeroSection = (): JSX.Element => {
           maxWidth: "680px",
           margin: "0 auto 32px auto",
         }}>
-          Vytváříme nové weby a modernizujeme ty stávající pomocí pokročilých AI nástrojů,
-          které zvyšují konverze, generují více zákazníků a podporují dlouhodobý růst.
+          Zapomeňte na pomalé, zastaralé weby bez výsledků. Díky AI získáte rychlý, chytrý a škálovatelný web, který skutečně přivádí zákazníky.
         </p>
 
         {/* CTAs */}

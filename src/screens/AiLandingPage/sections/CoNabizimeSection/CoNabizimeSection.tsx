@@ -17,46 +17,30 @@ const slides = [
         description:
             "Moderní web, který jasně komunikuje vaši hodnotu, získává zákazníky a je připravený růst s vaším podnikáním",
         features: [
-            "Konzultace a návrh zdarma",
-            "Dodání do 14 dnů",
-            "Responzivní mobilní verze",
-            "Napojení na interní systémy",
-            "Pravidelná optimalizace",
+            "Konzultace a návrh webu zdarma",
+            "Standardní dodání do 14 dnů",
+            "Design zaměřený pro konverze",
+            "Optimalizováno na mobil i počítač",
+            "Jednoduchá správa bez vývojáře",
         ],
         cta: "Chci web",
         image: "/New.web-promotion-V2.png",
     },
     {
-        id: "modernizace-webu",
-        label: "Modernizace webu",
-        title: "Modernizace Webu",
+        id: "upgrade-webu",
+        label: "Upgrade stávajícího webu",
+        title: "Upgrade stávajícího webu",
         description:
             "Kompletní modernizace vašeho stávajícího webu — nový design, vyšší rychlost, lepší konverze a nasazení AI nástrojů pro růst.",
         features: [
             "Bezplatný audit webu",
-            "Redesign vizuální identity",
-            "Optimalizace rychlosti a SEO",
+            "Moderní redesign pro vyšší konverze",
+            "Zrychlení webu a SEO optimalizace",
             "Integrace AI nástrojů",
-            "Průběžná správa a údržba",
+            "Vyšší stabilita a snadnější správa",
         ],
         cta: "Chci modernizaci",
         image: "/profitherm.png?v=2",
-    },
-    {
-        id: "integrace-ai",
-        label: "Integrace AI",
-        title: "Integrace AI nástrojů",
-        description:
-            "Nasazujeme AI nástroje, které automatizují práci, zlepšují zákaznickou zkušenost a maximalizují konverzní potenciál vašeho webu.",
-        features: [
-            "AI chatboty",
-            "Generování leadů",
-            "Chytré cenové kalkulátory",
-            "Inteligentní vyhledávání",
-            "Automatizace procesů",
-        ],
-        cta: "Zjistit více",
-        image: "/AI.png",
     },
 ];
 
@@ -235,16 +219,6 @@ export const CoNabizimeSection = (): JSX.Element => {
                                         display: "flex", flexDirection: "column", gap: "28px",
                                     }}
                                 >
-                                    <span style={{
-                                        display: "inline-flex", alignSelf: "flex-start",
-                                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "11px",
-                            color: "#00E5FF", letterSpacing: "0.12em", textTransform: "uppercase",
-                            background: "rgba(0,229,255,0.10)",
-                            border: "1px solid rgba(0,229,255,0.18)",
-                                        borderRadius: "999px", padding: "4px 14px",
-                                    }}>
-                                        {slide.label}
-                                    </span>
                                     <h3 style={{
                                         fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
                                         fontSize: "clamp(26px,3vw,36px)", lineHeight: 1.15,

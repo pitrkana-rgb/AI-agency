@@ -5,13 +5,13 @@ const pricingPlans = [
   {
     name: "Tvorba webu na míru",
     description: "Moderní, rychlý a srozumitelný web, který od první sekundy vysvětlí, co děláte a proč by to mělo zajímat vaše klienty.",
-    price: "od 14 900 Kč",
+    price: "od 24 900 Kč",
     features: [
-      "Konzultace a návrh řešení zdarma frontend verze",
+      "Konzultace a návrh řešení zdarma",
       "Kompletní web standardně dodán do 14 dnů",
-      "Zpracování včetně plně optimalizované mobilní verze",
-      "Možnost napojení na interní systémy a aplikace třetích stran",
-      "Zahrnutý následný technický support a údržba",
+      "Plně optimalizovaná mobilní verze",
+      "Možnost napojení na interní systémy a aplikace",
+      "Možnost následné správy a rozvoje webu",
     ],
     highlighted: true,
     cta: "Chci web",
@@ -19,13 +19,13 @@ const pricingPlans = [
   {
     name: "Modernizace webových stránek",
     description: "Kompletní modernizace vašeho stávajícího webu — nový design, vyšší rychlost, lepší konverze a nasazení AI nástrojů pro růst.",
-    price: "Individuální",
+    price: "od 17 900 Kč",
     features: [
-      "Bezplatný audit stávajícího webu a návrh vylepšení",
+      "Bezplatný audit webu a návrh zlepšení",
       "Redesign a modernizace vizuální identity",
-      "Integrace AI nástrojů",
-      "Chatbot, generování leadů, inteligentní vyhledávání, cenové kalkulátory a další",
-      "Průběžná správa, údržba a datová optimalizace",
+      "Zrychlení webu a SEO optimalizace",
+      "Integrace AI nástrojů a automatizací",
+      "Možnost dlouhodobé správy a optimalizace",
     ],
     highlighted: false,
     cta: "Chci modernizaci",
@@ -182,7 +182,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
             Vyberte službu
           </h2>
           <p className="section-sub" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
-            Ať už potřebujete nový web od základu nebo modernizaci toho stávajícího, připravíme řešení, které odpovídá vašim cílům i rozpočtu.
+            Uvedené ceny jsou orientační – každý projekt je jedinečný. Připravím vám proto nezávaznou kalkulaci přesně podle vašich potřeb. Neúčtuji žádné měsíční ani roční paušály, platíte pouze za skutečně odvedenou práci.
           </p>
         </div>
 

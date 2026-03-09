@@ -2,11 +2,42 @@ import { useState } from "react";
 import { PlusIcon, MinusIcon } from "lucide-react";
 
 const faqData = [
-  { question: "Jak probíhá první spolupráce?", answer: "Začínáme krátkým online callem, kde společně pojmenujeme cíle, aktuální situaci a možné překážky. Na základě toho navrhneme konkrétní další kroky – od jednorázového workshopu po dlouhodobější spolupráci. Vše dostanete přehledně sepsané." },
-  { question: "Je pro spolupráci potřeba mít jasno v zadání?", answer: "Nemusíte mít hotový brief ani přesně vědět, jaké AI řešení potřebujete. Pomůžeme vám od úplného začátku – společně zmapujeme příležitosti, ověříme nápady na malých experimentech a teprve potom se pouštíme do větší implementace." },
-  { question: "Jaké technologie a nástroje používáte?", answer: "Vycházíme z vašeho stávajícího stacku a procesů. Pracujeme s moderním webovým frontendem, nástroji pro automatizaci (např. Make, n8n, Zapier) a s AI modely, které dávají smysl pro daný use‑case. Vždy dbáme na bezpečné zacházení s daty." },
-  { question: "Dokážete pomoct i menším firmám nebo freelancerům?", answer: "Ano. Často začínáme právě s menšími týmy, kde má každá hodina navíc velký dopad. Umíme navrhnout řešení, které je finančně i časově realistické – od jednoduchého AI agenta přes chytré formuláře až po kompletní redesign webu." },
-  { question: "Jaká je orientační cena a doba dodání?", answer: "U webů se většina projektů pohybuje od 24 900 Kč výše, u AI agentů a automatizací od 29 900 Kč. Délka spolupráce bývá typicky 3–8 týdnů podle rozsahu. Konkrétní odhad vždy dostanete po úvodní konzultaci ještě před tím, než se do projektu pustíme." },
+  {
+    question: "Jaké typy webových stránek tvoříte?",
+    answer: "Vytvářím vše od jednoduchých landing page pro prezentaci služby až po komplexní weby pro firmy – včetně funkcí jako jsou rezervační systémy, poptávkové formuláře nebo napojení na další aplikace. Řešení vždy přizpůsobuji velikosti a potřebám vašeho podnikání.",
+  },
+  {
+    question: "Jak dlouho trvá vytvoření webu?",
+    answer: "Standardně dodávám kompletní web do 14 dnů. U rozsáhlejších projektů nebo modernizací se délka odvíjí od požadavků – konkrétní odhad dostanete po úvodní konzultaci.",
+  },
+  {
+    question: "Jak probíhá první spolupráce?",
+    answer: "Začínáme krátkým online callem nebo e-mailem, kde společně pojmenujeme cíle a vaše představy. Na základě toho připravím nezávaznou kalkulaci a návrh dalších kroků. Až poté se pustíme do samotné realizace.",
+  },
+  {
+    question: "Co ode mě budete potřebovat?",
+    answer: "Na začátku stačí základní informace: o čem vaše firma je, jaké máte cíle a představy o webu. Texty, obrázky a další podklady můžeme doplnit průběžně. U modernizace stávajícího webu pomůže přístup k současnému obsahu.",
+  },
+  {
+    question: "Budu si moci web upravovat sám?",
+    answer: "Ano. Weby připravuji tak, aby se daly snadno spravovat bez znalosti kódu – úpravy textů, obrázků nebo jednoduchých sekcí zvládnete sami. V případě potřeby nabízím i dlouhodobou správu a rozvoj.",
+  },
+  {
+    question: "Co když už web mám a chci ho modernizovat?",
+    answer: "Nabízím upgrade stávajícího webu: bezplatný audit, moderní redesign pro vyšší konverze, zrychlení a SEO optimalizaci, integraci AI nástrojů a lepší stabilitu. Ceny od 17 900 Kč podle rozsahu.",
+  },
+  {
+    question: "Co se děje po spuštění webu?",
+    answer: "Po předání vám ukážu, jak web spravovat. Nabízím možnost následné správy, údržby a optimalizace na základě dat. Můžeme také napojit analytiku a průběžně vylepšovat konverze.",
+  },
+  {
+    question: "Můžete web napojit na další systémy?",
+    answer: "Ano. Umím napojení na interní systémy, rezervační nebo objednávkové systémy, e-mailové nástroje a další aplikace. Konkrétní možnosti probereme podle vašich potřeb.",
+  },
+  {
+    question: "Můžeme si nejdříve nezávazně zavolat?",
+    answer: "Ano. Nezávazná konzultace je první krok – probereme vaše cíle, představy a rozpočet. Napište mi přes kontaktní formulář nebo na info@pk-digital.cz, ozvu se do 24 hodin.",
+  },
 ];
 
 import { SectionDivider } from "../../components/SectionDivider";
@@ -84,7 +115,7 @@ export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
                   role="region"
                   aria-labelledby={`faq-btn-${i}`}
                   style={{
-                    maxHeight: isOpen ? "400px" : "0",
+                    maxHeight: isOpen ? "600px" : "0",
                     overflow: "hidden",
                     transition: "max-height 300ms ease",
                   }}

@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Phone, MapPin, Building2, FileText, Mail, Landmark, Inbox, CheckCircle2, ChevronDown, Send
 } from "lucide-react";
 import { supabase } from "../../../../lib/supabase";
 
-const PROJECT_TYPE_OPTIONS = ["Tvorba webových stránek", "Modernizace webu", "Integrace AI"];
+const PROJECT_TYPE_OPTIONS = ["Tvorba webových stránek", "Upgrade stávajícího webu"];
 
 type FormState = {
   name: string;
@@ -14,6 +15,7 @@ type FormState = {
   projectType: string;
   budget: string;
   description: string;
+  gdprConsent: boolean;
 };
 
 const init: FormState = {
@@ -23,7 +25,8 @@ const init: FormState = {
   phone: "",
   projectType: "",
   budget: "",
-  description: ""
+  description: "",
+  gdprConsent: false,
 };
 
 const FloatingField = ({
@@ -166,25 +169,26 @@ const companyInfoOrdered = [
 
 export const ContactSection = (): JSX.Element => {
   const [form, setForm] = useState<FormState>(init);
-  const [errors, setErrors] = useState<Partial<FormState>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const set = (f: keyof FormState) => (v: string) => {
+  const set = (f: keyof FormState) => (v: string | boolean) => {
     setForm(p => ({ ...p, [f]: v }));
     if (errors[f]) setErrors(p => ({ ...p, [f]: undefined }));
     if (submitError) setSubmitError(null);
   };
 
   const validate = () => {
-    const e: Partial<FormState> = {};
+    const e: Partial<Record<keyof FormState, string>> = {};
     if (!form.name.trim()) e.name = "Zadejte jméno";
     if (!form.email.trim()) e.email = "Zadejte email";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Neplatný email";
     if (!form.phone.trim()) e.phone = "Zadejte telefon";
     if (!form.projectType) e.projectType = "Vyberte typ projektu";
     if (!form.description.trim()) e.description = "Napište nám, co poptáváte";
+    if (!form.gdprConsent) e.gdprConsent = "Pro odeslání je nutný souhlas se zpracováním osobních údajů.";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -255,6 +259,24 @@ export const ContactSection = (): JSX.Element => {
                   <FloatingField id="f-budget" label="Rozpočet" value={form.budget} onChange={set("budget")} placeholder="např. 50 000 Kč" />
                 </div>
                 <FloatingField id="f-desc" label="Napište nám, co poptáváte (povinné)" value={form.description} onChange={set("description")} error={errors.description} placeholder="Stručně popište váš projekt nebo dotaz..." multiline />
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <label style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer", fontFamily: "'Space Grotesk',sans-serif", fontSize: "15px", color: "rgba(255,255,255,0.85)" }}>
+                    <input
+                      type="checkbox"
+                      checked={form.gdprConsent}
+                      onChange={(e) => set("gdprConsent")(e.target.checked)}
+                      style={{ marginTop: "4px", width: "18px", height: "18px", accentColor: "#00E5FF" }}
+                      aria-invalid={!!errors.gdprConsent}
+                    />
+                    <span>
+                      Souhlasím se zpracováním osobních údajů dle{" "}
+                      <Link to="/zasady-ochrany-soukromi" style={{ color: "#00E5FF", textDecoration: "underline" }}>Zásad ochrany soukromí</Link>.
+                    </span>
+                  </label>
+                  {errors.gdprConsent && (
+                    <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "#F87171", paddingLeft: "30px" }}>{errors.gdprConsent}</span>
+                  )}
+                </div>
                 {submitError && (
                   <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "14px", color: "#F87171", margin: 0 }} role="alert">
                     {submitError}

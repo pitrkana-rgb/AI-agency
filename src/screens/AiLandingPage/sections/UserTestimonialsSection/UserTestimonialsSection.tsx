@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 const statsData = [
-  { label: "REALIZOVANÝCH PROJEKTŮ", value: 120, suffix: "+", description: "Od prvních MVP až po škálované AI řešení." },
-  { label: "KLIENTŮ NÁS DOPORUČUJE", value: 97, suffix: " %", description: "Dlouhodobé partnerství místo jednorázových zakázek." },
+  { label: "REALIZOVANÝCH PROJEKTŮ", value: 100, suffix: "+", description: "Od prvních MVP až po škálované AI řešení." },
+  { label: "ZÁKAZNICKÁ SPOKOJENOST", value: 100, suffix: " %", description: "Dlouhodobé partnerství místo jednorázových zakázek." },
   { label: "PRŮMĚRNÁ DOBA REALIZACE", value: 14, suffix: " dní", description: "Kompletní web připravený k nasazení." },
 ];
 
