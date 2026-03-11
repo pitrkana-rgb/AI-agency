@@ -105,7 +105,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
             className="step-block"
             style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 20px", position: "relative", zIndex: 1 }}
           >
-            {/* Icon container with spin-on-hover */}
+            {/* Icon container with auto-rotate every 3s */}
             <div
               className="step-icon-wrap"
               style={{
@@ -120,28 +120,8 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
                 transition: "background 250ms ease, box-shadow 250ms ease",
                 cursor: "default",
               }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.background = "rgba(0,229,255,0.12)";
-                el.style.boxShadow = "0 0 28px rgba(0,229,255,0.22)";
-                const icon = el.querySelector<SVGElement>(".step-svg-icon");
-                if (icon) {
-                  icon.style.transform = "rotate(360deg)";
-                  icon.style.transition = "transform 0.7s ease-in-out";
-                }
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.background = "rgba(0,229,255,0.06)";
-                el.style.boxShadow = "0 0 18px rgba(0,229,255,0.10)";
-                const icon = el.querySelector<SVGElement>(".step-svg-icon");
-                if (icon) {
-                  icon.style.transform = "rotate(0deg)";
-                  icon.style.transition = "transform 0.5s ease-in-out";
-                }
-              }}
             >
-              <span className="step-svg-icon" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span className="step-svg-icon step-svg-icon-auto-rotate" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <step.Icon />
               </span>
             </div>
@@ -160,6 +140,15 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
     </div>
 
     <style>{`
+      /* ── Auto-rotate icons every 3 seconds ── */
+      .step-svg-icon-auto-rotate {
+        animation: step-icon-rotate 3s ease-in-out infinite;
+      }
+      @keyframes step-icon-rotate {
+        0% { transform: rotate(0deg); }
+        10% { transform: rotate(360deg); }
+        10.01%, 100% { transform: rotate(0deg); }
+      }
       /* ── Mobile: stacked single column ── */
       @media(max-width:767px){
         .how-it-works-head { margin-bottom: 32px !important; }
@@ -200,7 +189,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
         .step-block { padding: 0 8px !important; }
       }
       @media(prefers-reduced-motion:reduce){
-        .step-svg-icon { transition: none !important; transform: none !important; }
+        .step-svg-icon { transition: none !important; transform: none !important; animation: none !important; }
         .step-icon-wrap { transition: none !important; }
       }
     `}</style>

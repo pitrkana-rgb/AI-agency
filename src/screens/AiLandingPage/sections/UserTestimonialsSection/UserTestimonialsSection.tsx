@@ -78,6 +78,9 @@ const AnimatedBadge = ({ badge, delay }: { badge: Badge; delay: number }) => {
   }, [visible, delay]);
 
   const count = useCountUp(badge.numericValue, 1200, started);
+  const titleParts = badge.title.split(/\s+/);
+  const titleLine1 = titleParts[0] ?? "";
+  const titleLine2 = titleParts.slice(1).join(" ") ?? "";
 
   return (
     <div
@@ -118,7 +121,7 @@ const AnimatedBadge = ({ badge, delay }: { badge: Badge; delay: number }) => {
         borderRadius: "1px",
       }} />
 
-      {/* Title */}
+      {/* Title — on mobile shows as 2 lines (e.g. GARANCE / SPOKOJENOSTI) */}
       <span
         className="badge-title"
         style={{
@@ -128,7 +131,8 @@ const AnimatedBadge = ({ badge, delay }: { badge: Badge; delay: number }) => {
           textTransform: "uppercase" as const,
         }}
       >
-        {badge.title}
+        <span className="badge-title-line1">{titleLine1}</span>
+        <span className="badge-title-line2">{titleLine2}</span>
       </span>
 
       {/* Animated value */}
@@ -189,10 +193,18 @@ export const UserTestimonialsSection = (): JSX.Element => (
       @media(max-width:767px){
         .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; }
         .badge-card { padding: 14px 10px !important; border-radius: 12px !important; gap: 6px !important; min-width: 0 !important; }
-        .badge-title { font-size: 9px !important; letter-spacing: 0.06em !important; }
+        .badge-title { font-size: 9px !important; letter-spacing: 0.06em !important; display: block !important; }
+        .badge-title-line1, .badge-title-line2 { display: block !important; line-height: 1.25 !important; }
+        .badge-title-line2 { margin-top: 1px !important; }
+        .badge-title-line2::before { content: none !important; }
         .badge-value { font-size: 22px !important; }
         .badge-desc { font-size: 10px !important; line-height: 1.35 !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; }
         .stats-section { padding-top: 60px !important; padding-bottom: 40px !important; }
+      }
+      @media(min-width:768px){
+        .badge-title { display: flex !important; flex-wrap: nowrap !important; gap: 0.25em !important; }
+        .badge-title-line1, .badge-title-line2 { display: inline !important; }
+        .badge-title-line2::before { content: "\\00a0" !important; }
       }
       @media(prefers-reduced-motion:reduce){
         .badge-card { transition: none !important; }
