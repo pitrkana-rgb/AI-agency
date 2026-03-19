@@ -68,7 +68,7 @@ export const ClientTestimonialsSection = (): JSX.Element => (
   <section style={{ width: "100%", backgroundColor: "#000", padding: "96px 0", marginTop: "-50px" }}>
     <SectionDivider />
     {/* Header — same style as other sections (centered, same font sizes) */}
-    <div style={{ maxWidth: "1200px", margin: "0 auto 56px", padding: "0 24px", textAlign: "center" }}>
+    <div style={{ maxWidth: "1280px", margin: "0 auto 56px", padding: "0 24px", textAlign: "center" }}>
       <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,4.5vw,52px)", color: "#fff", margin: "0 auto 20px", letterSpacing: "-0.02em", lineHeight: 1.1, maxWidth: "700px" }}>
         Co o spolupráci říkají{" "}
         <span style={{ background: "linear-gradient(135deg,#E040FB,#00E5FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>klienti</span>

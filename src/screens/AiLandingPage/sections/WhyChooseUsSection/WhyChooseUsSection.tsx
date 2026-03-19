@@ -28,8 +28,8 @@ const CheckIcon = () => (
 
 const CrossIcon = () => (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
-        <circle cx="10" cy="10" r="10" fill="rgba(255,255,255,0.04)" />
-        <path d="M7 7L13 13M13 7L7 13" stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="10" cy="10" r="10" fill="rgba(248,113,113,0.14)" />
+        <path d="M7 7L13 13M13 7L7 13" stroke="rgba(248,113,113,0.95)" strokeWidth="2" strokeLinecap="round" />
     </svg>
 );
 
@@ -92,31 +92,33 @@ const ThemCard = () => (
             borderRadius: "24px",
             padding: "40px",
             background: "#0D0D0D",
-            border: "1px solid rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.14)",
             display: "flex", flexDirection: "column", gap: "28px",
-            transition: "transform 250ms ease, box-shadow 250ms ease",
+            transition: "transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease",
             height: "100%", boxSizing: "border-box",
         }}
         onMouseEnter={e => {
             const el = e.currentTarget as HTMLDivElement;
             el.style.transform = "translateY(-4px)";
             el.style.boxShadow = "0 24px 48px rgba(0,0,0,0.5)";
+            el.style.borderColor = "rgba(0,229,255,0.18)";
         }}
         onMouseLeave={e => {
             const el = e.currentTarget as HTMLDivElement;
             el.style.transform = "";
             el.style.boxShadow = "";
+            el.style.borderColor = "rgba(255,255,255,0.14)";
         }}
     >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingBottom: "24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "18px", color: "rgba(255,255,255,0.35)", letterSpacing: "-0.01em" }}>Běžné agentury</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingBottom: "24px", borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
+            <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "rgba(255,255,255,0.28)", flexShrink: 0, boxShadow: "0 0 14px rgba(255,255,255,0.08)" }} />
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "18px", color: "rgba(255,255,255,0.75)", letterSpacing: "-0.01em" }}>Běžné agentury</span>
         </div>
         <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "18px" }}>
             {themPoints.map((point, i) => (
                 <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
                     <CrossIcon />
-                    <span className="why-bullet why-bullet-muted" style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.32)", lineHeight: 1.45, fontStyle: "italic" }}>{point}</span>
+                    <span className="why-bullet why-bullet-muted" style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: "15px", color: "rgba(255,255,255,0.78)", lineHeight: 1.45, fontStyle: "normal" }}>{point}</span>
                 </li>
             ))}
         </ul>
@@ -177,7 +179,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
 
             <div
                 style={{
-                    maxWidth: "1200px", margin: "0 auto", padding: "0 24px",
+                    maxWidth: "1280px", margin: "0 auto", padding: "0 24px",
                     opacity: visible ? 1 : 0,
                     transform: visible ? "translateY(0)" : "translateY(40px)",
                     transition: "opacity 0.7s ease, transform 0.7s ease",
@@ -289,24 +291,24 @@ export const WhyChooseUsSection = (): JSX.Element => {
                 <div style={{ textAlign: "center", marginTop: "52px" }}>
                     <button
                         type="button"
+                        className="animate-pulse-glow hero-primary-btn"
                         onClick={() => navigate("/kontakt")}
                         style={{
                             background: "linear-gradient(135deg, #0ABDC6 0%, #00E5FF 100%)",
                             color: "#070B14",
                             border: "none",
-                            borderRadius: "999px",
-                            padding: "16px 36px",
+                            borderRadius: "12px",
+                            padding: "15px 32px",
                             fontFamily: "'Space Grotesk', sans-serif",
                             fontWeight: 600,
                             fontSize: "16px",
                             cursor: "pointer",
-                            boxShadow: "0 0 20px rgba(0,229,255,0.25)",
-                            transition: "filter 0.2s ease, transform 0.2s ease",
+                            transition: "transform 0.25s ease, filter 0.25s ease",
                         }}
                         onMouseEnter={e => {
                             const el = e.currentTarget as HTMLButtonElement;
                             el.style.filter = "brightness(1.1)";
-                            el.style.transform = "translateY(-2px)";
+                            el.style.transform = "translateY(-3px)";
                         }}
                         onMouseLeave={e => {
                             const el = e.currentTarget as HTMLButtonElement;

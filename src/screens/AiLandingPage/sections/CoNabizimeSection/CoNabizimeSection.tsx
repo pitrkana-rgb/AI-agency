@@ -1,350 +1,556 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SectionDivider } from "../../components/SectionDivider";
 import { useNavigate } from "react-router-dom";
 
-const CheckIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: "2px" }}>
-        <circle cx="8" cy="8" r="8" fill="rgba(0,229,255,0.14)" />
-        <path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="#00E5FF" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-);
+type BeforeAfter = {
+  beforeSrc: string;
+  afterSrc: string;
+  beforeLabel: string;
+  afterLabel: string;
+};
 
-const slides = [
-    {
-        id: "tvorba-webu",
-        label: "Tvorba webových stránek",
-        title: "Tvorba webových stránek",
-        description:
-            "Moderní web, který jasně komunikuje vaši hodnotu, získává zákazníky a je připravený růst s vaším podnikáním",
-        features: [
-            "Konzultace a návrh webu zdarma",
-            "Standardní dodání do 14 dnů",
-            "Design zaměřený pro konverze",
-            "Optimalizováno na mobil i počítač",
-            "Jednoduchá správa bez vývojáře",
-        ],
-        cta: "Chci web",
-        image: "/New.web-promotion-V2.png",
+const BeforeAfterSlider = ({
+  beforeSrc,
+  afterSrc,
+  beforeLabel,
+  afterLabel,
+}: BeforeAfter): JSX.Element => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [pos, setPos] = useState(55);
+  const [dragging, setDragging] = useState(false);
+
+  const updateFromClientX = (clientX: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.max(0, Math.min(100, pct)));
+  };
+
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e: PointerEvent) => updateFromClientX(e.clientX);
+    const onUp = () => setDragging(false);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp, { once: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [dragging]);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        minHeight: "360px",
+        overflow: "hidden",
+        touchAction: "pan-y",
+        cursor: dragging ? "ew-resize" : "default",
+        userSelect: "none",
+      }}
+      aria-label="Před/po porovnání"
+      role="group"
+      onPointerDown={(e) => {
+        e.preventDefault();
+        setDragging(true);
+        updateFromClientX(e.clientX);
+        try {
+          e.currentTarget.setPointerCapture(e.pointerId);
+        } catch {
+          /* ignore */
+        }
+      }}
+      onPointerMove={(e) => {
+        if (!dragging) return;
+        updateFromClientX(e.clientX);
+      }}
+      onPointerUp={() => setDragging(false)}
+      onPointerCancel={() => setDragging(false)}
+    >
+      <img
+        src={beforeSrc}
+        alt={beforeLabel}
+        draggable={false}
+        onDragStart={(e) => e.preventDefault()}
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+      />
+
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: `${pos}%`,
+          width: `${100 - pos}%`,
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={afterSrc}
+          alt={afterLabel}
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+        />
+
+        {/* Pro badge - centered on the expanding (after) side */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: 16,
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "6px 12px",
+            borderRadius: 999,
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 700,
+            fontSize: 13,
+            color: "#000",
+            background: "linear-gradient(135deg, rgba(224,64,251,0.95), rgba(0,229,255,0.95))",
+            boxShadow: "0 0 18px rgba(0,229,255,0.18)",
+            zIndex: 3,
+            pointerEvents: "none",
+          }}
+        >
+          {afterLabel}
+        </div>
+      </div>
+
+      {/* Před badge - centered on the remaining (before) side */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: `${pos}%`,
+          zIndex: 3,
+          overflow: "hidden",
+          pointerEvents: "none",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 16,
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "6px 12px",
+            borderRadius: 999,
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 700,
+            fontSize: 13,
+            color: "#000",
+            background: "linear-gradient(135deg, rgba(224,64,251,0.95), rgba(0,229,255,0.95))",
+            boxShadow: "0 0 18px rgba(0,229,255,0.18)",
+            pointerEvents: "none",
+          }}
+        >
+          {beforeLabel}
+        </div>
+      </div>
+
+      {/* Divider line */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: `${pos}%`,
+          width: 2,
+          transform: "translateX(-1px)",
+          background: "rgba(0,229,255,0.65)",
+          boxShadow: "0 0 28px rgba(0,229,255,0.25)",
+          pointerEvents: "none",
+          zIndex: 5,
+        }}
+      />
+
+      {/* Handle (clean & modern) */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: `${pos}%`,
+          transform: "translate(-50%, -50%)",
+          width: 44,
+          height: 44,
+          borderRadius: 999,
+          background: "rgba(13,13,13,0.72)",
+          border: "1px solid rgba(0,229,255,0.25)",
+          boxShadow: "0 0 28px rgba(0,229,255,0.18)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+          backdropFilter: "blur(8px)",
+          zIndex: 6,
+        }}
+      >
+        <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,0.95)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="14 7 9 12 14 17" />
+          </svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,0.95)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="10 7 15 12 10 17" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type Slide = {
+  id: string;
+  title: string;
+  description: string;
+  features: string[];
+  cta: string;
+  image?: string;
+  beforeAfter?: BeforeAfter;
+};
+
+const slides: Slide[] = [
+  {
+    id: "tvorba-webu",
+    title: "Tvorba webových stránek",
+    description:
+      "Moderní web, který jasně komunikuje vaši hodnotu, získává zákazníky a je připravený na růst s vaším podnikáním.",
+    features: [
+      "Konzultace a návrh webu zdarma",
+      "Standardní dodání do 14 dnů",
+      "Design zaměřený pro konverze",
+      "Optimalizováno na mobil i počítač",
+      "Jednoduchá správa bez vývojáře",
+    ],
+    cta: "Chci web",
+    image: "/New.web-promotion-V2.png",
+  },
+  {
+    id: "upgrade-webu",
+    title: "Upgrade stávajícího webu",
+    description:
+      "Kompletní modernizace vašeho stávajícího webu — nový design, vyšší rychlost, lepší konverze.",
+    features: [
+      "Bezplatný audit webu",
+      "Moderní redesign pro vyšší konverze",
+      "Zrychlení webu a SEO optimalizace",
+      "Vyšší stabilita a snadnější správa",
+    ],
+    cta: "Chci modernizaci",
+    beforeAfter: {
+      beforeSrc: "/Modernizace/modernizace_before.png",
+      afterSrc: "/Modernizace/modernizace_after.png",
+      beforeLabel: "Před",
+      afterLabel: "Pro",
     },
-    {
-        id: "upgrade-webu",
-        label: "Upgrade stávajícího webu",
-        title: "Upgrade stávajícího webu",
-        description:
-            "Kompletní modernizace vašeho stávajícího webu — nový design, vyšší rychlost, lepší konverze a nasazení AI nástrojů pro růst.",
-        features: [
-            "Bezplatný audit webu",
-            "Moderní redesign pro vyšší konverze",
-            "Zrychlení webu a SEO optimalizace",
-            "Integrace AI nástrojů",
-            "Vyšší stabilita a snadnější správa",
-        ],
-        cta: "Chci modernizaci",
-        image: "/profitherm.png?v=2",
-    },
+  },
+  {
+    id: "automatizace-ai",
+    title: "Automatizace a AI agenti",
+    description:
+      "Automatizujeme rutinní procesy a nasazujeme AI agenty, kteří šetří čas, snižují náklady a zvyšují výkon vašeho businessu.",
+    features: [
+      "Analýza procesů a návrh automatizací",
+      "Implementace AI agentů (chat, email, interní nástroje)",
+      "Napojení na CRM, API a interní systémy",
+      "Automatizace zákaznické komunikace",
+      "Reporting, optimalizace a škálování řešení",
+    ],
+    cta: "Chci automatizaci",
+    image: "/AI.png",
+  },
 ];
 
-const SWIPE_THRESHOLD = 50;
-
 export const CoNabizimeSection = (): JSX.Element => {
-    const [active, setActive] = useState(0);
-    const touchStartX = useRef<number>(0);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const rowRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [rowVisible, setRowVisible] = useState<boolean[]>([false, false]);
 
-    const goTo = (idx: number) => {
-        if (idx === active) return;
-        setActive(Math.max(0, Math.min(slides.length - 1, idx)));
-    };
+  useEffect(() => {
+    const els = rowRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (!els.length) return;
 
-    // Keyboard navigation
-    useEffect(() => {
-        const handler = (e: KeyboardEvent) => {
-            if (e.key === "ArrowRight") goTo(Math.min(active + 1, slides.length - 1));
-            if (e.key === "ArrowLeft") goTo(Math.max(active - 1, 0));
-        };
-        window.addEventListener("keydown", handler);
-        return () => window.removeEventListener("keydown", handler);
-    }, [active]);
+    const obs = new IntersectionObserver(
+      (entries) => {
+        setRowVisible((prev) => {
+          const next = [...prev];
+          for (const entry of entries) {
+            const idxRaw = (entry.target as HTMLElement).dataset.idx;
+            const idx = idxRaw ? Number(idxRaw) : NaN;
+            if (Number.isNaN(idx)) continue;
+            if ((entry.intersectionRatio ?? 0) >= 0.15) next[idx] = true;
+          }
+          return next;
+        });
+      },
+      { threshold: [0, 0.15, 0.3] },
+    );
 
-    const onTouchStart = (e: any) => {
-        touchStartX.current = e.touches[0].clientX;
-    };
-    const onTouchEnd = (e: any) => {
-        const endX = e.changedTouches[0].clientX;
-        const delta = touchStartX.current - endX;
-        if (delta > SWIPE_THRESHOLD) goTo(Math.min(active + 1, slides.length - 1));
-        else if (delta < -SWIPE_THRESHOLD) goTo(Math.max(active - 1, 0));
-    };
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
-    return (
-        <section
-            id="co-nabizime"
-            style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}
-        >
-            <SectionDivider />
-            <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+  return (
+    <section
+      id="co-nabizime"
+      style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}
+    >
+      <SectionDivider />
 
-                {/* Head */}
-                <div className="offer-head" style={{ textAlign: "center", marginBottom: "56px" }}>
-                    <h2 style={{
-                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
-                        fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1,
-                        color: "#fff", margin: "0 auto 20px", letterSpacing: "-0.02em", maxWidth: "700px",
-                    }}>
-                        Co{" "}
-                        <span style={{ background: "linear-gradient(135deg,#E040FB,#00E5FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>nabízíme</span>
-                    </h2>
-                    <p className="section-sub offer-subheading" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
-                        Od vytvoření nového webu přes vizuální redesign až po integraci AI nástrojů – řešení pro začínající podnikatele i rostoucí firmy.
-                    </p>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
+        <div className="offer-head" style={{ textAlign: "center", marginBottom: "56px" }}>
+          <h2
+            style={{
+              fontFamily: "'Space Grotesk',sans-serif",
+              fontWeight: 700,
+              fontSize: "clamp(32px,4.5vw,52px)",
+              lineHeight: 1.1,
+              color: "#fff",
+              margin: "0 auto 20px",
+              letterSpacing: "-0.02em",
+              maxWidth: "700px",
+            }}
+          >
+            Co{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg,#E040FB,#00E5FF)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              nabízíme
+            </span>
+          </h2>
+          <p
+            className="section-sub offer-subheading"
+            style={{
+              fontFamily: "'Space Grotesk',sans-serif",
+              fontWeight: 400,
+              fontSize: "18px",
+              lineHeight: 1.6,
+              color: "rgba(255,255,255,0.65)",
+              margin: "0 auto",
+              maxWidth: "560px",
+            }}
+          >
+            Od vytvoření nového webu přes vizuální redesign až po nasazení AI nástrojů – řešení pro začínající podnikatele i
+            rostoucí firmy.
+          </p>
+        </div>
+
+        <div className="offer-rows">
+          {slides.map((slide, idx) => {
+            const showReverse = idx % 2 === 1;
+            const fadeDir = idx === 0 ? -1 : 1;
+            const isVisible = rowVisible[idx] ?? false;
+
+            return (
+              <div
+                key={slide.id}
+                ref={(el) => {
+                  rowRefs.current[idx] = el;
+                }}
+                data-idx={idx}
+                className={`offer-product-row ${showReverse ? "offer-row-reverse" : ""} ${isVisible ? "offer-row-visible" : ""}`}
+                style={{ ["--shift" as any]: `${fadeDir * 180}px` }}
+              >
+                <div className="offer-product-media">
+                  {slide.beforeAfter ? (
+                    <BeforeAfterSlider {...slide.beforeAfter} />
+                  ) : (
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      style={{ width: "100%", height: "100%", minHeight: "360px", objectFit: "cover", objectPosition: "center", display: "block" }}
+                    />
+                  )}
                 </div>
 
-                {/* Tab pills — hidden on mobile */}
-                <div className="offer-tabs" style={{ display: "flex", justifyContent: "center", gap: "12px", marginBottom: "40px", flexWrap: "wrap" }}>
-                    {slides.map((s, i) => (
-                        <button
-                            key={s.id}
-                            type="button"
-                            onClick={() => goTo(i)}
-                            style={{
-                                fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "14px",
-                                padding: "8px 20px", borderRadius: "999px", cursor: "pointer",
-                                border: i === active ? "none" : "1px solid rgba(255,255,255,0.15)",
-                                background: i === active
-                                    ? "linear-gradient(135deg,#0ABDC6,#00E5FF)"
-                                    : "rgba(255,255,255,0.05)",
-                                color: i === active ? "#000" : "rgba(255,255,255,0.55)",
-                                transition: "all 200ms ease",
-                                boxShadow: i === active ? "0 0 20px rgba(0,229,255,0.22)" : "none",
-                            }}
-                        >
-                            {s.label}
-                        </button>
+                <div className="offer-product-content">
+                  <h3 className="offer-title">{slide.title}</h3>
+                  <div className="offer-title-underline" aria-hidden="true" />
+
+                  <p className="offer-desc">{slide.description}</p>
+
+                  <ul className="offer-bullets">
+                    {slide.features.map((f) => (
+                      <li key={f}>{f}</li>
                     ))}
+                  </ul>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigate("/kontakt");
+                      setTimeout(() => {
+                        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                      }, 180);
+                    }}
+                    className="offer-cta animate-pulse-glow hero-primary-btn"
+                  >
+                    {slide.cta}
+                  </button>
                 </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-                {/* Slide panel — sliding track on mobile, grid on desktop */}
-                <div style={{ overflow: "hidden", width: "100%" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-                    <div
-                        className="offer-carousel-track"
-                        style={{
-                            display: "flex",
-                            width: `${slides.length * 100}%`,
-                            transform: `translateX(${-active * (100 / slides.length)}%)`,
-                            transition: "transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                        }}
-                    >
-                        {slides.map((slide) => (
-                            <div
-                                key={slide.id}
-                                className="offer-panel"
-                                style={{
-                                    flex: `0 0 ${100 / slides.length}%`,
-                                    display: "grid",
-                                    gridTemplateColumns: "1fr 1fr",
-                                    gap: 0,
-                                    borderRadius: "24px",
-                                    overflow: "hidden",
-                                    border: "1px solid rgba(255,255,255,0.08)",
-                                    boxShadow: "0 32px 80px rgba(0,0,0,0.5)",
-                                    boxSizing: "border-box",
-                                    minWidth: 0,
-                                }}
-                            >
-                                {/* Left — image or placeholder */}
-                                <div
-                                    className="offer-image-col"
-                                    style={{
-                                        background: slide.image
-                                            ? "#000"
-                                            : "linear-gradient(145deg, rgba(10,189,198,0.10), rgba(0,229,255,0.04))",
-                                        borderRight: "1px solid rgba(255,255,255,0.06)",
-                                        display: "flex", alignItems: "center", justifyContent: "center",
-                                        minHeight: "460px",
-                                        position: "relative",
-                                        overflow: "hidden",
-                                    }}
-                                >
-                                    {slide.image ? (
-                                        <img
-                                            src={slide.image}
-                                            alt={slide.title}
-                                            style={{
-                                                position: "absolute",
-                                                inset: 0,
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "cover",
-                                                objectPosition: "center",
-                                                display: "block",
-                                            }}
-                                        />
-                                    ) : (
-                                        <>
-                                            <div style={{
-                                                position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
-                                                width: "260px", height: "260px",
-                                                background: "radial-gradient(circle, rgba(0,229,255,0.16) 0%, transparent 70%)",
-                                                pointerEvents: "none",
-                                            }} />
-                                            <div style={{
-                                                display: "flex", flexDirection: "column", alignItems: "center", gap: "16px",
-                                                position: "relative", zIndex: 1,
-                                            }}>
-                                                <div style={{
-                                                    width: "80px", height: "80px", borderRadius: "20px",
-                                        background: "rgba(0,229,255,0.10)",
-                                        border: "1px dashed rgba(0,229,255,0.25)",
-                                                    display: "flex", alignItems: "center", justifyContent: "center",
-                                                }}>
-                                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(0,229,255,0.45)" strokeWidth="1.5" />
-                                            <path d="M3 9h18M9 21V9" stroke="rgba(0,229,255,0.45)" strokeWidth="1.5" strokeLinecap="round" />
-                                                    </svg>
-                                                </div>
-                                                <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                                                    Obrázek bude přidán
-                                                </span>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-
-                                {/* Right — content */}
-                                <div
-                                    className="offer-content-col"
-                                    style={{
-                                        background: "#0D0D0D",
-                                        padding: "52px 48px",
-                                        display: "flex", flexDirection: "column", gap: "28px",
-                                    }}
-                                >
-                                    <h3 style={{
-                                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
-                                        fontSize: "clamp(26px,3vw,36px)", lineHeight: 1.15,
-                                        color: "#fff", margin: 0, letterSpacing: "-0.02em",
-                                    }}>
-                                        {slide.title}
-                                    </h3>
-                                    <p style={{
-                                        fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400,
-                                        fontSize: "16px", lineHeight: 1.7,
-                                        color: "rgba(255,255,255,0.65)", margin: 0,
-                                    }}>
-                                        {slide.description}
-                                    </p>
-                                    <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
-                                        {slide.features.map(f => (
-                                            <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                                                <CheckIcon />
-                                                <span className="offer-bullet" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
-                                                    {f}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    <button
-                                        type="button"
-                                        onClick={() => navigate("/kontakt")}
-                                        style={{
-                                            alignSelf: "flex-start",
-                                background: "linear-gradient(135deg,#0ABDC6,#00E5FF)",
-                                color: "#070B14", border: "none", borderRadius: "12px",
-                                            padding: "14px 28px",
-                                            fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "15px",
-                                            cursor: "pointer",
-                                boxShadow: "0 0 20px rgba(0,229,255,0.22)",
-                                            transition: "filter 200ms ease, transform 200ms ease",
-                                        }}
-                                        onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
-                                        onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
-                                    >
-                                        {slide.cta}
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Dot navigation */}
-                <div className="offer-dots" style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "28px" }}>
-                    {slides.map((s, i) => (
-                        <button
-                            key={s.id}
-                            type="button"
-                            aria-label={`Přejít na slide ${i + 1}`}
-                            onClick={() => goTo(i)}
-                            style={{
-                                width: i === active ? "28px" : "8px", height: "8px",
-                                borderRadius: "999px", border: "none", cursor: "pointer",
-                                background: i === active ? "#00E5FF" : "rgba(255,255,255,0.2)",
-                                transition: "width 250ms ease, background 250ms ease",
-                                padding: 0,
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Arrow navigation */}
-                <div className="offer-arrows" style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "16px" }}>
-                    {[
-                        { label: "←", dir: -1 },
-                        { label: "→", dir: 1 },
-                    ].map(({ label, dir }) => (
-                        <button
-                            key={label}
-                            type="button"
-                            aria-label={dir === -1 ? "Předchozí" : "Další"}
-                            onClick={() => goTo(Math.max(0, Math.min(slides.length - 1, active + dir)))}
-                            style={{
-                                width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer",
-                                border: "1px solid rgba(255,255,255,0.15)",
-                                background: "rgba(255,255,255,0.05)",
-                                color: "rgba(255,255,255,0.7)",
-                                fontFamily: "system-ui", fontSize: "16px",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                transition: "background 200ms ease, border-color 200ms ease",
-                                opacity: (dir === -1 && active === 0) || (dir === 1 && active === slides.length - 1) ? 0.3 : 1,
-                            }}
-                            onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(0,229,255,0.12)"; b.style.borderColor = "rgba(0,229,255,0.35)"; }}
-                            onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.05)"; b.style.borderColor = "rgba(255,255,255,0.15)"; }}
-                        >
-                            {label}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <style>{`
-        .offer-carousel-track { will-change: transform; }
-        @media(max-width: 767px) {
-          .offer-tabs { display: none !important; }
-          .offer-head { margin-bottom: 20px !important; }
-          .offer-subheading { display: none !important; }
-          .offer-panel {
-            grid-template-columns: 1fr !important;
-          }
-          .offer-image-col {
-            border-right: none !important;
-            border-bottom: 1px solid rgba(255,255,255,0.06) !important;
-            min-height: 280px !important;
-          }
-          .offer-image-col img{
-            object-position: top center !important;
-          }
-          .offer-content-col {
-            padding: 32px 24px !important;
-            gap: 20px !important;
-          }
-          .offer-bullet { font-size: 13px !important; line-height: 1.55 !important; }
-          .offer-dots { margin-top: 18px !important; }
-          .offer-arrows { margin-top: 10px !important; }
+      <style>{`
+        .offer-rows{
+          display:flex;
+          flex-direction:column;
+          gap:56px;
         }
-        @media(prefers-reduced-motion: reduce) {
-          .offer-carousel-track { transition: none !important; }
+        .offer-product-row{
+          --shift: 0px;
+          position:relative;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:56px;
+          opacity: 0;
+          transform: translateX(var(--shift));
+          transition: opacity 700ms ease, transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
+          will-change: transform, opacity;
+        }
+        .offer-row-reverse{
+          flex-direction: row-reverse;
+        }
+        .offer-row-visible{
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        /* Clean “blob” style behind the image (no borders) */
+        .offer-product-media{
+          flex: 0 0 46%;
+          min-width: 0;
+          border-radius: 34px;
+          overflow:hidden;
+          background: rgba(255,255,255,0.02);
+          box-shadow: 0 0 60px rgba(0,229,255,0.06);
+          position:relative;
+        }
+        .offer-product-media::before{
+          content:'';
+          position:absolute;
+          inset:-60px;
+          background:
+            radial-gradient(circle at 20% 10%, rgba(0,229,255,0.16) 0%, transparent 52%),
+            radial-gradient(circle at 80% 20%, rgba(224,64,251,0.10) 0%, transparent 55%);
+          pointer-events:none;
+        }
+        .offer-product-media > *{
+          position:relative;
+          z-index:1;
+        }
+
+        .offer-product-content{
+          flex: 1 1 0;
+          min-width: 0;
+          max-width: 560px;
+          padding: 10px 0;
+        }
+
+        .offer-title{
+          fontFamily: "'Space Grotesk',sans-serif";
+          fontWeight: 900;
+          fontSize: clamp(22px, 3vw, 34px);
+          color: #fff;
+          margin: 0;
+          letterSpacing: -0.02em;
+          line-height: 1.15;
+        }
+        .offer-title-underline{
+          width: 56px;
+          height: 2px;
+          margin: 12px 0 18px;
+          background: linear-gradient(90deg, rgba(0,229,255,0.95), rgba(224,64,251,0.65));
+          border-radius: 999px;
+        }
+        .offer-desc{
+          fontFamily: "'Space Grotesk',sans-serif";
+          fontWeight: 400;
+          fontSize: 16px;
+          lineHeight: 1.7;
+          color: rgba(255,255,255,0.65);
+          margin: 0 0 18px;
+        }
+
+        .offer-bullets{
+          margin: 0 0 22px;
+          padding-left: 20px;
+          list-style: disc;
+        }
+        .offer-bullets li{
+          margin: 10px 0;
+          fontFamily: "'Space Grotesk',sans-serif";
+          fontWeight: 500;
+          fontSize: 15px;
+          lineHeight: 1.45;
+          color: rgba(255,255,255,0.78);
+        }
+
+        .offer-cta{
+          background: linear-gradient(135deg, #0ABDC6 0%, #00E5FF 100%);
+          color: #070B14;
+          border: none;
+          border-radius: 12px;
+          padding: 15px 32px;
+          fontFamily: "'Space Grotesk',sans-serif";
+          fontWeight: 600;
+          fontSize: 16px;
+          cursor: pointer;
+          transition: filter 0.25s ease, transform 0.25s ease;
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+        }
+        .offer-cta:hover{
+          filter: brightness(1.1);
+          transform: translateY(-2px);
+        }
+
+        @media(max-width:900px){
+          .offer-product-row{
+            flex-direction: column !important;
+            gap: 18px !important;
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+            transition: none !important;
+          }
+          .offer-product-media{
+            flex: 0 0 auto !important;
+            width: 100% !important;
+          }
+          .offer-product-content{
+            max-width: none !important;
+            width: 100% !important;
+          }
+          .offer-title{ font-size: clamp(20px, 5vw, 28px) !important; }
+          .offer-desc{ font-size: 14px !important; }
+          .offer-bullets li{ font-size: 14px !important; }
+        }
+        @media(prefers-reduced-motion: reduce){
+          .offer-product-row{
+            transition: none !important;
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+          }
         }
       `}</style>
-        </section>
-    );
+    </section>
+  );
 };
+

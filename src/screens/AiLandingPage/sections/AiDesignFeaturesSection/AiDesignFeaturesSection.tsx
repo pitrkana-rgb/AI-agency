@@ -1,41 +1,122 @@
 import { SectionDivider } from "../../components/SectionDivider";
 
-/* ── Inline SVG icons (outline / minimal style) ─────────────────── */
+/* ── Modern SaaS-style icons (unique gradient ids per SVG) ──────── */
 const ConsultationIcon = () => (
-  <svg width="65" height="65" viewBox="0 0 72 72" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {/* Phone handset — coordinates scaled 3× from 24×24 → 72×72 viewBox */}
-    <path d="M66 50.76v9a6 6 0 0 1-6.54 6 59.37 59.37 0 0 1-25.89-9.21A58.5 58.5 0 0 1 14.55 36a59.37 59.37 0 0 1-9.21-26.01A6 6 0 0 1 11.31 3.54h9a6 6 0 0 1 6 5.16c.381 2.88 1.083 5.709 2.1 8.43a6 6 0 0 1-1.35 6.33l-3.81 3.81a48 48 0 0 0 18.48 18.48l3.81-3.81a6 6 0 0 1 6.33-1.35c2.721 1.017 5.55 1.719 8.43 2.1a6 6 0 0 1 5.16 6.09z" />
+  <svg width="56" height="56" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="step-g1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#00E5FF" />
+        <stop offset="55%" stopColor="#0ABDC6" />
+        <stop offset="100%" stopColor="#E040FB" stopOpacity="0.85" />
+      </linearGradient>
+      <linearGradient id="step-g1s" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#00E5FF" stopOpacity="0.35" />
+        <stop offset="100%" stopColor="#E040FB" stopOpacity="0.25" />
+      </linearGradient>
+      <filter id="step-f1" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="1.2" result="b" />
+        <feMerge>
+          <feMergeNode in="b" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <circle cx="32" cy="32" r="26" fill="url(#step-g1s)" opacity="0.4" />
+    <rect x="18" y="12" width="28" height="44" rx="8" stroke="url(#step-g1)" strokeWidth="2.25" fill="rgba(0,229,255,0.06)" />
+    <rect x="24" y="18" width="16" height="22" rx="2" fill="url(#step-g1)" opacity="0.15" />
+    <circle cx="32" cy="46" r="2.5" fill="url(#step-g1)" />
+    <path
+      d="M8 28c4-8 12-12 24-12s20 4 24 12"
+      stroke="url(#step-g1)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      opacity="0.55"
+      filter="url(#step-f1)"
+    />
   </svg>
 );
 
 const PrototypeIcon = () => (
-  <svg width="72" height="72" viewBox="0 0 72 72" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="9" y="12" width="54" height="42" rx="3" />
-    <line x1="9" y1="24" x2="63" y2="24" />
-    <rect x="18" y="33" width="15" height="12" rx="2" />
-    <line x1="42" y1="33" x2="54" y2="33" />
-    <line x1="42" y1="40" x2="51" y2="40" />
-    <line x1="27" y1="57" x2="45" y2="57" />
-    <line x1="36" y1="54" x2="36" y2="57" />
+  <svg width="56" height="56" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="step-g2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#00E5FF" />
+        <stop offset="55%" stopColor="#0ABDC6" />
+        <stop offset="100%" stopColor="#E040FB" stopOpacity="0.85" />
+      </linearGradient>
+    </defs>
+    <rect x="8" y="14" width="48" height="38" rx="6" stroke="url(#step-g2)" strokeWidth="2.25" fill="rgba(0,229,255,0.05)" />
+    <rect x="8" y="14" width="48" height="10" rx="6" fill="url(#step-g2)" opacity="0.12" />
+    <circle cx="16" cy="19" r="2" fill="#00E5FF" opacity="0.9" />
+    <circle cx="24" cy="19" r="2" fill="#0ABDC6" opacity="0.65" />
+    <circle cx="32" cy="19" r="2" fill="#E040FB" opacity="0.5" />
+    <rect x="16" y="30" width="14" height="10" rx="2" stroke="url(#step-g2)" strokeWidth="1.75" opacity="0.85" />
+    <rect x="34" y="30" width="14" height="4" rx="1.5" fill="url(#step-g2)" opacity="0.35" />
+    <rect x="34" y="36" width="10" height="4" rx="1.5" fill="url(#step-g2)" opacity="0.2" />
+    <path d="M16 44h32" stroke="url(#step-g2)" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
   </svg>
 );
 
 const DevelopmentIcon = () => (
-  <svg width="72" height="72" viewBox="0 0 72 72" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="6" y="12" width="60" height="48" rx="4" />
-    <polyline points="24 30 12 36 24 42" />
-    <polyline points="48 30 60 36 48 42" />
-    <line x1="33" y1="21" x2="39" y2="51" />
+  <svg width="56" height="56" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="step-g3" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#00E5FF" />
+        <stop offset="55%" stopColor="#0ABDC6" />
+        <stop offset="100%" stopColor="#E040FB" stopOpacity="0.85" />
+      </linearGradient>
+      <filter id="step-f3" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="1.2" result="b" />
+        <feMerge>
+          <feMergeNode in="b" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <rect x="10" y="12" width="44" height="42" rx="7" stroke="url(#step-g3)" strokeWidth="2.25" fill="rgba(0,229,255,0.04)" />
+    <path
+      d="M22 24l-6 8 6 8M42 24l6 8-6 8"
+      stroke="url(#step-g3)"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      filter="url(#step-f3)"
+    />
+    <path d="M30 28v8M34 28v8" stroke="url(#step-g3)" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+    <circle cx="20" cy="46" r="2" fill="url(#step-g3)" opacity="0.7" />
+    <circle cx="32" cy="46" r="2" fill="url(#step-g3)" opacity="0.45" />
+    <circle cx="44" cy="46" r="2" fill="url(#step-g3)" opacity="0.25" />
   </svg>
 );
 
 const HandoverIcon = () => (
-  <svg width="72" height="72" viewBox="0 0 72 72" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points="9 27 9 57 63 57 63 27" />
-    <polyline points="21 27 21 15 51 15 51 27" />
-    <line x1="9" y1="27" x2="63" y2="27" />
-    <polyline points="30 42 36 48 42 42" />
-    <line x1="36" y1="33" x2="36" y2="48" />
+  <svg width="56" height="56" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="step-g4" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#00E5FF" />
+        <stop offset="55%" stopColor="#0ABDC6" />
+        <stop offset="100%" stopColor="#E040FB" stopOpacity="0.85" />
+      </linearGradient>
+      <filter id="step-f4" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="1.2" result="b" />
+        <feMerge>
+          <feMergeNode in="b" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <rect x="12" y="16" width="32" height="36" rx="5" stroke="url(#step-g4)" strokeWidth="2.25" fill="rgba(0,229,255,0.05)" />
+    <path d="M18 26h20M18 32h14M18 38h18" stroke="url(#step-g4)" strokeWidth="1.75" strokeLinecap="round" opacity="0.45" />
+    <circle cx="28" cy="44" r="3" fill="url(#step-g4)" opacity="0.5" />
+    <path
+      d="M44 32h12M52 26l6 6-6 6"
+      stroke="url(#step-g4)"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      filter="url(#step-f4)"
+    />
+    <circle cx="50" cy="32" r="10" stroke="url(#step-g4)" strokeWidth="1.5" opacity="0.25" fill="none" />
   </svg>
 );
 
@@ -73,7 +154,7 @@ const steps = [
 export const AiDesignFeaturesSection = (): JSX.Element => (
   <section id="features" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}>
     <SectionDivider />
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 
       {/* Section header */}
       <div className="how-it-works-head" style={{ marginBottom: "56px", textAlign: "center" }}>
@@ -89,15 +170,91 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
       {/* Step grid */}
       <div className="stepper-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "0", position: "relative" }}>
 
-        {/* Connecting gradient line — desktop only */}
+        {/* Connecting line — behind circles; circles use opaque fill so line is not visible inside */}
         <div
           className="stepper-line"
           style={{
-            position: "absolute", top: "64px", left: "12.5%", right: "12.5%", height: "2px",
+            position: "absolute",
+            top: "64px",
+            left: "12.5%",
+            right: "12.5%",
+            height: "2px",
             background: "linear-gradient(90deg, rgba(0,229,255,0.95) 0%, rgba(0,229,255,0.35) 50%, rgba(0,229,255,0.12) 100%)",
             zIndex: 0,
+            pointerEvents: "none",
           }}
         />
+
+        {/* Time labels between steps */}
+        <div
+          className="stepper-time-label"
+          style={{
+            position: "absolute",
+            top: "40px",
+            left: "25%",
+            transform: "translateX(-50%)",
+            zIndex: 2,
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 800,
+            fontSize: "18px",
+            color: "rgba(255,255,255,0.75)",
+            background: "rgba(0,229,255,0.08)",
+            border: "1px solid rgba(0,229,255,0.18)",
+            padding: "6px 10px",
+            borderRadius: "999px",
+            whiteSpace: "nowrap",
+            backdropFilter: "blur(8px)",
+            pointerEvents: "none",
+          }}
+        >
+          24 hodin
+        </div>
+        <div
+          className="stepper-time-label"
+          style={{
+            position: "absolute",
+            top: "40px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 2,
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 800,
+            fontSize: "18px",
+            color: "rgba(255,255,255,0.75)",
+            background: "rgba(0,229,255,0.08)",
+            border: "1px solid rgba(0,229,255,0.18)",
+            padding: "6px 10px",
+            borderRadius: "999px",
+            whiteSpace: "nowrap",
+            backdropFilter: "blur(8px)",
+            pointerEvents: "none",
+          }}
+        >
+          3 dny
+        </div>
+        <div
+          className="stepper-time-label"
+          style={{
+            position: "absolute",
+            top: "40px",
+            left: "75%",
+            transform: "translateX(-50%)",
+            zIndex: 2,
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 800,
+            fontSize: "18px",
+            color: "rgba(255,255,255,0.75)",
+            background: "rgba(0,229,255,0.08)",
+            border: "1px solid rgba(0,229,255,0.18)",
+            padding: "6px 10px",
+            borderRadius: "999px",
+            whiteSpace: "nowrap",
+            backdropFilter: "blur(8px)",
+            pointerEvents: "none",
+          }}
+        >
+          14 dnů
+        </div>
 
         {steps.map((step) => (
           <div
@@ -105,23 +262,48 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
             className="step-block"
             style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 20px", position: "relative", zIndex: 1 }}
           >
-            {/* Icon container with auto-rotate every 3s */}
+            {/* Icon: opaque disc masks the connector line; rotate only on hover */}
             <div
               className="step-icon-wrap"
               style={{
-                width: "128px", height: "128px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                marginBottom: "24px", flexShrink: 0,
+                width: "128px",
+                height: "128px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "24px",
+                flexShrink: 0,
                 borderRadius: "50%",
-                background: "rgba(0,229,255,0.06)",
-                border: "1px solid rgba(0,229,255,0.18)",
-                color: "#00E5FF",
-                boxShadow: "0 0 18px rgba(0,229,255,0.10)",
-                transition: "background 250ms ease, box-shadow 250ms ease",
+                /* Opaque disc masks connector line; subtle cyan rim */
+                background: "radial-gradient(circle at 50% 28%, rgba(0,229,255,0.1) 0%, #05060a 35%, #030305 55%, #000 100%)",
+                border: "1px solid rgba(0,229,255,0.28)",
+                boxShadow: "0 0 24px rgba(0,229,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
+                transition: "background 250ms ease, box-shadow 250ms ease, border-color 250ms ease",
                 cursor: "default",
+                position: "relative",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.borderColor = "rgba(0,229,255,0.45)";
+                el.style.boxShadow = "0 0 32px rgba(0,229,255,0.22), inset 0 1px 0 rgba(255,255,255,0.08)";
+                const icon = el.querySelector<HTMLElement>(".step-svg-icon");
+                if (icon) {
+                  icon.style.transform = "rotate(360deg)";
+                  icon.style.transition = "transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.borderColor = "rgba(0,229,255,0.28)";
+                el.style.boxShadow = "0 0 24px rgba(0,229,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)";
+                const icon = el.querySelector<HTMLElement>(".step-svg-icon");
+                if (icon) {
+                  icon.style.transform = "rotate(0deg)";
+                  icon.style.transition = "transform 0.55s ease-out";
+                }
               }}
             >
-              <span className="step-svg-icon step-svg-icon-auto-rotate" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span className="step-svg-icon" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <step.Icon />
               </span>
             </div>
@@ -140,15 +322,6 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
     </div>
 
     <style>{`
-      /* ── Auto-rotate icons every 3 seconds ── */
-      .step-svg-icon-auto-rotate {
-        animation: step-icon-rotate 3s ease-in-out infinite;
-      }
-      @keyframes step-icon-rotate {
-        0% { transform: rotate(0deg); }
-        10% { transform: rotate(360deg); }
-        10.01%, 100% { transform: rotate(0deg); }
-      }
       /* ── Mobile: stacked single column ── */
       @media(max-width:767px){
         .how-it-works-head { margin-bottom: 32px !important; }
@@ -157,6 +330,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
           gap: 16px !important;
         }
         .stepper-line { display: none !important; }
+        .stepper-time-label { display: none !important; }
         .step-block {
           flex-direction: row !important;
           align-items: flex-start !important;
@@ -186,10 +360,11 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
       @media(min-width:768px) and (max-width:1023px){
         .stepper-grid { grid-template-columns: repeat(2,1fr) !important; gap: 40px 24px !important; }
         .stepper-line { display: none !important; }
+        .stepper-time-label { display: none !important; }
         .step-block { padding: 0 8px !important; }
       }
       @media(prefers-reduced-motion:reduce){
-        .step-svg-icon { transition: none !important; transform: none !important; animation: none !important; }
+        .step-svg-icon { transition: none !important; transform: none !important; }
         .step-icon-wrap { transition: none !important; }
       }
     `}</style>

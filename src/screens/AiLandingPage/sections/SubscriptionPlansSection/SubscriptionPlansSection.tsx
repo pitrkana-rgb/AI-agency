@@ -30,6 +30,21 @@ const pricingPlans = [
     highlighted: false,
     cta: "Chci modernizaci",
   },
+  {
+    name: "Automatizace a AI agenti",
+    description:
+      "Automatizujeme rutinní procesy a nasazujeme AI agenty, kteří šetří čas, snižují náklady a zvyšují výkon vašeho businessu.",
+    price: "",
+    features: [
+      "Analýza procesů a návrh automatizací",
+      "Implementace AI agentů (chat, email, interní nástroje)",
+      "Napojení na CRM, API a interní systémy",
+      "Automatizace zákaznické komunikace",
+      "Reporting, optimalizace a škálování řešení",
+    ],
+    highlighted: false,
+    cta: "Chci automatizaci",
+  },
 ];
 
 import { SectionDivider } from "../../components/SectionDivider";
@@ -102,11 +117,6 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
         </p>
       </div>
 
-      {/* Price */}
-      <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "40px", color: "#F0F4F8", letterSpacing: "-0.03em", lineHeight: 1, marginTop: "-8px", marginBottom: "-8px" }}>
-        {plan.price}
-      </div>
-
       {/* Divider */}
       <div style={{ height: "1px", background: "linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.15),rgba(255,255,255,0))" }} />
 
@@ -129,18 +139,18 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
       {/* CTA */}
       <button
         type="button"
-        className="pricing-cta"
+        className="pricing-cta animate-pulse-glow hero-primary-btn"
         onClick={() => navigate("/kontakt")}
         style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-          padding: "14px 28px",
-          background: plan.highlighted ? "linear-gradient(135deg,#0ABDC6,#00E5FF)" : "rgba(13,27,42,0.65)",
-          border: plan.highlighted ? "none" : "1px solid rgba(0,229,255,0.12)",
+          padding: "15px 32px",
+          background: "linear-gradient(135deg,#0ABDC6,#00E5FF)",
+          border: "none",
           borderRadius: "12px",
           fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "16px",
-          color: plan.highlighted ? "#070B14" : "#F0F4F8", cursor: "pointer",
-          transition: "filter 250ms ease, transform 250ms ease",
-          boxShadow: plan.highlighted ? "0 0 18px rgba(0,229,255,0.25)" : "none",
+          color: "#070B14", cursor: "pointer",
+          transition: "transform 0.25s ease, filter 0.25s ease",
+          boxShadow: "none",
         }}
         onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
         onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
@@ -174,7 +184,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
   return (
     <section id="pricing" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px" }}>
       <SectionDivider />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
@@ -182,12 +192,14 @@ export const SubscriptionPlansSection = (): JSX.Element => {
             Vyberte službu
           </h2>
           <p className="section-sub" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "560px" }}>
-            Uvedené ceny jsou orientační – každý projekt je jedinečný. Připravím vám proto nezávaznou kalkulaci přesně podle vašich potřeb. Neúčtuji žádné měsíční ani roční paušály, platíte pouze za skutečně odvedenou práci.
+            Každý projekt je pro nás unikátní. Navrhneme řešení přesně podle vašich potřeb.
+            <br />
+            Do 3 dnů od konzultace získáte jasný plán, návrh řešení a cenovou kalkulaci – vše nezávazně a zdarma.
           </p>
         </div>
 
         {/* Desktop grid (hidden on mobile) */}
-        <div className="pricing-grid-desktop" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "24px", alignItems: "stretch" }}>
+        <div className="pricing-grid-desktop" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "24px", alignItems: "stretch" }}>
           {pricingPlans.map(plan => (
             <PricingCard key={plan.name} plan={plan} navigate={navigate} />
           ))}

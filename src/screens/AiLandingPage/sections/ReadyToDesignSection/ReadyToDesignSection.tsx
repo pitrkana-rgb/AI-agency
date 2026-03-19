@@ -15,7 +15,7 @@ export const ReadyToDesignSection = (): JSX.Element => {
   return (
     <section style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-80px" }}>
       <SectionDivider />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
         <div
           className="cta-inner"
           style={{
@@ -54,6 +54,7 @@ export const ReadyToDesignSection = (): JSX.Element => {
             <button
               type="button"
               id="ready-cta-btn"
+              className="animate-pulse-glow hero-primary-btn"
               onClick={() => navigate("/kontakt")}
               style={{
                 display: "inline-flex", alignItems: "center", gap: "10px",
@@ -62,11 +63,10 @@ export const ReadyToDesignSection = (): JSX.Element => {
                 border: "none", borderRadius: "12px",
                 fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "17px", color: "#070B14",
                 cursor: "pointer",
-                transition: "transform 250ms ease, box-shadow 250ms ease, filter 250ms ease",
-                boxShadow: "0 0 20px rgba(0,229,255,0.25)",
+                transition: "transform 0.25s ease, filter 0.25s ease",
               }}
-              onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-4px)"; b.style.filter = "brightness(1.04)"; b.style.boxShadow = "0 0 26px rgba(0,229,255,0.28)"; }}
-              onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = ""; b.style.filter = ""; b.style.boxShadow = "0 0 20px rgba(0,229,255,0.25)"; }}
+              onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-4px)"; b.style.filter = "brightness(1.04)"; }}
+              onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = ""; b.style.filter = ""; }}
               onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.97)"; }}
               onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-4px)"; }}
             >

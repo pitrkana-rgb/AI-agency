@@ -113,16 +113,15 @@ export const Header = () => {
                                 style={{
                                     background: "linear-gradient(135deg, #0ABDC6 0%, #00E5FF 100%)",
                                     color: "#070B14",
-                                    borderRadius: "999px",
-                                    padding: "12px 22px",
+                                    borderRadius: "12px",
+                                    padding: "15px 32px",
                                     fontFamily: "'Space Grotesk', sans-serif",
                                     fontWeight: 600,
-                                    fontSize: "15px",
+                                    fontSize: "16px",
                                     border: "none",
-                                    transition: "filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
-                                    boxShadow: "0 0 20px rgba(0, 229, 255, 0.3)",
+                                    transition: "transform 0.25s ease, filter 0.25s ease",
                                 }}
-                                className="hover:brightness-105 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#00E5FF]"
+                                className="animate-pulse-glow hero-primary-btn hover:brightness-105 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#00E5FF]"
                             >
                                 Napište nám
                             </Button>

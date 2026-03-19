@@ -31,7 +31,7 @@ export const SiteFooterSection = (): JSX.Element => {
       {/* Orange gradient top border */}
       <div style={{ height: "1px", background: "linear-gradient(90deg,transparent 0%,#00E5FF 40%,rgba(0,229,255,0.25) 70%,transparent 100%)" }} />
 
-      <div className="footer-wrapper" style={{ maxWidth: "1200px", margin: "0 auto", padding: "56px 24px 40px" }}>
+      <div className="footer-wrapper" style={{ maxWidth: "1280px", margin: "0 auto", padding: "56px 24px 40px" }}>
         <div className="footer-top" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "48px", flexWrap: "wrap", marginBottom: "48px" }}>
 
           {/* Brand */}

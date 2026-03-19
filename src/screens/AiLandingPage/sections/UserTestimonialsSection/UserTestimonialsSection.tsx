@@ -178,7 +178,7 @@ export const UserTestimonialsSection = (): JSX.Element => (
     className="stats-section"
     style={{ width: "100%", backgroundColor: "transparent", padding: "110px 0 60px" }}
   >
-    <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
       <div
         style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "24px" }}
         className="stats-grid"
