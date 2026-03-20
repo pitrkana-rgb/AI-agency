@@ -6,7 +6,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 const navigationItems = [
     { label: "Domů", targetId: "hero", path: "/" },
     { label: "Služby", targetId: "pricing", path: "/" },
-    { label: "O nás", targetId: "", path: "/o-nas" },
     { label: "FAQ", targetId: "faq", path: "/" },
     { label: "Kontakt", targetId: "company-info", path: "/kontakt" },
 ];
@@ -37,6 +36,11 @@ export const Header = () => {
     };
 
     const handleNavClick = (item: typeof navigationItems[0]) => {
+        if (location.pathname === item.path && item.path === "/kontakt" && item.targetId) {
+            scrollToSection(item.targetId);
+            setMenuOpen(false);
+            return;
+        }
         if (location.pathname === item.path && item.path === "/") {
             scrollToSection(item.targetId);
         } else {
@@ -109,7 +113,7 @@ export const Header = () => {
                         <div className="hidden md:block">
                             <Button
                                 type="button"
-                                onClick={() => navigate("/kontakt")}
+                                onClick={() => navigate("/napiste-nam")}
                                 style={{
                                     background: "linear-gradient(135deg, #0ABDC6 0%, #00E5FF 100%)",
                                     color: "#070B14",
@@ -231,7 +235,7 @@ export const Header = () => {
 
                     <button
                         type="button"
-                        onClick={() => { navigate("/kontakt"); setMenuOpen(false); }}
+                        onClick={() => { navigate("/napiste-nam"); setMenuOpen(false); }}
                         style={{
                             marginTop: "24px",
                             background: "linear-gradient(135deg,#0ABDC6,#00E5FF)",

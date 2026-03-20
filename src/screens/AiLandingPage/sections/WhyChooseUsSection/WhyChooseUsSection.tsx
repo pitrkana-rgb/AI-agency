@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SectionDivider } from "../../components/SectionDivider";
 
 const usPoints = [
     "Bezplatný prototyp do 3 dnů",
@@ -63,7 +64,8 @@ const PkCard = () => (
     >
         <div style={{
             borderRadius: "21px", padding: "40px",
-            background: "#0D0D0D",
+            backgroundColor: "#0D0D0D",
+            background: "radial-gradient(ellipse 60% 80% at 50% -10%, rgba(0,229,255,0.14) 0%, rgba(0,229,255,0) 70%), linear-gradient(145deg, #1A2633 0%, #0D0D0D 100%)",
             border: "1px solid rgba(255,255,255,0.08)",
             height: "100%", display: "flex", flexDirection: "column", gap: "28px", boxSizing: "border-box",
         }}>
@@ -91,7 +93,8 @@ const ThemCard = () => (
             minWidth: 0,
             borderRadius: "24px",
             padding: "40px",
-            background: "#0D0D0D",
+            backgroundColor: "#0D0D0D",
+            background: "radial-gradient(ellipse 60% 80% at 50% -10%, rgba(0,229,255,0.14) 0%, rgba(0,229,255,0) 70%), linear-gradient(145deg, #1A2633 0%, #0D0D0D 100%)",
             border: "1px solid rgba(255,255,255,0.14)",
             display: "flex", flexDirection: "column", gap: "28px",
             transition: "transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease",
@@ -163,12 +166,13 @@ export const WhyChooseUsSection = (): JSX.Element => {
             ref={ref}
             style={{
                 width: "100%",
-                backgroundColor: "#000",
+                backgroundColor: "transparent",
                 padding: "40px 0 80px",
                 position: "relative",
                 overflow: "hidden",
             }}
         >
+            <SectionDivider />
             {/* Ambient glow */}
             <div style={{
                 position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",
@@ -292,7 +296,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                     <button
                         type="button"
                         className="animate-pulse-glow hero-primary-btn"
-                        onClick={() => navigate("/kontakt")}
+                        onClick={() => navigate("/napiste-nam")}
                         style={{
                             background: "linear-gradient(135deg, #0ABDC6 0%, #00E5FF 100%)",
                             color: "#070B14",

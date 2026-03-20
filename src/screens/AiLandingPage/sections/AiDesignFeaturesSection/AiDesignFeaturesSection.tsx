@@ -152,7 +152,7 @@ const steps = [
 ];
 
 export const AiDesignFeaturesSection = (): JSX.Element => (
-  <section id="features" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}>
+  <section id="features" style={{ width: "100%", backgroundColor: "transparent", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}>
     <SectionDivider />
     <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 
@@ -198,7 +198,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
             fontWeight: 800,
             fontSize: "18px",
             color: "rgba(255,255,255,0.75)",
-            background: "rgba(0,229,255,0.08)",
+            background: "rgba(7,12,18,0.96)",
             border: "1px solid rgba(0,229,255,0.18)",
             padding: "6px 10px",
             borderRadius: "999px",
@@ -221,7 +221,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
             fontWeight: 800,
             fontSize: "18px",
             color: "rgba(255,255,255,0.75)",
-            background: "rgba(0,229,255,0.08)",
+            background: "rgba(7,12,18,0.96)",
             border: "1px solid rgba(0,229,255,0.18)",
             padding: "6px 10px",
             borderRadius: "999px",
@@ -244,7 +244,7 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
             fontWeight: 800,
             fontSize: "18px",
             color: "rgba(255,255,255,0.75)",
-            background: "rgba(0,229,255,0.08)",
+            background: "rgba(7,12,18,0.96)",
             border: "1px solid rgba(0,229,255,0.18)",
             padding: "6px 10px",
             borderRadius: "999px",

@@ -42,7 +42,7 @@ export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" style={{ width: "100%", backgroundColor: "#000", padding: "96px 0 120px", marginTop: "-50px", marginBottom: "-80px" }}>
+    <section id="faq" style={{ width: "100%", backgroundColor: "transparent", padding: "96px 0 120px", marginTop: "-50px", marginBottom: "-80px" }}>
       <SectionDivider />
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 24px" }}>
 

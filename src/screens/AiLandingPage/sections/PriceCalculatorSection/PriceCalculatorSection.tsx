@@ -503,7 +503,7 @@ export const PriceCalculatorSection = (): JSX.Element => {
               <button
                 type="button"
                 onClick={() => {
-                  navigate("/kontakt");
+                  navigate("/napiste-nam");
                   setTimeout(() => {
                     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                   }, 180);

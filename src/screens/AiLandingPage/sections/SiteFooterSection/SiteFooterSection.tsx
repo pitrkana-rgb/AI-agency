@@ -1,12 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { GithubIcon, TwitterIcon, LinkedinIcon } from "lucide-react";
 
 const navLinks = [
   { label: "Domů", id: "hero", path: "/" },
   { label: "Služby", id: "pricing", path: "/" },
-  { label: "O nás", id: "", path: "/o-nas" },
   { label: "FAQ", id: "faq", path: "/" },
-  { label: "Kontakt", id: "contact", path: "/kontakt" },
+  { label: "Kontakt", id: "company-info", path: "/kontakt" },
 ];
 
 export const SiteFooterSection = (): JSX.Element => {
@@ -14,11 +12,19 @@ export const SiteFooterSection = (): JSX.Element => {
   const location = useLocation();
 
   const handleNavClick = (link: typeof navLinks[0]) => {
+    if (location.pathname === link.path && link.path === "/kontakt" && link.id) {
+      document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     if (location.pathname === link.path && link.path === "/") {
       document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
       navigate(link.path);
       if (link.path === "/") {
+        setTimeout(() => {
+          document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      } else if (link.path === "/kontakt" && link.id) {
         setTimeout(() => {
           document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
@@ -46,23 +52,6 @@ export const SiteFooterSection = (): JSX.Element => {
             <p style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>
               Navrhujeme moderní weby, automatizujeme procesy a stavíme AI agenty pro váš tým.
             </p>
-            {/* Social icons */}
-            <div style={{ display: "flex", gap: "12px" }}>
-              {[{ Icon: TwitterIcon, label: "Twitter" }, { Icon: LinkedinIcon, label: "LinkedIn" }, { Icon: GithubIcon, label: "GitHub" }].map(({ Icon, label }) => (
-                <a key={label} href="#" aria-label={label} style={{
-                  width: "36px", height: "36px", borderRadius: "8px",
-                  background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  transition: "background 200ms ease, border-color 200ms ease",
-                  color: "rgba(255,255,255,0.6)",
-                }}
-                  onMouseEnter={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.background = "rgba(0,229,255,0.12)"; a.style.borderColor = "rgba(0,229,255,0.3)"; a.style.color = "#00E5FF"; }}
-                  onMouseLeave={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.background = "rgba(255,255,255,0.06)"; a.style.borderColor = "rgba(255,255,255,0.08)"; a.style.color = "rgba(255,255,255,0.6)"; }}
-                >
-                  <Icon style={{ width: "16px", height: "16px" }} />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Nav + Contact — wrapped for mobile 2-column row */}
@@ -72,7 +61,7 @@ export const SiteFooterSection = (): JSX.Element => {
             <nav style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "13px", letterSpacing: "0.08em", color: "#00E5FF", textTransform: "uppercase" as const, marginBottom: "4px" }}>Navigace</span>
               {navLinks.map(link => (
-                <button key={link.id} type="button" onClick={() => handleNavClick(link)}
+                <button key={`${link.path}-${link.label}`} type="button" onClick={() => handleNavClick(link)}
                   style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.6)", textAlign: "left", transition: "color 200ms ease" }}
                   onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.6)"; }}
@@ -85,7 +74,7 @@ export const SiteFooterSection = (): JSX.Element => {
             {/* Contact */}
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "13px", letterSpacing: "0.08em", color: "#00E5FF", textTransform: "uppercase" as const, marginBottom: "4px" }}>Kontakt</span>
-              <button type="button" onClick={() => navigate("/kontakt")}
+              <button type="button" onClick={() => navigate("/napiste-nam")}
                 style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "15px", color: "rgba(255,255,255,0.6)", textAlign: "left", transition: "color 200ms ease" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.6)"; }}

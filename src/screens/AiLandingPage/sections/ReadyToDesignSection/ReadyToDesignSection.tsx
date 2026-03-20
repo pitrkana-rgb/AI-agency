@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 export const ReadyToDesignSection = (): JSX.Element => {
   const navigate = useNavigate();
   return (
-    <section style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-80px" }}>
+    <section style={{ width: "100%", backgroundColor: "transparent", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-80px" }}>
       <SectionDivider />
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
         <div
@@ -55,7 +55,7 @@ export const ReadyToDesignSection = (): JSX.Element => {
               type="button"
               id="ready-cta-btn"
               className="animate-pulse-glow hero-primary-btn"
-              onClick={() => navigate("/kontakt")}
+              onClick={() => navigate("/napiste-nam")}
               style={{
                 display: "inline-flex", alignItems: "center", gap: "10px",
                 padding: "16px 36px",

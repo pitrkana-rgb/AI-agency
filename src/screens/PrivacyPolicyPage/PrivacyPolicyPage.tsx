@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Header } from "../../components/Header";
+import { LandingStylePageRoot } from "../../components/PageBackground";
 import { SiteFooterSection } from "../AiLandingPage/sections/SiteFooterSection/SiteFooterSection";
 
 export const PrivacyPolicyPage = (): JSX.Element => {
@@ -8,10 +9,7 @@ export const PrivacyPolicyPage = (): JSX.Element => {
   }, []);
 
   return (
-    <div
-      className="relative w-full min-h-screen overflow-x-hidden"
-      style={{ backgroundColor: "#000", fontFamily: "'Space Grotesk', 'Inter', sans-serif", color: "#fff" }}
-    >
+    <LandingStylePageRoot>
       <Header />
       <main className="relative" style={{ zIndex: 1, paddingTop: "100px", paddingBottom: "80px" }}>
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "0 24px" }}>
@@ -54,6 +52,6 @@ export const PrivacyPolicyPage = (): JSX.Element => {
         </div>
       </main>
       <SiteFooterSection />
-    </div>
+    </LandingStylePageRoot>
   );
 };

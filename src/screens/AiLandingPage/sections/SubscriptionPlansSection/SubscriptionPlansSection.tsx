@@ -92,7 +92,8 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
     )}
 
     <div style={{
-      background: "#0D0D0D",
+      backgroundColor: "#0D0D0D",
+      background: "radial-gradient(ellipse 60% 80% at 50% -10%, rgba(0,229,255,0.14) 0%, rgba(0,229,255,0) 70%), linear-gradient(145deg, #1A2633 0%, #0D0D0D 100%)",
       borderRadius: plan.highlighted ? "21px" : "24px",
       border: "1px solid rgba(255,255,255,0.08)",
       padding: "40px",
@@ -140,7 +141,7 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
       <button
         type="button"
         className="pricing-cta animate-pulse-glow hero-primary-btn"
-        onClick={() => navigate("/kontakt")}
+        onClick={() => navigate("/napiste-nam")}
         style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
           padding: "15px 32px",
@@ -182,7 +183,7 @@ export const SubscriptionPlansSection = (): JSX.Element => {
   };
 
   return (
-    <section id="pricing" style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px" }}>
+    <section id="pricing" style={{ width: "100%", backgroundColor: "transparent", padding: "80px 0 100px", marginTop: "-50px" }}>
       <SectionDivider />
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 

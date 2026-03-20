@@ -171,7 +171,7 @@ const AnimatedBadge = ({ badge, delay }: { badge: Badge; delay: number }) => {
         style={{
           fontFamily: "'Space Grotesk',sans-serif",
           fontWeight: 700,
-          fontSize: "clamp(36px, 4.5vw, 52px)",
+          fontSize: "clamp(26px, 4.5vw, 42px)",
           color: "#F0F4F8",
           lineHeight: 1,
           letterSpacing: "-0.03em",
@@ -235,6 +235,13 @@ export const UserTestimonialsSection = (): JSX.Element => (
         .badge-title { display: flex !important; flex-wrap: nowrap !important; gap: 0.25em !important; }
         .badge-title-line1, .badge-title-line2 { display: inline !important; }
         .badge-title-line2::before { content: "\\00a0" !important; }
+        .badge-card {
+          width: calc(100% - 20px) !important;
+          max-width: calc(100% - 20px) !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+          box-sizing: border-box !important;
+        }
       }
       @media(prefers-reduced-motion:reduce){
         .badge-card { transition: none !important; }

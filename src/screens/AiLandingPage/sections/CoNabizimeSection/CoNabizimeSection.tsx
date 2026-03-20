@@ -11,17 +11,73 @@ type BeforeAfter = {
   afterSrc: string;
   beforeLabel: string;
   afterLabel: string;
+  /** One-time demo: on first viewport entry, nudge slider right → left → center */
+  introDemo?: boolean;
 };
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 const BeforeAfterSlider = ({
   beforeSrc,
   afterSrc,
   beforeLabel,
   afterLabel,
+  introDemo = false,
 }: BeforeAfter): JSX.Element => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [pos, setPos] = useState(55);
   const [dragging, setDragging] = useState(false);
+  const [introRunning, setIntroRunning] = useState(false);
+  const introPlayedRef = useRef(false);
+
+  const transitionStyle =
+    dragging || !introRunning
+      ? "none"
+      : "clip-path 0.65s cubic-bezier(0.4, 0, 0.2, 1), left 0.65s cubic-bezier(0.4, 0, 0.2, 1)";
+
+  useEffect(() => {
+    if (!introDemo || introPlayedRef.current) return;
+    const el = ref.current;
+    if (!el) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      introPlayedRef.current = true;
+      return;
+    }
+
+    let cancelled = false;
+    const runIntro = async () => {
+      const center = 55;
+      const right = 78;
+      const left = 28;
+      introPlayedRef.current = true;
+      setIntroRunning(true);
+      await sleep(450);
+      if (cancelled) return;
+      setPos(right);
+      await sleep(780);
+      if (cancelled) return;
+      setPos(left);
+      await sleep(780);
+      if (cancelled) return;
+      setPos(center);
+      await sleep(720);
+      if (!cancelled) setIntroRunning(false);
+    };
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.12) return;
+        obs.disconnect();
+        void runIntro();
+      },
+      { threshold: [0, 0.12, 0.25], rootMargin: "0px" },
+    );
+    obs.observe(el);
+    return () => {
+      cancelled = true;
+      obs.disconnect();
+    };
+  }, [introDemo]);
 
   const updateFromClientX = (clientX: number) => {
     const el = ref.current;
@@ -48,13 +104,15 @@ const BeforeAfterSlider = ({
         width: "100%",
         height: "100%",
         overflow: "hidden",
-        touchAction: "pan-y",
+        touchAction: introRunning ? "none" : "pan-y",
         cursor: dragging ? "ew-resize" : "default",
         userSelect: "none",
+        pointerEvents: introRunning ? "none" : "auto",
       }}
       aria-label="Před/po porovnání"
       role="group"
       onPointerDown={(e) => {
+        if (introRunning) return;
         e.preventDefault();
         setDragging(true);
         updateFromClientX(e.clientX);
@@ -99,6 +157,7 @@ const BeforeAfterSlider = ({
           overflow: "hidden",
           /* Keep image size stable: we only clip what part is visible. */
           clipPath: `inset(0 0 0 ${pos}%)`,
+          transition: transitionStyle,
         }}
       >
         <img
@@ -131,6 +190,7 @@ const BeforeAfterSlider = ({
           boxShadow: "0 0 28px rgba(0,229,255,0.25)",
           pointerEvents: "none",
           zIndex: 5,
+          transition: transitionStyle,
         }}
       />
 
@@ -142,6 +202,7 @@ const BeforeAfterSlider = ({
           top: "50%",
           left: `${pos}%`,
           transform: "translate(-50%, -50%)",
+          transition: transitionStyle,
           width: 44,
           height: 44,
           borderRadius: 999,
@@ -237,6 +298,7 @@ const slides: Slide[] = [
       afterSrc: modernizaceAfterUrl,
       beforeLabel: "Před",
       afterLabel: "Po",
+      introDemo: true,
     },
   },
   {
@@ -264,26 +326,6 @@ export const CoNabizimeSection = (): JSX.Element => {
 
   const activeSlide = slides[activeIdx];
 
-  const highlightStyle: React.CSSProperties = {
-    background: "linear-gradient(135deg, #E040FB 0%, #00E5FF 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text",
-  };
-
-  const renderHighlightedTitle = (title: string) => {
-    const parts = title.split(" ").filter(Boolean);
-    const first = parts.shift() ?? "";
-    const rest = parts.join(" ");
-
-    return (
-      <>
-        {first && <span style={highlightStyle}>{first}</span>}
-        {rest ? <> {rest}</> : null}
-      </>
-    );
-  };
-
   const goTo = (idx: number) => {
     setActiveIdx(Math.max(0, Math.min(slides.length - 1, idx)));
   };
@@ -303,7 +345,7 @@ export const CoNabizimeSection = (): JSX.Element => {
       id="co-nabizime"
       style={{
         width: "100%",
-        backgroundColor: "#000",
+        backgroundColor: "transparent",
         padding: "80px 0 100px",
         marginTop: "-50px",
         marginBottom: "-50px",
@@ -373,28 +415,36 @@ export const CoNabizimeSection = (): JSX.Element => {
                       <div className="offer-gallery-grid">
                         {/* Left: text */}
                         <div className="offer-gallery-left">
-                          <div className="offer-title-wrap">
-                            <h3 className="offer-title offer-title-large">{renderHighlightedTitle(slide.title)}</h3>
-                            <div className="offer-title-underline" aria-hidden="true" />
+                          <div className="offer-left-copy">
+                            <div className="offer-title-wrap">
+                              <h3 className="offer-title offer-title-large">{slide.title}</h3>
+                              <div className="offer-title-underline" aria-hidden="true" />
+                            </div>
+
+                            <p className="offer-desc">{slide.description}</p>
+
+                            <ul className="offer-bullets">
+                              {slide.features.map((f) => (
+                                <li key={f}>{f}</li>
+                              ))}
+                            </ul>
                           </div>
-
-                          <p className="offer-desc">{slide.description}</p>
-
-                          <ul className="offer-bullets">
-                            {slide.features.map((f) => (
-                              <li key={f}>{f}</li>
-                            ))}
-                          </ul>
 
                           <button
                             type="button"
                             onClick={() => {
-                              navigate("/kontakt");
+                              navigate("/napiste-nam");
                               setTimeout(() => {
                                 document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                               }, 180);
                             }}
                             className="offer-cta animate-pulse-glow hero-primary-btn"
+                            style={{
+                              fontFamily: "'Space Grotesk', sans-serif",
+                              fontWeight: 600,
+                              fontSize: "16px",
+                              letterSpacing: "0",
+                            }}
                           >
                             {slide.cta}
                           </button>
@@ -532,21 +582,27 @@ export const CoNabizimeSection = (): JSX.Element => {
           padding: 15px 28px;
           position: relative;
           overflow: hidden;
+          isolation: isolate;
         }
 
-        /* 20% dark overlay for higher text readability */
+        /* Guaranteed dark fade above card background, below content */
         .offer-premium-card-inner::before{
-          content:'';
-          position:absolute;
-          inset:0;
-          background: rgba(0,0,0,0.2);
-          z-index:0;
-          pointer-events:none;
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.42) 0%,
+            rgba(0,0,0,0.46) 55%,
+            rgba(0,0,0,0.52) 100%
+          );
+          z-index: 1;
+          pointer-events: none;
         }
 
         .offer-premium-card-inner > *{
           position: relative;
-          z-index: 1;
+          z-index: 2;
         }
 
         .offer-ambient-lights{
@@ -574,7 +630,7 @@ export const CoNabizimeSection = (): JSX.Element => {
         .offer-blob--a{
           left: -8%;
           top: 10%;
-          opacity: 0.15;
+          opacity: 0.08;
           background: radial-gradient(circle at 30% 30%, rgba(0,194,255,0.18) 0%, rgba(0,194,255,0) 62%);
           animation-name: offerBlobMoveA;
           animation-duration: 34s;
@@ -583,7 +639,7 @@ export const CoNabizimeSection = (): JSX.Element => {
         .offer-blob--b{
           left: 36%;
           top: -18%;
-          opacity: 0.10;
+          opacity: 0.05;
           background: radial-gradient(circle at 30% 30%, rgba(74,222,128,0.16) 0%, rgba(74,222,128,0) 62%);
           animation-name: offerBlobMoveB;
           animation-duration: 40s;
@@ -592,7 +648,7 @@ export const CoNabizimeSection = (): JSX.Element => {
         .offer-blob--c{
           left: 52%;
           top: 45%;
-          opacity: 0.12;
+          opacity: 0.06;
           background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.18) 0%, rgba(56,189,248,0) 62%);
           animation-name: offerBlobMoveC;
           animation-duration: 28s;
@@ -631,7 +687,45 @@ export const CoNabizimeSection = (): JSX.Element => {
         .offer-gallery-left{
           flex: 1 1 35%;
           min-width: 0;
-          padding: 10px 0;
+          padding: 40px 0;
+        }
+
+        .offer-left-copy{
+          width: 100%;
+        }
+
+        @media(min-width:901px){
+          .offer-gallery-grid{
+            align-items: stretch;
+          }
+          .offer-gallery-left{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            align-self: stretch;
+            min-height: 0;
+          }
+          .offer-left-copy{
+            flex: 0 0 auto;
+            align-self: stretch;
+            text-align: left;
+          }
+          .offer-title-wrap{
+            text-align: left;
+            width: 100%;
+          }
+          .offer-desc{
+            text-align: left;
+          }
+          .offer-bullets{
+            text-align: left;
+            margin-bottom: 0;
+          }
+          .offer-cta{
+            margin-top: auto;
+            align-self: flex-start;
+          }
         }
 
         .offer-gallery-right{
@@ -712,7 +806,7 @@ export const CoNabizimeSection = (): JSX.Element => {
           border-radius: 12px;
           padding: 15px 32px;
           fontFamily: "'Space Grotesk',sans-serif";
-          fontWeight: 600;
+          fontWeight: 700;
           fontSize: 16px;
           cursor: pointer;
           transition: filter 0.25s ease, transform 0.25s ease;
@@ -839,13 +933,32 @@ export const CoNabizimeSection = (): JSX.Element => {
         @media(max-width:900px){
           .offer-premium-card-inner{ padding: 15px; }
           .offer-gallery-grid{ flex-direction: column; gap: 16px; }
-          .offer-gallery-left{ padding: 0; }
+          .offer-gallery-left{
+            padding: 40px 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
           .offer-gallery-right{ width: 100%; }
+          .offer-title-wrap{ text-align: center; }
           /* Keep mobile titles readable, not bigger than section heading */
           .offer-title-large{ font-size: 24px !important; }
           .offer-title:not(.offer-title-large){ font-size: clamp(22px, 6vw, 30px) !important; }
-          .offer-desc{ font-size: 14px !important; }
-          .offer-bullets li{ font-size: 14px !important; }
+          .offer-desc{
+            font-size: 14px !important;
+            text-align: center !important;
+          }
+          .offer-bullets{
+            padding-left: 0 !important;
+            list-style-position: inside;
+            text-align: center;
+          }
+          .offer-bullets li{
+            font-size: 14px !important;
+            text-align: center !important;
+          }
+          .offer-cta{ align-self: center; }
           .notebook-screen{ transform: none; }
           .offer-carousel-controls{ margin-top: 0; }
         }

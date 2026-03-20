@@ -71,22 +71,34 @@ export const MainHeroSection = (): JSX.Element => {
         }} />
       </div>
 
-      {/* Hero content */}
+      {/* Hero content — same horizontal alignment as other sections (max-width 1280px + 24px padding) */}
       <div
-        className="relative z-10 flex flex-col items-center animate-fade-in hero-content-wrap"
-        style={{ width: "80%", maxWidth: "none", textAlign: "center", padding: "0 24px", marginTop: "-300px" }}
+        className="hero-shell relative z-10"
+        style={{
+          width: "100%",
+          maxWidth: "1280px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: "24px",
+          paddingRight: "24px",
+          boxSizing: "border-box",
+        }}
       >
+        <div
+          className="flex flex-col items-center md:items-start animate-fade-in hero-content-wrap"
+          style={{ width: "100%", maxWidth: "none", padding: 0, marginTop: "-300px" }}
+        >
 
         {/* Headline */}
         <h1 className="hero-headline" style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 800,
-          fontSize: "clamp(28px, 4.5vw, 52px)",
+          fontSize: "clamp(16px, 4.5vw, 40px)",
           lineHeight: 1.05,
           color: "#FFFFFF",
           margin: "0 0 16px 0",
           letterSpacing: "-0.02em",
-          maxWidth: "1089px",
+          maxWidth: "100%",
           width: "100%",
         }}>
           Získejte web nové generace s{" "}
@@ -115,18 +127,18 @@ export const MainHeroSection = (): JSX.Element => {
           lineHeight: 1.65,
           color: "rgba(255,255,255,0.72)",
           maxWidth: "680px",
-          margin: "0 auto 32px auto",
+          margin: "0 0 32px 0",
         }}>
           Zapomeňte na pomalé, zastaralé weby bez výsledků. Díky AI získáte rychlý, chytrý a škálovatelný web, který skutečně přivádí zákazníky.
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-wrap items-center justify-center" style={{ gap: "16px" }}>
+        <div className="hero-cta-row flex flex-wrap items-center justify-center md:justify-start" style={{ gap: "16px" }}>
           <button
             id="hero-primary-cta"
             type="button"
             className="animate-pulse-glow hero-primary-btn"
-            onClick={() => navigate("/kontakt")}
+            onClick={() => navigate("/napiste-nam")}
             style={{
               background: "linear-gradient(135deg, #0ABDC6 0%, #00E5FF 100%)",
               color: "#070B14",
@@ -177,7 +189,7 @@ export const MainHeroSection = (): JSX.Element => {
             Naše služby
           </button>
         </div>
-
+        </div>
       </div>
 
       <style>{`
@@ -190,17 +202,43 @@ export const MainHeroSection = (): JSX.Element => {
         #hero-primary-cta:focus-visible, #hero-secondary-cta:focus-visible {
           outline: 2px solid #00E5FF; outline-offset: 3px;
         }
+        .hero-content-wrap {
+          text-align: center;
+        }
+        @media (min-width: 769px) {
+          .hero-content-wrap {
+            text-align: left;
+            /* ~left half of viewport, +20% width vs calc(50vw - 6rem) → 60vw - 7.2rem */
+            width: 100% !important;
+            max-width: calc(60vw - 7.2rem) !important;
+            box-sizing: border-box;
+          }
+          .hero-headline {
+            margin-left: 0;
+            margin-right: 0;
+            max-width: 100% !important;
+          }
+          .hero-subheading {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            max-width: 100% !important;
+          }
+        }
         /* ── Mobile hero adjustments ────────────── */
         @media (max-width: 768px) {
           .hero-rating-pill { display: none !important; }
+          .hero-shell {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
           .hero-content-wrap {
             width: 100% !important;
             max-width: 100% !important;
-            padding: 0 16px !important;
+            padding: 0 !important;
             margin-top: -180px !important;
           }
           .hero-headline {
-            font-size: 26px !important;
+            font-size: 24px !important;
             line-height: 1.1 !important;
             max-width: 100% !important;
             margin-bottom: 10px !important;
@@ -209,6 +247,8 @@ export const MainHeroSection = (): JSX.Element => {
             max-width: 320px !important;
             font-size: 14px !important;
             line-height: 1.5 !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
             margin-bottom: 20px !important;
           }
           .hero-primary-btn, .hero-secondary-btn {
