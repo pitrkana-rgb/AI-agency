@@ -33,11 +33,11 @@ export const ReadyToDesignSection = (): JSX.Element => {
           <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: "1px", background: "linear-gradient(90deg,transparent,#00E5FF,transparent)" }} />
 
           <div className="cta-stack" style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "32px" }}>
-            <h2 className="cta-heading" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(28px,4vw,56px)", color: "#fff", margin: 0, lineHeight: 1.1, letterSpacing: "-0.02em", maxWidth: "720px" }}>
+            <h2 className="cta-heading" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(28px,4vw,56px)", color: "#fff", margin: 0, lineHeight: 1.1, letterSpacing: "-0.02em", maxWidth: "792px" }}>
               Připraveni na web, který pracuje za vás?
             </h2>
 
-            <p className="section-sub cta-subtitle" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0, maxWidth: "560px" }}>
+            <p className="section-sub cta-subtitle" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0 }}>
               Ať už potřebujete nový web od základu nebo modernizaci toho stávajícího — začněte nezávaznou konzultací zdarma. Prototyp můžete mít už do 3 dnů.
             </p>
 

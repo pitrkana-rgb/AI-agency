@@ -195,7 +195,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                         color: "#fff",
                         margin: "0 auto 20px",
                         letterSpacing: "-0.02em",
-                        maxWidth: "700px",
+                        maxWidth: "770px",
                     }}>
                         Proč si vybrat{" "}
                         <span style={{
@@ -209,7 +209,7 @@ export const WhyChooseUsSection = (): JSX.Element => {
                         fontFamily: "'Space Grotesk', sans-serif",
                         fontWeight: 400, fontSize: "18px", lineHeight: 1.6,
                         color: "rgba(255,255,255,0.55)",
-                        maxWidth: "520px", margin: "0 auto",
+                        margin: "0 auto",
                     }}>
                         Stavíme weby rychle, využíváme AI a neseme odpovědnost za to, že vaše řešení skutečně funguje.
                     </p>

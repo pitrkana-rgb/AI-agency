@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { SectionDivider } from "../../components/SectionDivider";
 import { useNavigate } from "react-router-dom";
+import pcFrameUrl from "../../../../../Images/PC_frame.png";
+import tvorbaWebuUrl from "../../../../../Images/Tvorba webu.png";
+import modernizaceBeforeUrl from "../../../../../Images/Modernizace/Before.png";
+import modernizaceAfterUrl from "../../../../../Images/Modernizace/After.png";
 
 type BeforeAfter = {
   beforeSrc: string;
@@ -43,7 +47,6 @@ const BeforeAfterSlider = ({
         position: "relative",
         width: "100%",
         height: "100%",
-        minHeight: "360px",
         overflow: "hidden",
         touchAction: "pan-y",
         cursor: dragging ? "ew-resize" : "default",
@@ -73,53 +76,17 @@ const BeforeAfterSlider = ({
         alt={beforeLabel}
         draggable={false}
         onDragStart={(e) => e.preventDefault()}
-        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center top",
+          display: "block",
+          pointerEvents: "none",
+        }}
       />
 
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: `${pos}%`,
-          width: `${100 - pos}%`,
-          overflow: "hidden",
-        }}
-      >
-        <img
-          src={afterSrc}
-          alt={afterLabel}
-          draggable={false}
-          onDragStart={(e) => e.preventDefault()}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
-        />
-
-        {/* Pro badge - centered on the expanding (after) side */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: 16,
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "6px 12px",
-            borderRadius: 999,
-            fontFamily: "'Space Grotesk',sans-serif",
-            fontWeight: 700,
-            fontSize: 13,
-            color: "#000",
-            background: "linear-gradient(135deg, rgba(224,64,251,0.95), rgba(0,229,255,0.95))",
-            boxShadow: "0 0 18px rgba(0,229,255,0.18)",
-            zIndex: 3,
-            pointerEvents: "none",
-          }}
-        >
-          {afterLabel}
-        </div>
-      </div>
-
-      {/* Před badge - centered on the remaining (before) side */}
+      {/* Overlay: after image (clipped) */}
       <div
         aria-hidden="true"
         style={{
@@ -127,31 +94,27 @@ const BeforeAfterSlider = ({
           top: 0,
           bottom: 0,
           left: 0,
-          width: `${pos}%`,
-          zIndex: 3,
+          right: 0,
+          width: "100%",
           overflow: "hidden",
-          pointerEvents: "none",
+          /* Keep image size stable: we only clip what part is visible. */
+          clipPath: `inset(0 0 0 ${pos}%)`,
         }}
       >
-        <div
+        <img
+          src={afterSrc}
+          alt={afterLabel}
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
           style={{
-            position: "absolute",
-            top: 16,
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "6px 12px",
-            borderRadius: 999,
-            fontFamily: "'Space Grotesk',sans-serif",
-            fontWeight: 700,
-            fontSize: 13,
-            color: "#000",
-            background: "linear-gradient(135deg, rgba(224,64,251,0.95), rgba(0,229,255,0.95))",
-            boxShadow: "0 0 18px rgba(0,229,255,0.18)",
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            objectPosition: "center top",
+            display: "block",
             pointerEvents: "none",
           }}
-        >
-          {beforeLabel}
-        </div>
+        />
       </div>
 
       {/* Divider line */}
@@ -171,7 +134,7 @@ const BeforeAfterSlider = ({
         }}
       />
 
-      {/* Handle (clean & modern) */}
+      {/* Handle */}
       <div
         aria-hidden="true"
         style={{
@@ -193,11 +156,36 @@ const BeforeAfterSlider = ({
           zIndex: 6,
         }}
       >
-        <div style={{ display: "flex", gap: 6, alignItems: "center", justifyContent: "center" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,0.95)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        <div
+          style={{
+            display: "flex",
+            gap: 6,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="rgba(0,229,255,0.95)"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="14 7 9 12 14 17" />
           </svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,0.95)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="rgba(0,229,255,0.95)"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="10 7 15 12 10 17" />
           </svg>
         </div>
@@ -230,11 +218,11 @@ const slides: Slide[] = [
       "Jednoduchá správa bez vývojáře",
     ],
     cta: "Chci web",
-    image: "/New.web-promotion-V2.png",
+    image: tvorbaWebuUrl,
   },
   {
     id: "upgrade-webu",
-    title: "Upgrade stávajícího webu",
+    title: "Modernizace stránek",
     description:
       "Kompletní modernizace vašeho stávajícího webu — nový design, vyšší rychlost, lepší konverze.",
     features: [
@@ -245,10 +233,10 @@ const slides: Slide[] = [
     ],
     cta: "Chci modernizaci",
     beforeAfter: {
-      beforeSrc: "/Modernizace/modernizace_before.png",
-      afterSrc: "/Modernizace/modernizace_after.png",
+      beforeSrc: modernizaceBeforeUrl,
+      afterSrc: modernizaceAfterUrl,
       beforeLabel: "Před",
-      afterLabel: "Pro",
+      afterLabel: "Po",
     },
   },
   {
@@ -270,37 +258,56 @@ const slides: Slide[] = [
 
 export const CoNabizimeSection = (): JSX.Element => {
   const navigate = useNavigate();
-  const rowRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const [rowVisible, setRowVisible] = useState<boolean[]>([false, false]);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const touchStartX = useRef<number>(0);
+  const SWIPE_THRESHOLD = 50;
 
-  useEffect(() => {
-    const els = rowRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (!els.length) return;
+  const activeSlide = slides[activeIdx];
 
-    const obs = new IntersectionObserver(
-      (entries) => {
-        setRowVisible((prev) => {
-          const next = [...prev];
-          for (const entry of entries) {
-            const idxRaw = (entry.target as HTMLElement).dataset.idx;
-            const idx = idxRaw ? Number(idxRaw) : NaN;
-            if (Number.isNaN(idx)) continue;
-            if ((entry.intersectionRatio ?? 0) >= 0.15) next[idx] = true;
-          }
-          return next;
-        });
-      },
-      { threshold: [0, 0.15, 0.3] },
+  const highlightStyle: React.CSSProperties = {
+    background: "linear-gradient(135deg, #E040FB 0%, #00E5FF 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  };
+
+  const renderHighlightedTitle = (title: string) => {
+    const parts = title.split(" ").filter(Boolean);
+    const first = parts.shift() ?? "";
+    const rest = parts.join(" ");
+
+    return (
+      <>
+        {first && <span style={highlightStyle}>{first}</span>}
+        {rest ? <> {rest}</> : null}
+      </>
     );
+  };
 
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
+  const goTo = (idx: number) => {
+    setActiveIdx(Math.max(0, Math.min(slides.length - 1, idx)));
+  };
+
+  const onTouchStart = (e: any) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: any) => {
+    const endX = e.changedTouches[0].clientX;
+    const delta = touchStartX.current - endX;
+    if (delta > SWIPE_THRESHOLD) goTo(activeIdx + 1);
+    else if (delta < -SWIPE_THRESHOLD) goTo(activeIdx - 1);
+  };
 
   return (
     <section
       id="co-nabizime"
-      style={{ width: "100%", backgroundColor: "#000", padding: "80px 0 100px", marginTop: "-50px", marginBottom: "-50px" }}
+      style={{
+        width: "100%",
+        backgroundColor: "#000",
+        padding: "80px 0 100px",
+        marginTop: "-50px",
+        marginBottom: "-50px",
+      }}
     >
       <SectionDivider />
 
@@ -315,7 +322,7 @@ export const CoNabizimeSection = (): JSX.Element => {
               color: "#fff",
               margin: "0 auto 20px",
               letterSpacing: "-0.02em",
-              maxWidth: "700px",
+              maxWidth: "770px",
             }}
           >
             Co{" "}
@@ -339,7 +346,6 @@ export const CoNabizimeSection = (): JSX.Element => {
               lineHeight: 1.6,
               color: "rgba(255,255,255,0.65)",
               margin: "0 auto",
-              maxWidth: "560px",
             }}
           >
             Od vytvoření nového webu přes vizuální redesign až po nasazení AI nástrojů – řešení pro začínající podnikatele i
@@ -347,144 +353,341 @@ export const CoNabizimeSection = (): JSX.Element => {
           </p>
         </div>
 
-        <div className="offer-rows">
-          {slides.map((slide, idx) => {
-            const showReverse = idx % 2 === 1;
-            const fadeDir = idx === 0 ? -1 : 1;
-            const isVisible = rowVisible[idx] ?? false;
+        <div className="offer-carousel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+          <div className="offer-carousel-viewport" aria-label="Carousel Co nabízíme">
+            <div
+              className="offer-carousel-track"
+              style={{ transform: `translateX(${-activeIdx * 100}%)` }}
+            >
+              {slides.map((slide) => (
+                <div key={slide.id} className="offer-slide">
+                  <div className="offer-premium-card">
+                    <div className="offer-premium-card-inner">
+                      {/* Minimal ambient lights (gentle, premium, non-distracting) */}
+                      <div className="offer-ambient-lights" aria-hidden="true">
+                        <div className="offer-blob offer-blob--a" />
+                        <div className="offer-blob offer-blob--b" />
+                        <div className="offer-blob offer-blob--c" />
+                      </div>
 
-            return (
-              <div
-                key={slide.id}
-                ref={(el) => {
-                  rowRefs.current[idx] = el;
-                }}
-                data-idx={idx}
-                className={`offer-product-row ${showReverse ? "offer-row-reverse" : ""} ${isVisible ? "offer-row-visible" : ""}`}
-                style={{ ["--shift" as any]: `${fadeDir * 180}px` }}
-              >
-                <div className="offer-product-media">
-                  {slide.beforeAfter ? (
-                    <BeforeAfterSlider {...slide.beforeAfter} />
-                  ) : (
-                    <img
-                      src={slide.image}
-                      alt={slide.title}
-                      style={{ width: "100%", height: "100%", minHeight: "360px", objectFit: "cover", objectPosition: "center", display: "block" }}
-                    />
-                  )}
+                      <div className="offer-gallery-grid">
+                        {/* Left: text */}
+                        <div className="offer-gallery-left">
+                          <div className="offer-title-wrap">
+                            <h3 className="offer-title offer-title-large">{renderHighlightedTitle(slide.title)}</h3>
+                            <div className="offer-title-underline" aria-hidden="true" />
+                          </div>
+
+                          <p className="offer-desc">{slide.description}</p>
+
+                          <ul className="offer-bullets">
+                            {slide.features.map((f) => (
+                              <li key={f}>{f}</li>
+                            ))}
+                          </ul>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigate("/kontakt");
+                              setTimeout(() => {
+                                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                              }, 180);
+                            }}
+                            className="offer-cta animate-pulse-glow hero-primary-btn"
+                          >
+                            {slide.cta}
+                          </button>
+                        </div>
+
+                        {/* Right: notebook/monitor visualization */}
+                        <div className="offer-gallery-right">
+                          {slide.id === "tvorba-webu" ? (
+                            <div className="offer-simple-media">
+                              <img
+                                src={slide.image}
+                                alt={slide.title}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                  objectPosition: "center",
+                                  display: "block",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div className="notebook">
+                              <div className="notebook-screen">
+                                <img
+                                  className="notebook-frame-img"
+                                  src={pcFrameUrl}
+                                  alt=""
+                                  aria-hidden="true"
+                                />
+                                <div className="notebook-screen-inner" aria-hidden="true">
+                                  {slide.beforeAfter ? (
+                                    <BeforeAfterSlider {...slide.beforeAfter} />
+                                  ) : (
+                                    <img
+                                      src={slide.image}
+                                      alt={slide.title}
+                                      style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        objectPosition: "center top",
+                                        display: "block",
+                                      }}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </div>
 
-                <div className="offer-product-content">
-                  <h3 className="offer-title">{slide.title}</h3>
-                  <div className="offer-title-underline" aria-hidden="true" />
+          {/* Controls */}
+          <div className="offer-carousel-controls">
+            <button
+              type="button"
+              className="offer-nav-btn"
+              aria-label="Předchozí"
+              onClick={() => goTo(activeIdx - 1)}
+              style={{ opacity: activeIdx === 0 ? 0.35 : 1 }}
+            >
+              ←
+            </button>
 
-                  <p className="offer-desc">{slide.description}</p>
+            <div className="offer-carousel-dots" aria-label="Volba karty">
+              {slides.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  className={`offer-dot ${i === activeIdx ? "offer-dot-active" : ""}`}
+                  aria-label={`Karta ${i + 1}`}
+                  onClick={() => goTo(i)}
+                />
+              ))}
+            </div>
 
-                  <ul className="offer-bullets">
-                    {slide.features.map((f) => (
-                      <li key={f}>{f}</li>
-                    ))}
-                  </ul>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate("/kontakt");
-                      setTimeout(() => {
-                        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                      }, 180);
-                    }}
-                    className="offer-cta animate-pulse-glow hero-primary-btn"
-                  >
-                    {slide.cta}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+            <button
+              type="button"
+              className="offer-nav-btn"
+              aria-label="Další"
+              onClick={() => goTo(activeIdx + 1)}
+              style={{ opacity: activeIdx === slides.length - 1 ? 0.35 : 1 }}
+            >
+              →
+            </button>
+          </div>
         </div>
       </div>
 
       <style>{`
-        .offer-rows{
+        .offer-carousel{
+          width: 100%;
           display:flex;
           flex-direction:column;
-          gap:56px;
-        }
-        .offer-product-row{
-          --shift: 0px;
-          position:relative;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:56px;
-          opacity: 0;
-          transform: translateX(var(--shift));
-          transition: opacity 700ms ease, transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
-          will-change: transform, opacity;
-        }
-        .offer-row-reverse{
-          flex-direction: row-reverse;
-        }
-        .offer-row-visible{
-          opacity: 1;
-          transform: translateX(0);
+          gap: 24px;
         }
 
-        /* Clean “blob” style behind the image (no borders) */
-        .offer-product-media{
-          flex: 0 0 46%;
-          min-width: 0;
-          border-radius: 34px;
-          overflow:hidden;
-          background: rgba(255,255,255,0.02);
-          box-shadow: 0 0 60px rgba(0,229,255,0.06);
-          position:relative;
+        .offer-carousel-viewport{
+          width: 100%;
+          overflow: hidden;
         }
-        .offer-product-media::before{
+
+        .offer-carousel-track{
+          display:flex;
+          width: 100%;
+          transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+          will-change: transform;
+        }
+
+        .offer-slide{
+          flex: 0 0 100%;
+        }
+
+        .offer-premium-card{
+          border-radius: 28px;
+          padding: 1px;
+          background: linear-gradient(90deg, rgba(0,229,255,0.45) 0%, rgba(224,64,251,0.26) 100%);
+          box-shadow: 0 0 60px rgba(0,229,255,0.08);
+        }
+
+        .offer-premium-card-inner{
+          border-radius: 27px;
+          background:
+            radial-gradient(ellipse at 25% 0%, rgba(0,229,255,0.055) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 25%, rgba(224,64,251,0.045) 0%, transparent 42%),
+            linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.36) 100%);
+          border: 1px solid rgba(255,255,255,0.08);
+          padding: 15px 28px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* 20% dark overlay for higher text readability */
+        .offer-premium-card-inner::before{
           content:'';
           position:absolute;
-          inset:-60px;
-          background:
-            radial-gradient(circle at 20% 10%, rgba(0,229,255,0.16) 0%, transparent 52%),
-            radial-gradient(circle at 80% 20%, rgba(224,64,251,0.10) 0%, transparent 55%);
+          inset:0;
+          background: rgba(0,0,0,0.2);
+          z-index:0;
           pointer-events:none;
         }
-        .offer-product-media > *{
-          position:relative;
-          z-index:1;
+
+        .offer-premium-card-inner > *{
+          position: relative;
+          z-index: 1;
         }
 
-        .offer-product-content{
-          flex: 1 1 0;
+        .offer-ambient-lights{
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          overflow: hidden;
+        }
+
+        .offer-blob{
+          position: absolute;
+          width: clamp(300px, 38vw, 560px);
+          height: clamp(300px, 38vw, 560px);
+          border-radius: 9999px;
+          filter: blur(120px);
+          opacity: 0.12;
+          transform: translate3d(0,0,0);
+          background: radial-gradient(circle at 30% 30%, rgba(0,194,255,0.18) 0%, rgba(0,194,255,0) 62%);
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          will-change: transform;
+        }
+
+        .offer-blob--a{
+          left: -8%;
+          top: 10%;
+          opacity: 0.15;
+          background: radial-gradient(circle at 30% 30%, rgba(0,194,255,0.18) 0%, rgba(0,194,255,0) 62%);
+          animation-name: offerBlobMoveA;
+          animation-duration: 34s;
+        }
+
+        .offer-blob--b{
+          left: 36%;
+          top: -18%;
+          opacity: 0.10;
+          background: radial-gradient(circle at 30% 30%, rgba(74,222,128,0.16) 0%, rgba(74,222,128,0) 62%);
+          animation-name: offerBlobMoveB;
+          animation-duration: 40s;
+        }
+
+        .offer-blob--c{
+          left: 52%;
+          top: 45%;
+          opacity: 0.12;
+          background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.18) 0%, rgba(56,189,248,0) 62%);
+          animation-name: offerBlobMoveC;
+          animation-duration: 28s;
+        }
+
+        @keyframes offerBlobMoveA{
+          0%{ transform: translate3d(0px, 0px, 0) scale(1); }
+          50%{ transform: translate3d(18px, -14px, 0) scale(1.02); }
+          100%{ transform: translate3d(0px, 0px, 0) scale(1); }
+        }
+        @keyframes offerBlobMoveB{
+          0%{ transform: translate3d(0px, 0px, 0) scale(1); }
+          50%{ transform: translate3d(-22px, 16px, 0) scale(1.02); }
+          100%{ transform: translate3d(0px, 0px, 0) scale(1); }
+        }
+        @keyframes offerBlobMoveC{
+          0%{ transform: translate3d(0px, 0px, 0) scale(1); }
+          50%{ transform: translate3d(14px, 18px, 0) scale(1.02); }
+          100%{ transform: translate3d(0px, 0px, 0) scale(1); }
+        }
+
+        .offer-card-swap{
+          animation: offerSwap 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+        @keyframes offerSwap{
+          from { opacity: 0; transform: translateY(10px) scale(0.99); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .offer-gallery-grid{
+          display:flex;
+          gap: 8px;
+          align-items: center;
+        }
+
+        .offer-gallery-left{
+          flex: 1 1 35%;
           min-width: 0;
-          max-width: 560px;
           padding: 10px 0;
+        }
+
+        .offer-gallery-right{
+          flex: 1 1 75%;
+          min-width: 0;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          padding: 5px 0;
+        }
+
+        .offer-simple-media{
+          width: 100%;
+          aspect-ratio: 6 / 4;
+          border-radius: 0;
+          overflow: hidden;
+          border: none;
+          box-shadow: none;
+          background: transparent;
         }
 
         .offer-title{
           fontFamily: "'Space Grotesk',sans-serif";
-          fontWeight: 900;
-          fontSize: clamp(22px, 3vw, 34px);
+          fontWeight: 700;
           color: #fff;
           margin: 0;
           letterSpacing: -0.02em;
           line-height: 1.15;
         }
+
+        .offer-title-large{
+          /* Same style as section heading, just ~20% smaller */
+          /* Card title = 2x card description font size */
+          fontSize: 28px !important;
+          lineHeight: 1.08;
+          display: inline-block;
+        }
+
+        .offer-title-wrap{
+          display: inline-block;
+        }
+
         .offer-title-underline{
-          width: 56px;
+          width: 100%;
           height: 2px;
           margin: 12px 0 18px;
           background: linear-gradient(90deg, rgba(0,229,255,0.95), rgba(224,64,251,0.65));
           border-radius: 999px;
         }
+
         .offer-desc{
           fontFamily: "'Space Grotesk',sans-serif";
           fontWeight: 400;
           fontSize: 16px;
           lineHeight: 1.7;
-          color: rgba(255,255,255,0.65);
+          color: rgba(255,255,255,0.72);
           margin: 0 0 18px;
         }
 
@@ -499,7 +702,7 @@ export const CoNabizimeSection = (): JSX.Element => {
           fontWeight: 500;
           fontSize: 15px;
           lineHeight: 1.45;
-          color: rgba(255,255,255,0.78);
+          color: rgba(255,255,255,0.86);
         }
 
         .offer-cta{
@@ -522,32 +725,143 @@ export const CoNabizimeSection = (): JSX.Element => {
           transform: translateY(-2px);
         }
 
+        /* Notebook (monitor) mock */
+        .notebook{
+          width: 100%;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          transform: scale(1.3);
+          transform-origin: center;
+        }
+
+        .notebook-screen{
+          position:relative;
+          width: 100%;
+          aspect-ratio: 6 / 4;
+          border-radius: 18px;
+          overflow:hidden;
+          transform: none;
+          box-shadow: none;
+          border: none;
+          background: transparent;
+        }
+
+        .notebook-frame-img{
+          position:absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 2;
+          display:block;
+          pointer-events:none;
+          user-select:none;
+        }
+
+        .notebook-screen-inner{
+          position:absolute;
+          /* Hole inside PC_frame.png:
+             frame = 1536x1024, hole = 915x580
+             => left = 310.5px (20.234%), top = 222px (21.679%)
+             => width = 915px (59.505%), height = 580px (56.641%)
+          */
+          left: 20.2344%;
+          /* Nudge hole upward to reduce remaining top blank space */
+          top: 17.7%;
+          width: 59.5052%;
+          /* Keep bottom alignment: top + height should stay ~78.3203% */
+          height: 60.6203%;
+          border-radius: 2.4%;
+          overflow:hidden;
+          background: #000;
+          z-index: 1;
+        }
+
+        .notebook-screen-inner > *{
+          width: 100%;
+          height: 100%;
+        }
+
+        /* Controls */
+        .offer-carousel-controls{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap: 16px;
+          margin-top: 4px;
+        }
+
+        .offer-nav-btn{
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          border: 1px solid rgba(255,255,255,0.14);
+          background: rgba(255,255,255,0.05);
+          color: rgba(255,255,255,0.75);
+          cursor:pointer;
+          transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+          fontFamily: system-ui;
+          fontSize: 18px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+        .offer-nav-btn:hover{
+          background: rgba(0,229,255,0.12);
+          border-color: rgba(0,229,255,0.35);
+          transform: translateY(-2px);
+        }
+
+        .offer-carousel-dots{
+          display:flex;
+          gap: 10px;
+          align-items:center;
+          justify-content:center;
+          flex: 1 1 auto;
+        }
+
+        .offer-dot{
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          border: none;
+          cursor:pointer;
+          background: rgba(255,255,255,0.18);
+          transition: width 250ms ease, background 250ms ease;
+          padding: 0;
+        }
+        .offer-dot-active{
+          width: 28px;
+          background: rgba(0,229,255,0.95);
+        }
+
         @media(max-width:900px){
-          .offer-product-row{
-            flex-direction: column !important;
-            gap: 18px !important;
-            opacity: 1 !important;
-            transform: translateX(0) !important;
-            transition: none !important;
-          }
-          .offer-product-media{
-            flex: 0 0 auto !important;
-            width: 100% !important;
-          }
-          .offer-product-content{
-            max-width: none !important;
-            width: 100% !important;
-          }
-          .offer-title{ font-size: clamp(20px, 5vw, 28px) !important; }
+          .offer-premium-card-inner{ padding: 15px; }
+          .offer-gallery-grid{ flex-direction: column; gap: 16px; }
+          .offer-gallery-left{ padding: 0; }
+          .offer-gallery-right{ width: 100%; }
+          /* Keep mobile titles readable, not bigger than section heading */
+          .offer-title-large{ font-size: 24px !important; }
+          .offer-title:not(.offer-title-large){ font-size: clamp(22px, 6vw, 30px) !important; }
           .offer-desc{ font-size: 14px !important; }
           .offer-bullets li{ font-size: 14px !important; }
+          .notebook-screen{ transform: none; }
+          .offer-carousel-controls{ margin-top: 0; }
         }
-        @media(prefers-reduced-motion: reduce){
-          .offer-product-row{
-            transition: none !important;
-            opacity: 1 !important;
-            transform: translateX(0) !important;
+
+        /* Desktop: screen >= 1025px => double the card title size */
+        @media(min-width:1025px){
+          .offer-title-large{
+            /* keep desktop fixed size (32px) */
+            font-size: 28px !important;
+            line-height: 1.08;
           }
+        }
+
+        @media(prefers-reduced-motion: reduce){
+          .offer-card-swap{ animation: none !important; }
+          .notebook-screen{ transform: none !important; }
         }
       `}</style>
     </section>

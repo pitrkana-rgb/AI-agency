@@ -1,27 +1,57 @@
 import { useEffect, useRef, useState } from "react";
 
-/* ── Count-up hook ──────────────────────────────────────────────── */
-const useCountUp = (target: number, duration = 1400, start = false) => {
-  const [count, setCount] = useState(0);
+type AnimatedBadgeValue = {
+  count: number;
+  suffix: string;
+};
+
+/* ── Badge value animation hook ─────────────────────────────────── */
+const useAnimatedBadgeValue = (badge: Badge, start = false, duration = 1500): AnimatedBadgeValue => {
+  const [value, setValue] = useState<AnimatedBadgeValue>({ count: 0, suffix: badge.suffix });
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!start) return;
+
     let startTime: number | null = null;
+    const isTimeBadge = badge.suffix.includes("dn");
+
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
+
+      if (!isTimeBadge) {
+        setValue({ count: Math.round(eased * badge.numericValue), suffix: badge.suffix });
+      } else {
+        const phaseSplit = 0.62;
+
+        if (progress <= phaseSplit) {
+          // Phase 1: enough visual motion via hours 1..24.
+          const phaseProgress = progress / phaseSplit;
+          const phaseEased = 1 - Math.pow(1 - phaseProgress, 3);
+          const hours = Math.max(1, Math.round(1 + phaseEased * 23));
+          setValue({ count: hours, suffix: " h" });
+        } else {
+          // Phase 2: switch to final unit/value (days) and count up.
+          const phaseProgress = (progress - phaseSplit) / (1 - phaseSplit);
+          const phaseEased = 1 - Math.pow(1 - phaseProgress, 3);
+          const fromDays = 1;
+          const toDays = badge.numericValue;
+          const days = Math.round(fromDays + (toDays - fromDays) * phaseEased);
+          setValue({ count: days, suffix: badge.suffix });
+        }
+      }
+
       if (progress < 1) rafRef.current = requestAnimationFrame(step);
     };
+
     rafRef.current = requestAnimationFrame(step);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [start, target, duration]);
+  }, [start, badge.numericValue, badge.suffix, duration]);
 
-  return count;
+  return value;
 };
 
 /* ── Badge definition ───────────────────────────────────────────── */
@@ -77,7 +107,7 @@ const AnimatedBadge = ({ badge, delay }: { badge: Badge; delay: number }) => {
     return () => clearTimeout(t);
   }, [visible, delay]);
 
-  const count = useCountUp(badge.numericValue, 1200, started);
+  const animated = useAnimatedBadgeValue(badge, started, 2475);
   const titleParts = badge.title.split(/\s+/);
   const titleLine1 = titleParts[0] ?? "";
   const titleLine2 = titleParts.slice(1).join(" ") ?? "";
@@ -153,7 +183,7 @@ const AnimatedBadge = ({ badge, delay }: { badge: Badge; delay: number }) => {
         aria-live="polite"
         aria-atomic="true"
       >
-        {count}{badge.suffix}
+        {animated.count}{animated.suffix}
       </div>
 
       {/* Description */}

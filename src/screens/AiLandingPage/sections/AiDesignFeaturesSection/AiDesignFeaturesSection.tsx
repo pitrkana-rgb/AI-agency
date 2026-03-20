@@ -158,11 +158,11 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
 
       {/* Section header */}
       <div className="how-it-works-head" style={{ marginBottom: "56px", textAlign: "center" }}>
-        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1, color: "#fff", margin: "0 auto 20px", letterSpacing: "-0.02em", maxWidth: "700px" }}>
+        <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1, color: "#fff", margin: "0 auto 20px", letterSpacing: "-0.02em", maxWidth: "770px" }}>
           Jak probíhá{" "}
           <span style={{ background: "linear-gradient(135deg,#E040FB,#00E5FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>spolupráce</span>
         </h2>
-        <p className="section-sub" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", margin: "0 auto", maxWidth: "640px" }}>
+        <p className="section-sub" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", margin: "0 auto" }}>
           Díky pokročilým AI nástrojům dokážeme výrazně zrychlit vývoj webu — prototyp připravíme do 3 dnů a hotový web dodáme již za 14 dnů.
         </p>
       </div>
@@ -281,30 +281,40 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
                 transition: "background 250ms ease, box-shadow 250ms ease, border-color 250ms ease",
                 cursor: "default",
                 position: "relative",
+                perspective: "900px",
+                transformStyle: "preserve-3d",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.borderColor = "rgba(0,229,255,0.45)";
                 el.style.boxShadow = "0 0 32px rgba(0,229,255,0.22), inset 0 1px 0 rgba(255,255,255,0.08)";
                 const icon = el.querySelector<HTMLElement>(".step-svg-icon");
-                if (icon) {
-                  icon.style.transform = "rotate(360deg)";
-                  icon.style.transition = "transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)";
-                }
+                if (icon) icon.classList.add("step-icon-rotate-3d");
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.borderColor = "rgba(0,229,255,0.28)";
                 el.style.boxShadow = "0 0 24px rgba(0,229,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)";
                 const icon = el.querySelector<HTMLElement>(".step-svg-icon");
-                if (icon) {
-                  icon.style.transform = "rotate(0deg)";
-                  icon.style.transition = "transform 0.55s ease-out";
-                }
+                if (icon) icon.classList.remove("step-icon-rotate-3d");
               }}
             >
-              <span className="step-svg-icon" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <step.Icon />
+              <span
+                className="step-svg-icon"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transformStyle: "preserve-3d",
+                  willChange: "transform",
+                }}
+              >
+                <span className="step-svg-face step-svg-front" aria-hidden="true">
+                  <step.Icon />
+                </span>
+                <span className="step-svg-face step-svg-back" aria-hidden="true">
+                  <step.Icon />
+                </span>
               </span>
             </div>
 
@@ -322,6 +332,48 @@ export const AiDesignFeaturesSection = (): JSX.Element => (
     </div>
 
     <style>{`
+      /* Ensure SVG stays visible through 3D rotation */
+      .step-svg-icon{
+        backface-visibility: visible !important;
+        transform-style: preserve-3d !important;
+        will-change: transform;
+        position: relative;
+        width: 56px;
+        height: 56px;
+      }
+
+      .step-svg-face{
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        opacity: 1 !important;
+      }
+      .step-svg-front{
+        transform: translateZ(1px);
+      }
+      .step-svg-back{
+        transform: rotateY(180deg) translateZ(1px);
+      }
+      @keyframes step-icon-rotate-3d{
+        from { transform: rotateY(0deg) translateZ(1px); }
+        to { transform: rotateY(360deg) translateZ(1px); }
+      }
+      .step-icon-rotate-3d{
+        animation: step-icon-rotate-3d 3200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .step-svg-icon svg{
+        backface-visibility: visible !important;
+        transform-style: preserve-3d !important;
+        -webkit-backface-visibility: visible !important;
+      }
+      .step-svg-icon *{
+        backface-visibility: visible !important;
+      }
+
       /* ── Mobile: stacked single column ── */
       @media(max-width:767px){
         .how-it-works-head { margin-bottom: 32px !important; }

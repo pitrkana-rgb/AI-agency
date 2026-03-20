@@ -74,7 +74,7 @@ export const MainHeroSection = (): JSX.Element => {
       {/* Hero content */}
       <div
         className="relative z-10 flex flex-col items-center animate-fade-in hero-content-wrap"
-        style={{ maxWidth: "900px", textAlign: "center", padding: "0 24px", marginTop: "-300px" }}
+        style={{ width: "80%", maxWidth: "none", textAlign: "center", padding: "0 24px", marginTop: "-300px" }}
       >
 
         {/* Headline */}
@@ -86,6 +86,8 @@ export const MainHeroSection = (): JSX.Element => {
           color: "#FFFFFF",
           margin: "0 0 16px 0",
           letterSpacing: "-0.02em",
+          maxWidth: "1089px",
+          width: "100%",
         }}>
           Získejte web nové generace s{" "}
           <span style={{
@@ -192,6 +194,7 @@ export const MainHeroSection = (): JSX.Element => {
         @media (max-width: 768px) {
           .hero-rating-pill { display: none !important; }
           .hero-content-wrap {
+            width: 100% !important;
             max-width: 100% !important;
             padding: 0 16px !important;
             margin-top: -180px !important;
