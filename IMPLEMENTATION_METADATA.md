@@ -18,11 +18,15 @@
 | Source image | `Images/metadata.png` | Copied to **`public/og-image.png`** (keep in sync when updating art) |
 | Favicon | `index.html` | `/Company_logo_Icon_V2.png` |
 
-**Status (implemented):** `Images/metadata.png` is copied to **`public/og-image.png`** on deploy; `index.html` uses `og-image.png` with cache-bust `?v=2`. Re-copy from `Images/metadata.png` whenever you change the design asset.
+**Status (implemented):** Run **`npm run og-image`** after changing **`Images/metadata.png`**. That script resizes to **1200×630** with **`fit: cover`** and **`position: northwest`** (top-left anchor) so X/Facebook/WhatsApp previews favor the **logo, headline, and left CTA** instead of a centered crop. Bump **`?v=`** on `og-image.png` in `index.html` when you ship a new PNG.
 
 ---
 
 ## 2. Image asset pipeline (`metadata.png`)
+
+### 2.0 Why a script? (center vs left)
+
+Social apps often **center-crop** large images. If `metadata.png` is a full-width screenshot, the preview cut off **PK** and the left headline. The repo uses **`scripts/generate-og-image.mjs`** (Sharp) to bake in a **left-priority** crop to 1200×630 — there is **no HTML meta tag** to set crop position on third-party previews.
 
 ### 2.1 Requirements (social platforms)
 
@@ -31,14 +35,12 @@
 - **Safe zone:** Keep key text/logo inside ~**1100 × 580 px** — edges can be cropped on some clients.
 - **File size:** Target **&lt; 300–500 KB** after optimization (TinyPNG, Squoosh, or `sharp` in build) for fast WhatsApp/Telegram loads.
 
-### 2.2 Steps
+### 2.2 Steps (recommended)
 
-1. Open **`Images/metadata.png`** in your design tool; confirm **exact dimensions**.
-2. If not 1200×630, **resize or export** to 1200×630 (or keep aspect and pad — avoid distortion).
-3. **Choose deployment strategy (pick one):**
-   - **A (simplest):** Export final asset as **`public/og-image.png`** (overwrite). **No URL changes** in `index.html`.
-   - **B:** Copy/export as **`public/metadata.png`** and update **every** reference from `og-image.png` → `metadata.png` (see §4 checklist).
-4. Optional: Keep **`Images/metadata.png`** as design source; document in README: “Export → `public/og-image.png` on release.”
+1. Update the design source **`Images/metadata.png`** (full-width marketing capture is OK).
+2. From repo root: **`npm install`** (once) then **`npm run og-image`** → writes **`public/og-image.png`**.
+3. Bump **`og-image.png?v=N`** in **`index.html`** (all occurrences) so caches refresh.
+4. **Manual fallback:** Export a 1200×630 PNG yourself with important content in the **left/center safe zone**, save as **`public/og-image.png`**.
 
 ### 2.3 Update `og:image` dimensions meta
 
