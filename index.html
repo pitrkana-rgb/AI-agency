@@ -5,8 +5,8 @@
   <meta charset="utf-8" />
 
   <!-- ═══════════════════════════════════════════════════════════
-         PRIMARY META TAGS
-    ════════════════════════════════════════════════════════════════ -->
+         PRIMARY META TAGS (single source of truth for SERP + social copy)
+  ════════════════════════════════════════════════════════════════ -->
   <title>PK Digital – Moderní weby, AI nástroje a automatizace | do 14 dní</title>
   <meta name="title" content="PK Digital – Moderní weby, AI nástroje a automatizace | do 14 dní" />
   <meta name="description"
@@ -17,70 +17,83 @@
   <meta name="robots" content="index, follow" />
   <meta name="language" content="cs" />
   <meta name="revisit-after" content="7 days" />
-  <meta name="theme-color" content="#FF5A1F" />
+  <!-- Brand surface (matches landing background); browser UI / PWA tint -->
+  <meta name="theme-color" content="#010204" />
+  <meta name="color-scheme" content="dark" />
 
   <!-- ═══════════════════════════════════════════════════════════
          VIEWPORT & COMPATIBILITY
-    ════════════════════════════════════════════════════════════════ -->
+  ════════════════════════════════════════════════════════════════ -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <!-- ═══════════════════════════════════════════════════════════
-         OPEN GRAPH / FACEBOOK / LINKEDIN
-    ════════════════════════════════════════════════════════════════ -->
+         OPEN GRAPH — Facebook, LinkedIn, WhatsApp, Discord, Slack, Telegram
+  ════════════════════════════════════════════════════════════════ -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pk-digital.cz/" />
   <meta property="og:site_name" content="PK Digital" />
   <meta property="og:locale" content="cs_CZ" />
-  <meta property="og:title" content="PK Digital – Moderní weby nové generace díky síle AI" />
+  <meta property="og:title" content="PK Digital – Moderní weby, AI nástroje a automatizace | do 14 dní" />
   <meta property="og:description"
-    content="Získejte web, který prodává. Vytváříme moderní weby a implementujeme AI nástroje — konzultace zdarma, dodání do 14 dní, 97 % klientů nás doporučuje." />
-  <meta property="og:image" content="https://pk-digital.cz/og-image.png" />
+    content="Navrhujeme moderní weby a digitální řešení, která propojují technologii, uživatelský zážitek a reálné obchodní výsledky. Konzultace a návrh zdarma. Dodání do 14 dní." />
+  <!-- Preview image: exported from Images/metadata.png → public/og-image.png -->
+  <meta property="og:image" content="https://pk-digital.cz/og-image.png?v=2" />
+  <meta property="og:image:secure_url" content="https://pk-digital.cz/og-image.png?v=2" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:alt" content="PK Digital – Moderní weby a AI nástroje" />
+  <meta property="og:image:alt" content="PK Digital – moderní weby, AI nástroje a automatizace pro váš byznys" />
 
   <!-- ═══════════════════════════════════════════════════════════
          TWITTER / X CARD
-    ════════════════════════════════════════════════════════════════ -->
+  ════════════════════════════════════════════════════════════════ -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@pkdigital_cz" />
   <meta name="twitter:creator" content="@pkdigital_cz" />
   <meta name="twitter:url" content="https://pk-digital.cz/" />
-  <meta name="twitter:title" content="PK Digital – Moderní weby nové generace díky síle AI" />
+  <meta name="twitter:title" content="PK Digital – Moderní weby, AI nástroje a automatizace | do 14 dní" />
   <meta name="twitter:description"
-    content="Tvoříme weby s bleskovou realizací do 14 dní a 97 % spokojeností klientů. Konzultace a návrh front-endu zdarma." />
-  <meta name="twitter:image" content="https://pk-digital.cz/og-image.png" />
-  <meta name="twitter:image:alt" content="PK Digital – Moderní weby a AI nástroje" />
+    content="Navrhujeme moderní weby a digitální řešení, která propojují technologii, uživatelský zážitek a reálné obchodní výsledky. Konzultace a návrh zdarma. Dodání do 14 dní." />
+  <meta name="twitter:image" content="https://pk-digital.cz/og-image.png?v=2" />
+  <meta name="twitter:image:alt" content="PK Digital – moderní weby, AI nástroje a automatizace pro váš byznys" />
 
   <!-- ═══════════════════════════════════════════════════════════
          CANONICAL & HREFLANG
-    ════════════════════════════════════════════════════════════════ -->
+  ════════════════════════════════════════════════════════════════ -->
   <link rel="canonical" href="https://pk-digital.cz/" />
   <link rel="alternate" hreflang="cs" href="https://pk-digital.cz/" />
 
   <!-- ═══════════════════════════════════════════════════════════
-         STRUCTURED DATA — JSON-LD (Organization + LocalBusiness)
-    ════════════════════════════════════════════════════════════════ -->
+         STRUCTURED DATA — Organization + LocalBusiness
+  ════════════════════════════════════════════════════════════════ -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": ["Organization", "LocalBusiness"],
+      "@id": "https://pk-digital.cz/#organization",
       "name": "PK Digital",
+      "legalName": "PK-Digital",
       "url": "https://pk-digital.cz",
-      "logo": "https://pk-digital.cz/Company_logo.png",
-      "image": "https://pk-digital.cz/og-image.png",
+      "logo": "https://pk-digital.cz/Company_logo_V2.png",
+      "image": "https://pk-digital.cz/og-image.png?v=2",
       "description": "Navrhujeme moderní weby a digitální řešení, která propojují technologii, uživatelský zážitek a reálné obchodní výsledky.",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Němčice 329",
+        "addressLocality": "Ivančice",
+        "postalCode": "664 91",
         "addressCountry": "CZ"
       },
+      "telephone": "+420 725 703 868",
+      "email": "info@pk-digital.cz",
       "contactPoint": {
         "@type": "ContactPoint",
-        "contactType": "customer support",
+        "contactType": "sales",
         "url": "https://pk-digital.cz/kontakt",
-        "availableLanguage": "Czech"
+        "telephone": "+420-725-703-868",
+        "email": "info@pk-digital.cz",
+        "availableLanguage": ["cs-CZ"]
       },
       "sameAs": [],
       "offers": [
@@ -112,26 +125,30 @@
     </script>
 
   <!-- ═══════════════════════════════════════════════════════════
-         STRUCTURED DATA — WebSite + SearchAction (Sitelinks Searchbox)
-    ════════════════════════════════════════════════════════════════ -->
+         STRUCTURED DATA — WebSite
+  ════════════════════════════════════════════════════════════════ -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://pk-digital.cz/#website",
       "name": "PK Digital",
-      "url": "https://pk-digital.cz"
+      "url": "https://pk-digital.cz",
+      "description": "Moderní weby, AI nástroje a automatizace. Konzultace zdarma, dodání do 14 dní.",
+      "inLanguage": "cs-CZ",
+      "publisher": { "@id": "https://pk-digital.cz/#organization" }
     }
     </script>
 
   <!-- ═══════════════════════════════════════════════════════════
          FAVICON & ICONS
-    ════════════════════════════════════════════════════════════════ -->
+  ════════════════════════════════════════════════════════════════ -->
   <link rel="icon" type="image/png" href="/Company_logo_Icon_V2.png" />
   <link rel="apple-touch-icon" href="/Company_logo_Icon_V2.png" />
 
   <!-- ═══════════════════════════════════════════════════════════
          PERFORMANCE: PRECONNECT & FONTS
-    ════════════════════════════════════════════════════════════════ -->
+  ════════════════════════════════════════════════════════════════ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
