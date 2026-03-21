@@ -4,43 +4,37 @@ import { CheckIcon, ChevronRightIcon } from "lucide-react";
 const pricingPlans = [
   {
     name: "Tvorba webu na míru",
-    description: "Moderní, rychlý a srozumitelný web, který od první sekundy vysvětlí, co děláte a proč by to mělo zajímat vaše klienty.",
-    price: "od 19 900 Kč",
+    description: "Navrhujeme weby, které jasně komunikují hodnotu a přivádí zákazníky.",
     features: [
-      "Konzultace a návrh řešení zdarma",
-      "Kompletní web standardně dodán do 14 dnů",
+      "Konzultace a návrh prototypu včetně cenové kalkulace zdarma",
+      "Funkční web běžně dodán do 14 dnů",
       "Plně optimalizovaná mobilní verze",
-      "Možnost napojení na interní systémy a aplikace",
-      "Možnost následné správy a rozvoje webu",
+      "Napojení na CRM a další systémy",
+      "Monitoring měření návštěvnosti",
     ],
     highlighted: true,
     cta: "Chci web",
   },
   {
     name: "Modernizace stránek",
-    description: "Kompletní modernizace vašeho stávajícího webu — nový design, vyšší rychlost, lepší konverze a nasazení AI nástrojů pro růst.",
-    price: "od 14 900 Kč",
+    description: "Zvyšujeme výkon stávajících webů bez nutnosti začínat od nuly.",
     features: [
-      "Bezplatný audit webu a návrh zlepšení",
-      "Redesign a modernizace vizuální identity",
-      "Zrychlení webu a SEO optimalizace",
-      "Integrace AI nástrojů a automatizací",
-      "Možnost dlouhodobé správy a optimalizace",
+      "Konzultace a návrh redesignu včetně cenové kalkulace zdarma",
+      "Nový vizuální návrh připraven běžně do 14 dnů",
+      "Optimalizace rychlosti a technického výkonu",
+      "Zlepšení UX a SEO optimalizace",
     ],
     highlighted: false,
     cta: "Chci modernizaci",
   },
   {
     name: "Automatizace a AI agenti",
-    description:
-      "Automatizujeme rutinní procesy a nasazujeme AI agenty, kteří šetří čas, snižují náklady a zvyšují výkon vašeho businessu.",
-    price: "",
+    description: "Navrhujeme automatizace, které snižují náklady a nahrazují rutinní práci.",
     features: [
-      "Analýza procesů a návrh automatizací",
-      "Implementace AI agentů (chat, email, interní nástroje)",
-      "Napojení na CRM, API a interní systémy",
-      "Automatizace zákaznické komunikace",
-      "Reporting, optimalizace a škálování řešení",
+      "Konzultace a mapování procesů zdarma",
+      "Do 3 dnů připravíme demo automatizace včetně cenové kalkulace",
+      "Nasazení automatizace běžně do 14 dnů",
+      "Monitoring, vyhodnocování a další optimalizace",
     ],
     highlighted: false,
     cta: "Chci automatizaci",
@@ -53,7 +47,7 @@ import { useNavigate } from "react-router-dom";
 /* ── Card component shared by desktop grid + mobile carousel ── */
 const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigate: (path: string) => void }) => (
   <div
-    className={`pricing-card ${plan.highlighted ? "popular-card" : ""}`}
+    className={`pricing-card pricing-card-outer ${plan.highlighted ? "popular-card" : ""}`}
     style={{
       position: "relative",
       borderRadius: "24px",
@@ -91,7 +85,9 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
       </div>
     )}
 
-    <div style={{
+    <div
+      className="pricing-card-body"
+      style={{
       backgroundColor: "#0D0D0D",
       background: "radial-gradient(ellipse 60% 80% at 50% -10%, rgba(0,229,255,0.14) 0%, rgba(0,229,255,0) 70%), linear-gradient(145deg, #1A2633 0%, #0D0D0D 100%)",
       borderRadius: plan.highlighted ? "21px" : "24px",
@@ -102,7 +98,10 @@ const PricingCard = ({ plan, navigate }: { plan: typeof pricingPlans[0]; navigat
       flexDirection: "column",
       gap: "32px",
       boxSizing: "border-box" as const,
-    }}>
+      flex: 1,
+      minHeight: 0,
+    }}
+    >
       {/* Plan name */}
       <div>
         <h3 style={{
@@ -223,7 +222,11 @@ export const SubscriptionPlansSection = (): JSX.Element => {
               }}
             >
               {pricingPlans.map((plan) => (
-                <div key={plan.name} style={{ flex: `0 0 ${100 / pricingPlans.length}%`, padding: "20px 0 4px", boxSizing: "border-box" }}>
+                <div
+                  key={plan.name}
+                  className="pricing-mobile-slide"
+                  style={{ flex: `0 0 ${100 / pricingPlans.length}%`, padding: "20px 0 4px", boxSizing: "border-box" }}
+                >
                   <PricingCard plan={plan} navigate={navigate} />
                 </div>
               ))}
@@ -278,14 +281,50 @@ export const SubscriptionPlansSection = (): JSX.Element => {
       </div>
 
       <style>{`
+        /* Equal-height cards: desktop grid */
+        .pricing-grid-desktop {
+          align-items: stretch;
+        }
+        .pricing-grid-desktop .pricing-card-outer {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+        .pricing-grid-desktop .pricing-card-body {
+          flex: 1 1 auto;
+          min-height: 0;
+        }
+        .pricing-card-body .pricing-cta {
+          margin-top: auto;
+          flex-shrink: 0;
+        }
+
+        /* Equal-height cards: mobile carousel slides */
+        .pricing-mobile-slide {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          min-height: clamp(520px, 78vh, 760px);
+        }
+        .pricing-mobile-slide .pricing-card-outer {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-height: 0;
+        }
+        .pricing-mobile-slide .pricing-card-body {
+          flex: 1 1 auto;
+          min-height: 0;
+        }
+
         .pricing-mobile-carousel { display: none; }
         @media(max-width:768px){
           .pricing-grid-desktop { display: none !important; }
           .pricing-mobile-carousel { display: block !important; }
-          .pricing-carousel-track { will-change: transform; }
+          .pricing-carousel-track { will-change: transform; align-items: stretch; }
           .pricing-card { transform: scale(1) !important; }
           .popular-card { transform: scale(1) !important; }
-          .pricing-cta { padding: 10px 16px !important; font-size: 14px !important; }
+          .pricing-cta { padding: 10px 16px !important; font-size: 14px !important; margin-top: auto; }
           .pricing-bullet { font-size: 13px !important; line-height: 1.55 !important; }
           .pricing-dots { margin-top: 18px !important; }
           .pricing-arrows { margin-top: 10px !important; }
