@@ -124,6 +124,7 @@ export const ContactFormBlock = (): JSX.Element => {
     if (!form.name.trim()) e.name = isEn ? "Enter name or company" : "Zadejte jméno nebo název společnosti";
     if (!form.email.trim()) e.email = isEn ? "Enter email" : "Zadejte e-mail";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = isEn ? "Invalid email" : "Neplatný e-mail";
+    if (!form.phone.trim()) e.phone = isEn ? "Enter phone" : "Zadejte telefon";
     if (form.services.length === 0) e.services = isEn ? "Select at least one service" : "Vyberte alespoň jednu službu";
     if (!form.gdprConsent) e.gdprConsent = isEn ? "Consent is required to submit the form." : "Pro odeslání je nutný souhlas se zpracováním osobních údajů.";
     setErrors(e);
@@ -331,10 +332,11 @@ export const ContactFormBlock = (): JSX.Element => {
                     <FloatingField
                       inverse
                       id="f-phone"
-                      label={isEn ? "Phone (optional)" : "Telefon (nepovinné)"}
+                      label={isEn ? "Phone (required)" : "Telefon (povinné)"}
                       type="tel"
                       value={form.phone}
                       onChange={set("phone") as (v: string) => void}
+                      error={errors.phone}
                       placeholder="+420 725 703 868"
                     />
                     <FloatingField
