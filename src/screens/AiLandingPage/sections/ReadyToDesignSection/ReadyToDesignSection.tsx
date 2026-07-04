@@ -8,6 +8,8 @@ import arrowSendUrl from "../../../../../Images/arrow_send.png";
 import {
   buildLeadPayload,
   getContactServiceOptions,
+  getPhoneValidationError,
+  isValidPhoneNumber,
   leadFormInit,
   type LeadFormState,
 } from "../ContactSection/contactFormConfig";
@@ -136,6 +138,7 @@ export const ReadyToDesignSection = ({ avoidFooterOverlap = false }: ReadyToDesi
     if (!form.email.trim()) e.email = isEn ? "Enter email" : "Zadejte e-mail";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = isEn ? "Invalid email" : "Neplatný e-mail";
     if (!form.phone.trim()) e.phone = isEn ? "Enter phone" : "Zadejte telefon";
+    else if (!isValidPhoneNumber(form.phone)) e.phone = getPhoneValidationError(isEn);
     if (form.services.length === 0) e.services = isEn ? "Select at least one service" : "Vyberte alespoň jednu službu";
     if (!form.gdprConsent) e.gdprConsent = isEn ? "Consent is required to submit the form." : "Pro odeslání je nutný souhlas se zpracováním osobních údajů.";
     setErrors(e);
