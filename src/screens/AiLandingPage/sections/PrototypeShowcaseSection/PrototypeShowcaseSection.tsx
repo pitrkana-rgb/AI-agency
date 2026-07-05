@@ -29,6 +29,11 @@ const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   "bazar-sport-motokros": "on-light",
 };
 
+/** Per-prototype chrome pinned over thumbnail luminance detection. */
+const PREVIEW_CHROME_OVERRIDE: Partial<Record<string, PreviewChrome>> = {
+  "bazar-sport-motokros": "on-light",
+};
+
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
   new Promise((resolve) => {
     const fallback = PREVIEW_CHROME_FALLBACK[imageId] ?? "on-dark";
@@ -391,6 +396,11 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
 
   useEffect(() => {
     if (!activePreview) return;
+    const forced = PREVIEW_CHROME_OVERRIDE[activePreview.imageId];
+    if (forced) {
+      setPreviewChrome(forced);
+      return;
+    }
     let cancelled = false;
     setPreviewChrome(PREVIEW_CHROME_FALLBACK[activePreview.imageId] ?? "on-dark");
     void detectPreviewChromeFromImage(activePreview.imageId).then((chrome) => {
