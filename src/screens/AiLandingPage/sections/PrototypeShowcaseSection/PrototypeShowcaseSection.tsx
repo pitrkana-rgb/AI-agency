@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Monitor, Smartphone } from "lucide-react";
 import {
   hasBeenRevealed,
   markRevealedById,
   useInViewOnce,
 } from "../../../../hooks/useInViewOnce";
+import { useLanguage } from "../../../../i18n/LanguageContext";
+import { pk } from "../../../../design/pkLandingColors";
+import { MobilePreviewClickHint } from "../../../../components/MobilePreviewClickHint";
+import { PrototypePreviewImage } from "./PrototypePreviewImage";
 
 const PROTOTYPE_ENTRANCE_ID = "prototype-showcase-entrance";
 const PROTOTYPE_CARD_STAGGER_MS = 250;
@@ -11,19 +17,51 @@ const prototypeEntranceTotalMs = (cardCount: number) =>
   PROTOTYPE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
 const PREVIEW_MOBILE_FRAME_WIDTH_PX = 390;
 type PreviewViewport = "desktop" | "mobile";
-import { createPortal } from "react-dom";
-import { Monitor, Smartphone } from "lucide-react";
-import { useLanguage } from "../../../../i18n/LanguageContext";
-import {
-  HEADER_CTA_PAD_Y,
-  headerPrimaryCtaClassName,
-  headerPrimaryCtaStyle,
-} from "../../../../design/headerCtaStyle";
-import { pk } from "../../../../design/pkLandingColors";
-import { scrollToSectionId } from "../../../../utils/scrollToSection";
-import companyLogoV4BlackUrl from "../../../../../Images/Company_logo_V4_black.png";
-import { MobilePreviewClickHint } from "../../../../components/MobilePreviewClickHint";
-import { PrototypePreviewImage } from "./PrototypePreviewImage";
+/** Light chrome on dark preview headers; dark chrome on light preview headers. */
+type PreviewChrome = "on-dark" | "on-light";
+
+const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
+  profitherm: "on-dark",
+  "black-beard": "on-dark",
+  dentio: "on-light",
+  "jan-novak": "on-dark",
+  "vas-financni-partner": "on-light",
+  "osobni-makler": "on-light",
+};
+
+const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
+  new Promise((resolve) => {
+    const fallback = PREVIEW_CHROME_FALLBACK[imageId] ?? "on-dark";
+    const img = new Image();
+    img.decoding = "async";
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        const sampleWidth = Math.min(360, img.naturalWidth || 360);
+        const sourceHeight = Math.max(1, Math.floor((img.naturalHeight || 720) * 0.24));
+        canvas.width = sampleWidth;
+        canvas.height = sourceHeight;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        if (!ctx) {
+          resolve(fallback);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, img.naturalWidth, sourceHeight, 0, 0, sampleWidth, sourceHeight);
+        const { data } = ctx.getImageData(0, 0, sampleWidth, sourceHeight);
+        let luminanceSum = 0;
+        const pixels = data.length / 4;
+        for (let i = 0; i < data.length; i += 4) {
+          luminanceSum +=
+            0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+        }
+        resolve(luminanceSum / pixels < 132 ? "on-dark" : "on-light");
+      } catch {
+        resolve(fallback);
+      }
+    };
+    img.onerror = () => resolve(fallback);
+    img.src = `/prototype-previews/${imageId}/preview-480.webp`;
+  });
 
 type PrototypeCard = {
   title: string;
@@ -43,12 +81,12 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://profithermsolution.cz/",
   },
   {
-    title: "Black Beard",
-    badge: "Barbershop",
+    title: "Osobní makléř",
+    badge: "Reality",
     description:
-      "Stylový web pro pánský barbershop s důrazem na atmosféru a řemeslo. Prezentuje služby, ceník a rezervace tak, aby zákazníci snadno našli termín a vraceli se pravidelně.",
-    imageId: "black-beard",
-    previewUrl: "https://black-beard-chi.vercel.app/",
+      "Prémiová prezentace pro makléře, kteří chtějí působit moderně a důvěryhodně. Web usnadňuje prezentaci nabídek a podporuje rychlejší kontakt od zájemců.",
+    imageId: "osobni-makler",
+    previewUrl: "https://domov-snadno.vercel.app/",
   },
   {
     title: "Dentio",
@@ -75,12 +113,12 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://financni-partner-demo.vercel.app/",
   },
   {
-    title: "Osobní makléř",
-    badge: "Reality",
+    title: "Black Beard",
+    badge: "Barbershop",
     description:
-      "Prémiová prezentace pro makléře, kteří chtějí působit moderně a důvěryhodně. Web usnadňuje prezentaci nabídek a podporuje rychlejší kontakt od zájemců.",
-    imageId: "osobni-makler",
-    previewUrl: "https://domov-snadno.vercel.app/",
+      "Stylový web pro pánský barbershop s důrazem na atmosféru a řemeslo. Prezentuje služby, ceník a rezervace tak, aby zákazníci snadno našli termín a vraceli se pravidelně.",
+    imageId: "black-beard",
+    previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
 
@@ -94,12 +132,12 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://profithermsolution.cz/",
   },
   {
-    title: "Black Beard",
-    badge: "Barbershop",
+    title: "Personal broker",
+    badge: "Real estate",
     description:
-      "A stylish website for a men’s barbershop with a focus on atmosphere and craft. It showcases services, pricing, and booking so clients find a slot and keep coming back.",
-    imageId: "black-beard",
-    previewUrl: "https://black-beard-chi.vercel.app/",
+      "A premium presentation for agents who want to look modern and trustworthy. The site showcases listings clearly and encourages faster contact from prospects.",
+    imageId: "osobni-makler",
+    previewUrl: "https://domov-snadno.vercel.app/",
   },
   {
     title: "Dentio",
@@ -126,12 +164,12 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://financni-partner-demo.vercel.app/",
   },
   {
-    title: "Personal broker",
-    badge: "Real estate",
+    title: "Black Beard",
+    badge: "Barbershop",
     description:
-      "A premium presentation for agents who want to look modern and trustworthy. The site showcases listings clearly and encourages faster contact from prospects.",
-    imageId: "osobni-makler",
-    previewUrl: "https://domov-snadno.vercel.app/",
+      "A stylish website for a men’s barbershop with a focus on atmosphere and craft. It showcases services, pricing, and booking so clients find a slot and keep coming back.",
+    imageId: "black-beard",
+    previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
 
@@ -238,8 +276,8 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         previewBackShort: "Back",
         viewportDesktop: "Desktop layout",
         viewportMobile: "Mobile layout",
+        viewportMode: "Display mode",
         previewHint: "Tap for preview",
-        stickyCta: "I want a similar website",
       }
     : {
         heading: "Návrh webu zdarma do 3 dnů",
@@ -249,13 +287,14 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         previewBackShort: "Zpět",
         viewportDesktop: "Rozložení pro počítač",
         viewportMobile: "Rozložení pro mobil",
+        viewportMode: "Režim zobrazení",
         previewHint: "Klikněte pro náhled",
-        stickyCta: "Chci podobný web",
       };
 
   const activeCards = isEn ? cardsEn : cards;
   const [activePreview, setActivePreview] = useState<PrototypeCard | null>(null);
   const [previewViewport, setPreviewViewport] = useState<PreviewViewport>("desktop");
+  const [previewChrome, setPreviewChrome] = useState<PreviewChrome>("on-dark");
   const [sectionRef, cardsVisible] = useInViewOnce({
     id: "prototype-showcase",
     threshold: 0.38,
@@ -340,7 +379,20 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
   const closePreview = () => {
     setActivePreview(null);
     setPreviewViewport("desktop");
+    setPreviewChrome("on-dark");
   };
+
+  useEffect(() => {
+    if (!activePreview) return;
+    let cancelled = false;
+    setPreviewChrome(PREVIEW_CHROME_FALLBACK[activePreview.imageId] ?? "on-dark");
+    void detectPreviewChromeFromImage(activePreview.imageId).then((chrome) => {
+      if (!cancelled) setPreviewChrome(chrome);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [activePreview?.imageId]);
 
   useEffect(() => {
     if (!activePreview) return;
@@ -462,78 +514,6 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             aria-modal="true"
             aria-label={activePreview.title}
           >
-            <header className="prototype-preview-bar">
-              <nav className="prototype-preview-nav" aria-label={isEn ? "Prototype preview" : "Náhled prototypu"}>
-                <div className="prototype-preview-brand">
-                  <button
-                    type="button"
-                    className="prototype-preview-logo-btn"
-                    onClick={closePreview}
-                    aria-label={isEn ? "Close preview" : "Zavřít náhled"}
-                  >
-                    <img
-                      src={companyLogoV4BlackUrl}
-                      alt="PK Digital"
-                      className="prototype-preview-logo"
-                    />
-                  </button>
-                </div>
-
-                <div className="prototype-preview-center">
-                  <p className="prototype-preview-title">{activePreview.title}</p>
-                  <div
-                    className="prototype-preview-viewport"
-                    role="group"
-                    aria-label={isEn ? "Preview device width" : "Šířka náhledu"}
-                  >
-                    <button
-                      type="button"
-                      className="prototype-preview-viewport-btn"
-                      aria-pressed={previewViewport === "desktop"}
-                      aria-label={t.viewportDesktop}
-                      onClick={() => setPreviewViewport("desktop")}
-                    >
-                      <Monitor size={18} strokeWidth={2} aria-hidden />
-                    </button>
-                    <button
-                      type="button"
-                      className="prototype-preview-viewport-btn"
-                      aria-pressed={previewViewport === "mobile"}
-                      aria-label={t.viewportMobile}
-                      onClick={() => setPreviewViewport("mobile")}
-                    >
-                      <Smartphone size={18} strokeWidth={2} aria-hidden />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="prototype-preview-actions">
-                  <button
-                    type="button"
-                    className="prototype-preview-back"
-                    onClick={closePreview}
-                  >
-                    <span className="prototype-preview-back-label prototype-preview-back-label--full">
-                      {t.previewBack}
-                    </span>
-                    <span className="prototype-preview-back-label prototype-preview-back-label--short">
-                      {t.previewBackShort}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    className={`prototype-preview-cta landing-primary-cta ${headerPrimaryCtaClassName}`}
-                    style={headerPrimaryCtaStyle}
-                    onClick={() => {
-                      closePreview();
-                      window.requestAnimationFrame(() => scrollToSectionId("kontakt"));
-                    }}
-                  >
-                    {t.stickyCta}
-                  </button>
-                </div>
-              </nav>
-            </header>
             <div
               className={`prototype-preview-scroll${previewViewport === "mobile" ? " prototype-preview-scroll--device-mobile" : ""}`}
             >
@@ -545,6 +525,53 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
                   title={activePreview.title}
                   className="prototype-preview-frame"
                 />
+              </div>
+            </div>
+
+            <div
+              className={`prototype-preview-controls prototype-preview-controls--${previewChrome}`}
+              role="toolbar"
+              aria-label={isEn ? "Prototype preview controls" : "Ovládání náhledu prototypu"}
+            >
+              <div className="prototype-preview-controls-group">
+                <div
+                  className="prototype-preview-viewport"
+                  role="group"
+                  aria-label={t.viewportMode}
+                >
+                  <span className="prototype-preview-viewport-label">{t.viewportMode}</span>
+                  <button
+                    type="button"
+                    className="prototype-preview-viewport-btn"
+                    aria-pressed={previewViewport === "desktop"}
+                    aria-label={t.viewportDesktop}
+                    onClick={() => setPreviewViewport("desktop")}
+                  >
+                    <Monitor size={18} strokeWidth={2} aria-hidden />
+                  </button>
+                  <button
+                    type="button"
+                    className="prototype-preview-viewport-btn"
+                    aria-pressed={previewViewport === "mobile"}
+                    aria-label={t.viewportMobile}
+                    onClick={() => setPreviewViewport("mobile")}
+                  >
+                    <Smartphone size={18} strokeWidth={2} aria-hidden />
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  className="prototype-preview-back"
+                  onClick={closePreview}
+                >
+                  <span className="prototype-preview-back-label prototype-preview-back-label--full">
+                    {t.previewBack}
+                  </span>
+                  <span className="prototype-preview-back-label prototype-preview-back-label--short">
+                    {t.previewBackShort}
+                  </span>
+                </button>
               </div>
             </div>
           </div>,
@@ -711,150 +738,13 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           border-radius: 0;
           box-shadow: none;
           background: var(--pk-page);
-          display: grid;
-          grid-template-rows: auto minmax(0, 1fr);
           overflow: hidden;
-        }
-        .prototype-preview-bar{
-          position: sticky;
-          top: 0;
-          z-index: 3;
-          flex: 0 0 auto;
-          width: 100%;
-          background: var(--pk-page);
-          border-bottom: 1px solid rgb(15 23 42 / 0.05);
-          box-shadow: 0 1px 0 rgb(15 23 42 / 0.05);
-        }
-        .prototype-preview-nav{
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px 20px;
-          width: 100%;
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 15px 24px;
-          box-sizing: border-box;
-        }
-        .prototype-preview-brand,
-        .prototype-preview-actions{
-          flex: 0 0 auto;
-          display: flex;
-          align-items: center;
-        }
-        .prototype-preview-logo-btn{
-          display: block;
-          border: none;
-          padding: 0;
-          margin: 0;
-          background: transparent;
-          cursor: pointer;
-          border-radius: 6px;
-        }
-        .prototype-preview-logo-btn:focus-visible{
-          outline: 2px solid var(--pk-accent);
-          outline-offset: 3px;
-        }
-        .prototype-preview-logo{
-          display: block;
-          height: 59.2px;
-          width: auto;
-        }
-        .prototype-preview-center{
-          flex: 1 1 auto;
-          min-width: 0;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          gap: 14px;
-          padding: 0 12px;
-        }
-        .prototype-preview-title{
-          margin: 0;
-          max-width: 100%;
-          font-family: "Montserrat", sans-serif;
-          font-weight: 700;
-          font-size: clamp(14px, 1.6vw, 17px);
-          line-height: 1.25;
-          letter-spacing: -0.02em;
-          color: var(--pk-ink);
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .prototype-preview-viewport{
-          display: inline-flex;
-          align-items: center;
-          gap: 2px;
-          padding: 3px;
-          border-radius: 10px;
-          border: 1px solid var(--pk-slate-tint-10);
-          background: var(--pk-slate-tint-08);
-        }
-        .prototype-preview-viewport-btn{
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 38px;
-          height: 34px;
-          border: none;
-          border-radius: 8px;
-          padding: 0;
-          background: transparent;
-          color: var(--pk-ink);
-          cursor: pointer;
-          transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
-        }
-        .prototype-preview-viewport-btn:hover{
-          color: var(--pk-brand-4);
-        }
-        .prototype-preview-viewport-btn[aria-pressed="true"]{
-          background: var(--pk-page);
-          color: var(--pk-brand-4);
-          box-shadow: 0 2px 10px rgb(2 6 23 / 0.08);
-        }
-        .prototype-preview-viewport-btn:focus-visible{
-          outline: 2px solid var(--pk-accent);
-          outline-offset: 2px;
-        }
-        .prototype-preview-actions{
-          gap: 10px;
-        }
-        .prototype-preview-back{
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          box-sizing: border-box;
-          border: 1px solid var(--pk-slate-tint-10);
-          border-radius: 12px;
-          padding: ${HEADER_CTA_PAD_Y}px 16px;
-          background: var(--pk-page);
-          color: var(--pk-ink);
-          font-family: "Montserrat", sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 1.2;
-          letter-spacing: 0.01em;
-          cursor: pointer;
-          white-space: nowrap;
-          transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
-        }
-        .prototype-preview-back:hover{
-          border-color: var(--pk-slate-tint-16);
-          transform: translateY(-1px);
-        }
-        .prototype-preview-back:focus-visible{
-          outline: 2px solid var(--pk-accent);
-          outline-offset: 2px;
-        }
-        .prototype-preview-back-label--short{
-          display: none;
         }
         .prototype-preview-scroll{
-          min-height: 0;
+          position: absolute;
+          inset: 0;
           width: 100%;
+          height: 100%;
           overflow: auto;
           -webkit-overflow-scrolling: touch;
           background: var(--pk-page);
@@ -885,6 +775,161 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           margin: 0;
           padding: 0;
           background: var(--pk-page);
+        }
+        .prototype-preview-controls{
+          position: fixed;
+          top: max(10px, env(safe-area-inset-top, 0px));
+          left: 12px;
+          right: 12px;
+          z-index: 5;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 10px;
+          pointer-events: none;
+        }
+        .prototype-preview-controls-group{
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          pointer-events: auto;
+        }
+        @media (min-width: 901px){
+          .prototype-preview-controls{
+            left: auto;
+            right: 0;
+            padding-right: 30px;
+          }
+        }
+        .prototype-preview-back,
+        .prototype-preview-viewport{
+          display: inline-flex;
+          align-items: center;
+          box-sizing: border-box;
+          border-radius: 12px;
+          height: 44px;
+          padding: 0 14px;
+          flex-shrink: 0;
+          backdrop-filter: blur(14px) saturate(1.15);
+          -webkit-backdrop-filter: blur(14px) saturate(1.15);
+          transition:
+            background 220ms ease,
+            border-color 220ms ease,
+            color 220ms ease,
+            box-shadow 220ms ease,
+            transform 200ms ease;
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-back,
+        .prototype-preview-controls--on-dark .prototype-preview-viewport{
+          background: rgb(255 255 255 / 0.9);
+          border: 1px solid rgb(255 255 255 / 0.34);
+          box-shadow:
+            0 2px 8px rgb(2 6 23 / 0.06),
+            0 10px 32px rgb(2 6 23 / 0.12);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-back,
+        .prototype-preview-controls--on-light .prototype-preview-viewport{
+          background: rgb(15 23 42 / 0.88);
+          border: 1px solid rgb(255 255 255 / 0.12);
+          box-shadow:
+            0 2px 8px rgb(2 6 23 / 0.18),
+            0 10px 32px rgb(2 6 23 / 0.22);
+        }
+        .prototype-preview-back{
+          justify-content: center;
+          cursor: pointer;
+          white-space: nowrap;
+          border: none;
+        }
+        .prototype-preview-viewport-label,
+        .prototype-preview-back{
+          font-family: "Montserrat", sans-serif;
+          font-weight: 600;
+          font-size: 15px;
+          line-height: 1.2;
+          letter-spacing: 0.01em;
+        }
+        .prototype-preview-viewport-label{
+          white-space: nowrap;
+          user-select: none;
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-back{
+          color: var(--pk-ink);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-back{
+          color: #fff;
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-back:hover,
+        .prototype-preview-controls--on-dark .prototype-preview-viewport:hover{
+          background: rgb(255 255 255 / 0.96);
+          transform: translateY(-1px);
+          box-shadow:
+            0 4px 12px rgb(2 6 23 / 0.08),
+            0 14px 36px rgb(2 6 23 / 0.14);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-back:hover,
+        .prototype-preview-controls--on-light .prototype-preview-viewport:hover{
+          background: rgb(15 23 42 / 0.94);
+          transform: translateY(-1px);
+          box-shadow:
+            0 4px 12px rgb(2 6 23 / 0.22),
+            0 14px 36px rgb(2 6 23 / 0.28);
+        }
+        .prototype-preview-back:focus-visible{
+          outline: 2px solid var(--pk-accent);
+          outline-offset: 2px;
+        }
+        .prototype-preview-back-label--short{
+          display: none;
+        }
+        .prototype-preview-viewport{
+          gap: 10px;
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-label{
+          color: var(--pk-ink);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-viewport-label{
+          color: rgb(255 255 255 / 0.92);
+        }
+        .prototype-preview-viewport-btn{
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 28px;
+          border: none;
+          border-radius: 8px;
+          padding: 0;
+          background: transparent;
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn{
+          color: var(--pk-ink);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-viewport-btn{
+          color: rgb(255 255 255 / 0.88);
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn:hover{
+          color: var(--pk-brand-4);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-viewport-btn:hover{
+          color: #fff;
+        }
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn[aria-pressed="true"]{
+          background: rgb(255 255 255 / 0.95);
+          color: var(--pk-brand-4);
+          box-shadow: 0 2px 10px rgb(2 6 23 / 0.08);
+        }
+        .prototype-preview-controls--on-light .prototype-preview-viewport-btn[aria-pressed="true"]{
+          background: rgb(255 255 255 / 0.14);
+          color: #fff;
+          box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+        }
+        .prototype-preview-viewport-btn:focus-visible{
+          outline: 2px solid var(--pk-accent);
+          outline-offset: 2px;
         }
         @media (max-width: 1024px){
           .prototype-showcase-section{
@@ -1087,27 +1132,11 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           }
           .prototype-mobile-title{ font-size: 16px; }
           .prototype-mobile-body{ font-size: 13px; line-height: 1.5; }
-          .prototype-preview-brand{
-            display: none !important;
-          }
-          .prototype-preview-center{
-            display: none;
-          }
-          .prototype-preview-viewport{
-            display: none !important;
-          }
-          .prototype-preview-nav{
-            padding: 15px 20px;
-            gap: 10px;
-            justify-content: space-between;
-          }
-          .prototype-preview-actions{
-            flex: 1 1 auto;
-            min-width: 0;
-            width: 100%;
-            margin-left: 0;
-            justify-content: space-between;
-            gap: 10px;
+          .prototype-preview-controls{
+            left: auto;
+            right: 0;
+            padding-right: 16px;
+            gap: 8px;
           }
           .prototype-preview-back-label--full{
             display: none;
@@ -1115,23 +1144,18 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           .prototype-preview-back-label--short{
             display: inline;
           }
-          .prototype-preview-back{
-            flex-shrink: 0;
+          .prototype-preview-back,
+          .prototype-preview-viewport{
+            height: 40px;
+            padding: 0 12px;
+          }
+          .prototype-preview-back,
+          .prototype-preview-viewport-label{
             font-size: 14px;
-            padding: ${HEADER_CTA_PAD_Y}px 14px;
           }
-          .prototype-preview-cta{
-            flex-shrink: 0;
-            margin-left: 0;
-            max-width: none;
-            font-size: 13px !important;
-            padding: ${HEADER_CTA_PAD_Y}px 14px !important;
-            white-space: nowrap;
-          }
-        }
-        @media (min-width: 768px){
-          .prototype-preview-logo{
-            height: 66px;
+          .prototype-preview-viewport-btn{
+            width: 30px;
+            height: 26px;
           }
         }
         @media (prefers-reduced-motion: reduce){
