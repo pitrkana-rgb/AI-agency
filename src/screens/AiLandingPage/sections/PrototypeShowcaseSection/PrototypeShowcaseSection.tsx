@@ -71,6 +71,12 @@ type PrototypeCard = {
   previewUrl: string;
 };
 
+const PREVIEW_MOBILE_BREAKPOINT_PX = 900;
+
+const isPreviewMobileScreen = (): boolean =>
+  typeof window !== "undefined" &&
+  window.matchMedia(`(max-width: ${PREVIEW_MOBILE_BREAKPOINT_PX}px)`).matches;
+
 const cards: PrototypeCard[] = [
   {
     title: "Profitherm Solution",
@@ -295,6 +301,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
   const [activePreview, setActivePreview] = useState<PrototypeCard | null>(null);
   const [previewViewport, setPreviewViewport] = useState<PreviewViewport>("desktop");
   const [previewChrome, setPreviewChrome] = useState<PreviewChrome>("on-dark");
+  const [previewMobileScreen, setPreviewMobileScreen] = useState(isPreviewMobileScreen);
   const [sectionRef, cardsVisible] = useInViewOnce({
     id: "prototype-showcase",
     threshold: 0.38,
@@ -372,7 +379,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
       suppressCardClickRef.current = false;
       return;
     }
-    setPreviewViewport("desktop");
+    setPreviewViewport(isPreviewMobileScreen() ? "mobile" : "desktop");
     setActivePreview(card);
   };
 
@@ -395,6 +402,18 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
   }, [activePreview?.imageId]);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${PREVIEW_MOBILE_BREAKPOINT_PX}px)`);
+    const syncPreviewLayout = () => {
+      const mobile = mediaQuery.matches;
+      setPreviewMobileScreen(mobile);
+      if (mobile) setPreviewViewport("mobile");
+    };
+    syncPreviewLayout();
+    mediaQuery.addEventListener("change", syncPreviewLayout);
+    return () => mediaQuery.removeEventListener("change", syncPreviewLayout);
+  }, []);
+
+  useEffect(() => {
     if (!activePreview) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") closePreview();
@@ -406,6 +425,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
       document.body.style.overflow = "";
     };
   }, [activePreview]);
+
+  const showDesktopMobileFrame =
+    !previewMobileScreen && previewViewport === "mobile";
 
   return (
     <section
@@ -509,16 +531,16 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
       {activePreview
         ? createPortal(
           <div
-            className="prototype-preview-overlay"
+            className={`prototype-preview-overlay${previewMobileScreen ? " prototype-preview-overlay--native-mobile" : ""}`}
             role="dialog"
             aria-modal="true"
             aria-label={activePreview.title}
           >
             <div
-              className={`prototype-preview-scroll${previewViewport === "mobile" ? " prototype-preview-scroll--device-mobile" : ""}`}
+              className={`prototype-preview-scroll${showDesktopMobileFrame ? " prototype-preview-scroll--device-mobile" : ""}`}
             >
               <div
-                className={`prototype-preview-stage${previewViewport === "mobile" ? " prototype-preview-stage--device-mobile" : ""}`}
+                className={`prototype-preview-stage${showDesktopMobileFrame ? " prototype-preview-stage--device-mobile" : ""}`}
               >
                 <iframe
                   src={activePreview.previewUrl}
@@ -534,31 +556,33 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
               aria-label={isEn ? "Prototype preview controls" : "Ovládání náhledu prototypu"}
             >
               <div className="prototype-preview-controls-group">
-                <div
-                  className="prototype-preview-viewport"
-                  role="group"
-                  aria-label={t.viewportMode}
-                >
-                  <span className="prototype-preview-viewport-label">{t.viewportMode}</span>
-                  <button
-                    type="button"
-                    className="prototype-preview-viewport-btn"
-                    aria-pressed={previewViewport === "desktop"}
-                    aria-label={t.viewportDesktop}
-                    onClick={() => setPreviewViewport("desktop")}
+                {!previewMobileScreen ? (
+                  <div
+                    className="prototype-preview-viewport"
+                    role="group"
+                    aria-label={t.viewportMode}
                   >
-                    <Monitor size={18} strokeWidth={2} aria-hidden />
-                  </button>
-                  <button
-                    type="button"
-                    className="prototype-preview-viewport-btn"
-                    aria-pressed={previewViewport === "mobile"}
-                    aria-label={t.viewportMobile}
-                    onClick={() => setPreviewViewport("mobile")}
-                  >
-                    <Smartphone size={18} strokeWidth={2} aria-hidden />
-                  </button>
-                </div>
+                    <span className="prototype-preview-viewport-label">{t.viewportMode}</span>
+                    <button
+                      type="button"
+                      className="prototype-preview-viewport-btn"
+                      aria-pressed={previewViewport === "desktop"}
+                      aria-label={t.viewportDesktop}
+                      onClick={() => setPreviewViewport("desktop")}
+                    >
+                      <Monitor size={18} strokeWidth={2} aria-hidden />
+                    </button>
+                    <button
+                      type="button"
+                      className="prototype-preview-viewport-btn"
+                      aria-pressed={previewViewport === "mobile"}
+                      aria-label={t.viewportMobile}
+                      onClick={() => setPreviewViewport("mobile")}
+                    >
+                      <Smartphone size={18} strokeWidth={2} aria-hidden />
+                    </button>
+                  </div>
+                ) : null}
 
                 <button
                   type="button"
@@ -775,6 +799,31 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           margin: 0;
           padding: 0;
           background: var(--pk-page);
+        }
+        .prototype-preview-overlay--native-mobile .prototype-preview-scroll,
+        .prototype-preview-overlay--native-mobile .prototype-preview-stage,
+        .prototype-preview-overlay--native-mobile .prototype-preview-frame{
+          width: 100%;
+          height: 100%;
+          min-height: 100%;
+          max-width: none;
+          margin: 0;
+          box-shadow: none;
+          background: var(--pk-page);
+        }
+        @media (max-width: ${PREVIEW_MOBILE_BREAKPOINT_PX}px){
+          .prototype-preview-viewport{
+            display: none !important;
+          }
+          .prototype-preview-scroll,
+          .prototype-preview-stage{
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+          }
+          .prototype-preview-stage--device-mobile{
+            width: min(${PREVIEW_MOBILE_FRAME_WIDTH_PX}px, 100%);
+          }
         }
         .prototype-preview-controls{
           position: fixed;
