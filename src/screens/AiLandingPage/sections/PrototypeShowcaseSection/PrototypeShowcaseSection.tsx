@@ -26,7 +26,7 @@ const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   dentio: "on-light",
   "jan-novak": "on-dark",
   "vas-financni-partner": "on-light",
-  "osobni-makler": "on-light",
+  "bazar-sport-motokros": "on-light",
 };
 
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
@@ -87,12 +87,12 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://profithermsolution.cz/",
   },
   {
-    title: "Osobní makléř",
-    badge: "Reality",
+    title: "Bazar-Sport-Motokros",
+    badge: "Sport",
     description:
-      "Prémiová prezentace pro makléře, kteří chtějí působit moderně a důvěryhodně. Web usnadňuje prezentaci nabídek a podporuje rychlejší kontakt od zájemců.",
-    imageId: "osobni-makler",
-    previewUrl: "https://domov-snadno.vercel.app/",
+      "Web pro sportovní bazar se zaměřením hlavně na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka sortimentu podle sezóny a snadný nákup pro aktivní zákazníky.",
+    imageId: "bazar-sport-motokros",
+    previewUrl: "https://ski-spot-landing.vercel.app/",
   },
   {
     title: "Dentio",
@@ -138,12 +138,12 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://profithermsolution.cz/",
   },
   {
-    title: "Personal broker",
-    badge: "Real estate",
+    title: "Bazar-Sport-Motokros",
+    badge: "Sport",
     description:
-      "A premium presentation for agents who want to look modern and trustworthy. The site showcases listings clearly and encourages faster contact from prospects.",
-    imageId: "osobni-makler",
-    previewUrl: "https://domov-snadno.vercel.app/",
+      "A sports shop site focused mainly on skis and winter gear, with bikes and cycling equipment in summer. Clear seasonal ranges and straightforward shopping for active customers year-round.",
+    imageId: "bazar-sport-motokros",
+    previewUrl: "https://ski-spot-landing.vercel.app/",
   },
   {
     title: "Dentio",

@@ -22,14 +22,20 @@ const DESKTOP_WIDTHS = [640, 960, 1280, 1600, 1920];
 const MOBILE_ASPECT = { w: 327, h: 750 };
 const MOBILE_WIDTHS = [320, 480, 640, 960, 1280];
 
+/** Map Project_images filename stem → hero-previews folder id. */
+const HERO_ID_ALIASES = {
+  lyze: "bazar-sport-motokros",
+};
+
 const files = readdirSync(srcDir);
 const desktopFiles = files.filter((f) => /-desktop\.png$/i.test(f));
 
 for (const file of desktopFiles) {
-  const id = file.replace(/-desktop\.png$/i, "").toLowerCase();
+  const rawId = file.replace(/-desktop\.png$/i, "").toLowerCase();
+  const id = HERO_ID_ALIASES[rawId] ?? rawId;
   const desktopSrc = join(srcDir, file);
   const mobileFile = files.find(
-    (f) => f.replace(/\.png$/i, "").toLowerCase() === `${id}-mobil`,
+    (f) => f.replace(/\.png$/i, "").toLowerCase() === `${rawId}-mobil`,
   );
   const mobileSrc = mobileFile ? join(srcDir, mobileFile) : null;
 

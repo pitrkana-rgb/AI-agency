@@ -16,13 +16,21 @@ const outRoot = join(root, "public", "prototype-previews");
 /** Display widths; 2× covers retina in ~450px cards. */
 const WIDTHS = [480, 720, 960, 1280, 1600];
 
+/** Map source filename stem → public preview folder id (when they differ). */
+const PROTOTYPE_ID_ALIASES = {
+  lyze: "bazar-sport-motokros",
+};
+
 const SOURCES = [
   { id: "profitherm", file: join(root, "Images", "Project_images", "Profitherm-desktop.png") },
   { id: "black-beard", file: join(root, "Images", "Project_images", "Barber-desktop.png") },
   { id: "dentio", file: join(root, "Images", "Project_images", "Dentist-desktop.png") },
   { id: "jan-novak", file: join(root, "Images", "Prototypes", "fitness trenér.png") },
   { id: "vas-financni-partner", file: join(root, "Images", "Prototypes", "investiční poradce.png") },
-  { id: "osobni-makler", file: join(root, "Images", "Prototypes", "realitní makléř.png") },
+  {
+    id: PROTOTYPE_ID_ALIASES.lyze,
+    file: join(root, "Images", "Project_images", "Lyze-desktop.png"),
+  },
 ];
 
 for (const { id, file } of SOURCES) {
