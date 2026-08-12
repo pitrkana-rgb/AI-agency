@@ -25,6 +25,8 @@ const MOBILE_WIDTHS = [320, 480, 640, 960, 1280];
 /** Map Project_images filename stem → hero-previews folder id. */
 const HERO_ID_ALIASES = {
   lyze: "bazar-sport-motokros",
+  /** Trifer desktop/mobile replace former Barber / Black Beard visuals. */
+  trifer: "black-beard",
 };
 
 const files = readdirSync(srcDir);
@@ -34,9 +36,12 @@ for (const file of desktopFiles) {
   const rawId = file.replace(/-desktop\.png$/i, "").toLowerCase();
   const id = HERO_ID_ALIASES[rawId] ?? rawId;
   const desktopSrc = join(srcDir, file);
-  const mobileFile = files.find(
-    (f) => f.replace(/\.png$/i, "").toLowerCase() === `${rawId}-mobil`,
-  );
+  const mobileCandidates = [`${rawId}-mobilv2`, `${rawId}-mobil`];
+  const mobileFile = mobileCandidates
+    .map((candidate) =>
+      files.find((f) => f.replace(/\.png$/i, "").toLowerCase() === candidate),
+    )
+    .find(Boolean);
   const mobileSrc = mobileFile ? join(srcDir, mobileFile) : null;
 
   const desktopOut = join(outRoot, id, "desktop");

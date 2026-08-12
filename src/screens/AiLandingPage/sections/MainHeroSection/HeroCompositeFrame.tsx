@@ -41,12 +41,29 @@ const shotLayerStyle: CSSProperties = {
   imageRendering: "auto",
 };
 
+/** Fit mobile shot to slot width; keep aspect ratio; pin to existing bottom edge. */
+const mobileShotLayerStyle: CSSProperties = {
+  position: "absolute",
+  left: 0,
+  bottom: 0,
+  top: "auto",
+  width: "100%",
+  height: "auto",
+  maxWidth: "none",
+  pointerEvents: "none",
+  transition: `opacity ${FADE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+  willChange: "opacity",
+  transform: "translateZ(0)",
+  backfaceVisibility: "hidden",
+  imageRendering: "auto",
+  clipPath: "inset(0 0 10px 0)",
+};
+
 type HeroScreenCarouselProps = {
   projectIds: readonly string[];
   variant: "desktop" | "mobile";
   activeIdx: number;
   className?: string;
-  objectFit?: "cover" | "contain";
 };
 
 /** Crossfades screenshots inside one frame cutout (index controlled by parent for sync). */
@@ -55,7 +72,6 @@ const HeroScreenCarousel = ({
   variant,
   activeIdx,
   className,
-  objectFit = "cover",
 }: HeroScreenCarouselProps): JSX.Element | null => {
   if (projectIds.length === 0) return null;
 
@@ -64,6 +80,7 @@ const HeroScreenCarousel = ({
   const widths = isDesktop ? HERO_DESKTOP_WIDTHS : HERO_MOBILE_WIDTHS;
   const sizes = isDesktop ? HERO_DESKTOP_SIZES : HERO_MOBILE_SIZES;
   const intrinsic = isDesktop ? HERO_DESKTOP_INTRINSIC : HERO_MOBILE_INTRINSIC;
+  const layerStyle = isDesktop ? shotLayerStyle : mobileShotLayerStyle;
 
   return (
     <>
@@ -77,9 +94,8 @@ const HeroScreenCarousel = ({
           height={intrinsic.height}
           className={className}
           style={{
-            ...shotLayerStyle,
-            objectFit,
-            objectPosition: isDesktop ? "top center" : "center center",
+            ...layerStyle,
+            ...(isDesktop ? { objectFit: "cover", objectPosition: "top center" } : null),
             opacity: i === activeIdx ? 1 : 0,
             zIndex: i === activeIdx ? 2 : 1,
           }}
@@ -172,7 +188,6 @@ export const HeroCompositeFrame = memo(function HeroCompositeFrame({
           variant="mobile"
           activeIdx={safeIdx}
           className="hero-project-shot hero-project-shot--phone"
-          objectFit="contain"
         />
       </div>
       <img

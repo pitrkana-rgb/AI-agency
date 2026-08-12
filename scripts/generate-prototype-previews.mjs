@@ -23,14 +23,11 @@ const PROTOTYPE_ID_ALIASES = {
 
 const SOURCES = [
   { id: "profitherm", file: join(root, "Images", "Project_images", "Profitherm-desktop.png") },
-  { id: "black-beard", file: join(root, "Images", "Project_images", "Barber-desktop.png") },
-  { id: "dentio", file: join(root, "Images", "Project_images", "Dentist-desktop.png") },
-  { id: "jan-novak", file: join(root, "Images", "Prototypes", "fitness trenér.png") },
-  { id: "vas-financni-partner", file: join(root, "Images", "Prototypes", "investiční poradce.png") },
   {
     id: PROTOTYPE_ID_ALIASES.lyze,
     file: join(root, "Images", "Project_images", "Lyze-desktop.png"),
   },
+  { id: "black-beard", file: join(root, "Images", "Project_images", "Trifer-desktop.png") },
 ];
 
 for (const { id, file } of SOURCES) {

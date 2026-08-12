@@ -23,15 +23,13 @@ type PreviewChrome = "on-dark" | "on-light";
 const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   profitherm: "on-dark",
   "black-beard": "on-dark",
-  dentio: "on-light",
-  "jan-novak": "on-dark",
-  "vas-financni-partner": "on-light",
   "bazar-sport-motokros": "on-light",
 };
 
 /** Per-prototype chrome pinned over thumbnail luminance detection. */
 const PREVIEW_CHROME_OVERRIDE: Partial<Record<string, PreviewChrome>> = {
   "bazar-sport-motokros": "on-light",
+  "black-beard": "on-dark",
 };
 
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
@@ -70,7 +68,6 @@ const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =
 
 type PrototypeCard = {
   title: string;
-  badge: string;
   description: string;
   imageId: string;
   previewUrl: string;
@@ -85,102 +82,48 @@ const isPreviewMobileScreen = (): boolean =>
 const cards: PrototypeCard[] = [
   {
     title: "Profitherm Solution",
-    badge: "Rekonstrukce",
     description:
       "Web zaměřený na dotační programy a rekonstrukce domů na klíč. Jasně vysvětluje služby, buduje důvěru a pomáhá přivádět kvalitní poptávky od majitelů nemovitostí.",
     imageId: "profitherm",
     previewUrl: "https://profithermsolution.cz/",
   },
   {
+    title: "TRIFER",
+    description:
+      "Web pro společnost zaměřenou na výrobu a montáž ocelových konstrukcí pro firmy i soukromé zákazníky. Moderní prezentace služeb s důrazem na získávání nových poptávek.",
+    imageId: "black-beard",
+    previewUrl: "https://laser-steel-structures.vercel.app/",
+  },
+  {
     title: "Bazar-Sport-Motokros",
-    badge: "Sport",
     description:
       "Web pro sportovní bazar se zaměřením hlavně na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka sortimentu podle sezóny a snadný nákup pro aktivní zákazníky.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
-  },
-  {
-    title: "Dentio",
-    badge: "Zubní ordinace",
-    description:
-      "Profesionální prezentace pro zubaře a dentální hygienisty. Přehledné služby, moderní vizuál a snadný kontakt pomáhají pacientům rychle objednat termín a posílit důvěru v ordinaci.",
-    imageId: "dentio",
-    previewUrl: "https://dentio.vercel.app/",
-  },
-  {
-    title: "Jan Novák",
-    badge: "Fitness",
-    description:
-      "Dynamický web zaměřený na osobní značku trenéra a získávání rezervací. Přehledné sekce, silný vizuál a důraz na výsledky klientů pomáhají zvýšit počet nových zájemců.",
-    imageId: "jan-novak",
-    previewUrl: "https://fitness-trainer-alpha.vercel.app/",
-  },
-  {
-    title: "Váš finanční partner",
-    badge: "Finance",
-    description:
-      "Web vytvořený pro profesionální prezentaci finančních služeb a budování důvěry. Pomáhá jednoduše vysvětlit nabídku a přivádět nové klienty přes kvalitní poptávky.",
-    imageId: "vas-financni-partner",
-    previewUrl: "https://financni-partner-demo.vercel.app/",
-  },
-  {
-    title: "Black Beard",
-    badge: "Barbershop",
-    description:
-      "Stylový web pro pánský barbershop s důrazem na atmosféru a řemeslo. Prezentuje služby, ceník a rezervace tak, aby zákazníci snadno našli termín a vraceli se pravidelně.",
-    imageId: "black-beard",
-    previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
 
 const cardsEn: PrototypeCard[] = [
   {
     title: "Profitherm Solution",
-    badge: "Renovation",
     description:
       "A website focused on grant programs and turnkey home renovations. It explains services clearly, builds trust, and brings quality inquiries from property owners.",
     imageId: "profitherm",
     previewUrl: "https://profithermsolution.cz/",
   },
   {
+    title: "TRIFER",
+    description:
+      "A website for a company specializing in the manufacture and assembly of steel structures for businesses and private clients. A modern presentation of services focused on generating new inquiries.",
+    imageId: "black-beard",
+    previewUrl: "https://laser-steel-structures.vercel.app/",
+  },
+  {
     title: "Bazar-Sport-Motokros",
-    badge: "Sport",
     description:
       "A sports shop site focused mainly on skis and winter gear, with bikes and cycling equipment in summer. Clear seasonal ranges and straightforward shopping for active customers year-round.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
-  },
-  {
-    title: "Dentio",
-    badge: "Dental",
-    description:
-      "A professional presentation for dentists and dental hygienists. Clear services, a modern look, and easy contact help patients book faster and trust the practice.",
-    imageId: "dentio",
-    previewUrl: "https://dentio.vercel.app/",
-  },
-  {
-    title: "Jan Novák",
-    badge: "Fitness",
-    description:
-      "A dynamic website focused on the trainer’s personal brand and booking growth. Strong visuals and clear sections help turn visitors into new inquiries.",
-    imageId: "jan-novak",
-    previewUrl: "https://fitness-trainer-alpha.vercel.app/",
-  },
-  {
-    title: "Your financial partner",
-    badge: "Finance",
-    description:
-      "A website built for a professional financial services presentation and trust-building. It explains the offer clearly and brings new clients through high-quality inquiries.",
-    imageId: "vas-financni-partner",
-    previewUrl: "https://financni-partner-demo.vercel.app/",
-  },
-  {
-    title: "Black Beard",
-    badge: "Barbershop",
-    description:
-      "A stylish website for a men’s barbershop with a focus on atmosphere and craft. It showcases services, pricing, and booking so clients find a slot and keep coming back.",
-    imageId: "black-beard",
-    previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
 
@@ -223,7 +166,6 @@ const PrototypeShowcaseMobileCard = ({
       </div>
       <div className="prototype-mobile-heading">
         <h3 className="prototype-mobile-title">{card.title}</h3>
-        <span className="prototype-item-badge">{card.badge}</span>
       </div>
       <p className="prototype-mobile-body">{card.description}</p>
     </article>
@@ -268,7 +210,6 @@ const PrototypeShowcaseItem = ({
       </div>
       <div className="prototype-item-heading">
         <h3 className="prototype-item-title">{card.title}</h3>
-        <span className="prototype-item-badge">{card.badge}</span>
       </div>
       <p className="prototype-item-desc">{card.description}</p>
     </article>
@@ -280,9 +221,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
   const isEn = language === "en";
   const t = isEn
     ? {
-        heading: "Get a free website design in 3 days",
+        heading: "Completed website showcases",
         subheading:
-          "Browse sample prototypes and get a sense of the quality you'll receive free of charge within 3 days. I'll create your design tailored to your business, and if you're happy with it, I'll turn it into a professional website ready to represent your brand at the highest level.",
+          "Real projects from concept to launch. Every website is designed for a specific business and its customers.",
         previewBack: "Back to showcase",
         previewBackShort: "Back",
         viewportDesktop: "Desktop layout",
@@ -291,9 +232,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         previewHint: "Tap for preview",
       }
     : {
-        heading: "Návrh webu zdarma do 3 dnů",
+        heading: "Ukázky hotových webů",
         subheading:
-          "Prohlédněte si ukázkové prototypy a udělejte si představu o kvalitě zpracování, kterou zdarma získáte do 3 dnů. Váš návrh vytvořím na míru vašemu podnikání a pokud budete spokojeni, proměním jej v profesionální web připravený reprezentovat vaši značku na nejvyšší úrovni.",
+          "Ukázky reálných projektů od návrhu až po finální spuštění. Každý web navrhujeme na míru konkrétnímu podnikání a jeho zákazníkům.",
         previewBack: "Zpět na ukázky",
         previewBackShort: "Zpět",
         viewportDesktop: "Rozložení pro počítač",
@@ -521,7 +462,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           </div>
           </div>
 
-          <div className="prototype-mobile-dots" role="tablist" aria-label={isEn ? "Prototype slides" : "Prototypy"}>
+          <div className="prototype-mobile-dots" role="tablist" aria-label={isEn ? "Website showcases" : "Ukázky webů"}>
             {activeCards.map((_, i) => (
               <button
                 key={i}
@@ -619,7 +560,12 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             padding-top: 30px !important;
           }
           .prototype-section-sub{
-            max-width: 100%;
+            max-width: 820px;
+          }
+          .prototype-grid{
+            gap: 40px;
+            max-width: 1280px;
+            margin: 0 auto;
           }
         }
         .prototype-grid{
@@ -643,6 +589,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           cursor: pointer;
           -webkit-tap-highlight-color: transparent;
           transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+          text-align: center;
         }
         @media (min-width: 901px) {
           .prototype-grid-desktop .prototype-item{
@@ -716,7 +663,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         .prototype-item-heading{
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: center;
           gap: 12px;
           width: 100%;
         }
@@ -728,26 +675,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           line-height: 1.2;
           letter-spacing: -0.02em;
           color: var(--pk-ink);
-          text-align: left;
+          text-align: center;
           flex: 1 1 auto;
           min-width: 0;
-        }
-        .prototype-item-badge{
-          flex: 0 0 auto;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 6px 12px;
-          border-radius: 999px;
-          font-family: "Montserrat", sans-serif;
-          font-weight: 700;
-          font-size: 12px;
-          line-height: 1;
-          letter-spacing: 0.02em;
-          color: var(--pk-ink);
-          background: var(--pk-slate-tint-06);
-          border: 1px solid var(--pk-slate-tint-16);
-          white-space: nowrap;
         }
         .prototype-item-desc{
           margin: 0;
@@ -756,7 +686,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           font-size: 14px;
           line-height: 1.65;
           color: var(--pk-ink);
-          text-align: left;
+          text-align: center;
         }
         .prototype-preview-overlay{
           position: fixed;
@@ -1041,7 +971,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
               0 4px 12px rgb(15 23 42 / 0.07);
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
-            text-align: left;
+            text-align: center;
           }
           .prototype-mobile-card:focus-visible{
             outline: 2px solid var(--pk-accent);
@@ -1124,7 +1054,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           .prototype-mobile-heading{
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             gap: 10px;
             margin: 0 0 8px;
           }
@@ -1138,7 +1068,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             color: var(--pk-ink);
             flex: 1 1 auto;
             min-width: 0;
-            text-align: left;
+            text-align: center;
           }
           .prototype-mobile-body{
             margin: 0;
@@ -1147,6 +1077,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             font-size: 14px;
             line-height: 1.55;
             color: var(--pk-ink);
+            text-align: center;
           }
           .prototype-mobile-dots{
             display: flex;
