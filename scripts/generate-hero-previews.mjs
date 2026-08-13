@@ -30,12 +30,32 @@ const HERO_ID_ALIASES = {
 };
 
 const files = readdirSync(srcDir);
-const desktopFiles = files.filter((f) => /-desktop\.png$/i.test(f));
+const desktopBaseIds = [
+  ...new Set(
+    files
+      .map((f) => {
+        const stem = f.replace(/\.png$/i, "").toLowerCase();
+        const match = stem.match(/^(.+)-desktop(?:v\d+)?$/);
+        return match ? match[1] : null;
+      })
+      .filter(Boolean),
+  ),
+];
 
-for (const file of desktopFiles) {
-  const rawId = file.replace(/-desktop\.png$/i, "").toLowerCase();
+for (const rawId of desktopBaseIds) {
   const id = HERO_ID_ALIASES[rawId] ?? rawId;
-  const desktopSrc = join(srcDir, file);
+  const desktopCandidates = [
+    `${rawId}-desktopv3`,
+    `${rawId}-desktopv2`,
+    `${rawId}-desktop`,
+  ];
+  const desktopFile = desktopCandidates
+    .map((candidate) =>
+      files.find((f) => f.replace(/\.png$/i, "").toLowerCase() === candidate),
+    )
+    .find(Boolean);
+  if (!desktopFile) continue;
+  const desktopSrc = join(srcDir, desktopFile);
   const mobileCandidates = [`${rawId}-mobilv2`, `${rawId}-mobil`];
   const mobileFile = mobileCandidates
     .map((candidate) =>
@@ -55,7 +75,7 @@ for (const file of desktopFiles) {
       .resize(width, height, { fit: "cover", position: "north" })
       .webp({ quality: 88, effort: 4, smartSubsample: true })
       .toFile(out);
-    console.log("Wrote:", out);
+    console.log("Wrote:", out, "←", desktopFile);
   }
 
   if (mobileSrc && existsSync(mobileSrc)) {
@@ -74,4 +94,4 @@ for (const file of desktopFiles) {
   }
 }
 
-console.log("Done —", desktopFiles.length, "hero projects");
+console.log("Done —", desktopBaseIds.length, "hero projects");

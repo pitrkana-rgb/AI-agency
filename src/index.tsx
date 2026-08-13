@@ -10,7 +10,6 @@ import { PrivacyPolicyPage } from "./screens/PrivacyPolicyPage/PrivacyPolicyPage
 import { TermsPage } from "./screens/TermsPage/TermsPage";
 import { NotFoundPage } from "./screens/NotFoundPage/NotFoundPage";
 import { CookieConsentBanner } from "./components/CookieConsentBanner";
-import { StickyContactRail } from "./components/StickyContactRail";
 import { LanguageProvider } from "./i18n/LanguageContext";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
@@ -28,7 +27,6 @@ createRoot(document.getElementById("app") as HTMLElement).render(
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <CookieConsentBanner />
-        <StickyContactRail />
         <Analytics />
       </BrowserRouter>
     </LanguageProvider>

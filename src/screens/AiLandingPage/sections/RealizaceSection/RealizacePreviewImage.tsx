@@ -1,30 +1,30 @@
 import { ResponsiveWebpImage } from "../../../../components/ResponsiveWebpImage";
 import {
-  PROTOTYPE_PREVIEW_INTRINSIC,
-  PROTOTYPE_PREVIEW_SIZES,
-  prototypePreviewBasePath,
-  PROTOTYPE_PREVIEW_WIDTHS,
-} from "./prototypePreviewAssets";
+  REALIZACE_PREVIEW_INTRINSIC,
+  REALIZACE_PREVIEW_SIZES,
+  realizacePreviewBasePath,
+  REALIZACE_PREVIEW_WIDTHS,
+} from "./realizacePreviewAssets";
 
-type PrototypePreviewImageProps = {
+type RealizacePreviewImageProps = {
   imageId: string;
   className: string;
   loading?: "lazy" | "eager";
   fetchPriority?: "high" | "low" | "auto";
 };
 
-export const PrototypePreviewImage = ({
+export const RealizacePreviewImage = ({
   imageId,
   className,
   loading = "lazy",
   fetchPriority,
-}: PrototypePreviewImageProps): JSX.Element => (
+}: RealizacePreviewImageProps): JSX.Element => (
   <ResponsiveWebpImage
-    basePath={prototypePreviewBasePath(imageId)}
-    widths={PROTOTYPE_PREVIEW_WIDTHS}
-    sizes={PROTOTYPE_PREVIEW_SIZES}
-    width={PROTOTYPE_PREVIEW_INTRINSIC.width}
-    height={PROTOTYPE_PREVIEW_INTRINSIC.height}
+    basePath={realizacePreviewBasePath(imageId)}
+    widths={REALIZACE_PREVIEW_WIDTHS}
+    sizes={REALIZACE_PREVIEW_SIZES}
+    width={REALIZACE_PREVIEW_INTRINSIC.width}
+    height={REALIZACE_PREVIEW_INTRINSIC.height}
     className={className}
     loading={loading}
     fetchPriority={fetchPriority}

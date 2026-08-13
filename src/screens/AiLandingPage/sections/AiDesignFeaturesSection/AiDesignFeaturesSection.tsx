@@ -219,8 +219,8 @@ export const AiDesignFeaturesSection = (): JSX.Element => {
         display:flex;
         flex-direction: column;
         gap: 14px;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
       }
       .how-title{
         margin: 0;
@@ -382,6 +382,10 @@ export const AiDesignFeaturesSection = (): JSX.Element => {
         .how-row{
           grid-template-columns: 1fr;
           gap: 24px;
+        }
+        .how-left{
+          align-items: center;
+          text-align: center;
         }
         .how-sub{ max-width: none; }
       }

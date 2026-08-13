@@ -430,7 +430,7 @@ export const ReadyToDesignSection = ({ avoidFooterOverlap = false }: ReadyToDesi
                           e.currentTarget.style.filter = "";
                         }}
                       >
-                        {loading ? (isEn ? "Sending..." : "Odesílám...") : (isEn ? "Start consultation" : "Začít konzultovat")}
+                        {loading ? (isEn ? "Sending..." : "Odesílám...") : (isEn ? "Send inquiry" : "Odeslat poptávku")}
                       </button>
                     </div>
                   </div>

@@ -7,7 +7,8 @@ import { ClientTestimonialsSection } from "./sections/ClientTestimonialsSection"
 import { WhyChooseUsSection } from "./sections/WhyChooseUsSection/WhyChooseUsSection";
 import { CoNabizimeSection } from "./sections/CoNabizimeSection/CoNabizimeSection";
 import { BrandLogosCarouselSection } from "./sections/BrandLogosCarouselSection/BrandLogosCarouselSection";
-import { PrototypeShowcaseSection } from "./sections/PrototypeShowcaseSection/PrototypeShowcaseSection";
+import { RealizaceSection } from "./sections/RealizaceSection/RealizaceSection";
+import { FreeWebsiteProposalSection } from "./sections/FreeWebsiteProposalSection/FreeWebsiteProposalSection";
 // Hidden for now – re-enable by uncommenting import and section below
 // import { PriceCalculatorSection } from "./sections/PriceCalculatorSection/PriceCalculatorSection";
 import { Header } from "../../components/Header";
@@ -54,8 +55,12 @@ export const AiLandingPage = (): JSX.Element => {
             <CoNabizimeSection />
           </section>
 
-          <section className="section-mb-mobile prototype-section-wrap">
-            <PrototypeShowcaseSection />
+          <section className="section-mb-mobile realizace-section-wrap">
+            <RealizaceSection />
+          </section>
+
+          <section className="section-mb-mobile">
+            <FreeWebsiteProposalSection />
           </section>
 
           <div
@@ -140,7 +145,7 @@ export const AiLandingPage = (): JSX.Element => {
         }
 
         @media (max-width: 1024px) {
-          .prototype-section-wrap {
+          .realizace-section-wrap {
             overflow: visible;
           }
         }

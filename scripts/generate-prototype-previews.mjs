@@ -25,9 +25,9 @@ const SOURCES = [
   { id: "profitherm", file: join(root, "Images", "Project_images", "Profitherm-desktop.png") },
   {
     id: PROTOTYPE_ID_ALIASES.lyze,
-    file: join(root, "Images", "Project_images", "Lyze-desktop.png"),
+    file: join(root, "Images", "Project_images", "Lyze-desktopV3.png"),
   },
-  { id: "black-beard", file: join(root, "Images", "Project_images", "Trifer-desktop.png") },
+  { id: "black-beard", file: join(root, "Images", "Project_images", "Trifer-desktopV3.png") },
 ];
 
 for (const { id, file } of SOURCES) {

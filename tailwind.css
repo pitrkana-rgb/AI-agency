@@ -26,9 +26,10 @@
   animation: pulse-glow 2.5s ease-out infinite;
 }
 
-/* Primary CTA: same fill as header “Napište nám” (solid accent + ink text). */
+/* Primary CTA: same fill as header “Nezávazná poptávka” (magenta→cyan gradient + ink text). */
 .landing-primary-cta {
-  background-color: var(--pk-accent) !important;
+  background-color: transparent !important;
+  background-image: var(--pk-gradient-popular) !important;
   color: var(--pk-ink) !important;
   border: none;
   border-radius: 12px;

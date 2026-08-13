@@ -670,7 +670,7 @@ export const CoNabizimeSection = (): JSX.Element => {
               maxWidth: "980px",
             }}
           >
-            {isEn ? "I provide comprehensive digital services" : "Poskytuji komplexní digitální služby"}
+            {isEn ? "Custom websites, apps, and automation" : "Weby, aplikace a automatizace na míru"}
           </h2>
           <p
             className="section-sub offer-subheading"
@@ -684,8 +684,8 @@ export const CoNabizimeSection = (): JSX.Element => {
             }}
           >
             {isEn
-              ? "I create custom websites and applications, modernize corporate websites, and automate business processes. By combining modern design, SEO, and AI technology, I help companies grow and win more customers."
-              : "Tvořím webové stránky a aplikace na míru, modernizuji firemní weby a automatizuji procesy. Díky spojení moderního designu, SEO a AI technologií pomáhám firmám růst a získávat více zákazníků."}
+              ? "I create custom websites and applications, modernize corporate websites, and automate processes. By combining modern design, SEO, and AI technology, I help companies grow and win new customers."
+              : "Tvořím webové stránky a aplikace na míru, modernizuji firemní weby a automatizuji procesy. Spojením moderního designu, SEO a AI technologií pomáhám firmám růst a získávat nové zákazníky."}
           </p>
           <h3
             className={`offer-mobile-card-title pk-section-heading${cardVisible ? " is-visible" : ""}`}
@@ -1267,7 +1267,8 @@ export const CoNabizimeSection = (): JSX.Element => {
         }
 
         .offer-cta{
-          background-color: var(--pk-accent);
+          background-color: transparent;
+          background-image: var(--pk-gradient-popular);
           color: var(--pk-ink);
           border: none;
           border-radius: 12px;

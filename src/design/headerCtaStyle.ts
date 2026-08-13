@@ -1,12 +1,13 @@
 import type { CSSProperties } from "react";
 import { pk } from "./pkLandingColors";
 
-/** Matches Header.tsx “Napište nám” button. */
+/** Matches Header.tsx primary CTA + free-proposal banner button. */
 export const HEADER_CTA_PAD_Y = Math.round(11 * 0.8);
 export const HEADER_CTA_PAD_X = Math.round(28 * 0.8);
 
 export const headerPrimaryCtaStyle: CSSProperties = {
-  backgroundColor: pk.accent,
+  backgroundImage: pk.gradientPopular,
+  backgroundColor: "transparent",
   color: pk.ink,
   borderRadius: "12px",
   padding: `${HEADER_CTA_PAD_Y}px ${HEADER_CTA_PAD_X}px`,

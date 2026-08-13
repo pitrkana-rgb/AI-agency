@@ -4,6 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../i18n/LanguageContext";
 import companyLogoV4BlackUrl from "../../Images/Company_logo_V4_black.png";
 import { pk } from "../design/pkLandingColors";
+import {
+  headerPrimaryCtaClassName,
+  headerPrimaryCtaStyle,
+} from "../design/headerCtaStyle";
 import { scrollToSectionId } from "../utils/scrollToSection";
 
 const HEADER_PHONE_DISPLAY = "+420 725 703 868";
@@ -11,9 +15,6 @@ const HEADER_PHONE_HREF = "tel:+420725703868";
 const HEADER_EMAIL_DISPLAY = "info@pk-digital.cz";
 const HEADER_EMAIL_HREF = "mailto:info@pk-digital.cz";
 
-/** Matches header + hero primary CTA (tightened in steps vs original 15px). */
-const HEADER_CTA_PAD_Y = Math.round(11 * 0.8);
-const HEADER_CTA_PAD_X = Math.round(28 * 0.8);
 const CONTACT_ICON_PX = Math.round(15 * 1.3);
 const CONTACT_ICON_DRAWER_PX = Math.round(17 * 1.3);
 
@@ -215,21 +216,8 @@ export const Header = () => {
                             <button
                                 type="button"
                                 onClick={() => navigate("/napiste-nam")}
-                                style={{
-                                    backgroundColor: pk.accent,
-                                    color: pk.ink,
-                                    borderRadius: "12px",
-                                    padding: `${HEADER_CTA_PAD_Y}px ${HEADER_CTA_PAD_X}px`,
-                                    fontFamily: "'Montserrat', sans-serif",
-                                    fontWeight: 600,
-                                    fontSize: "16px",
-                                    textTransform: "none",
-                                    letterSpacing: "0.01em",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    transition: "transform 0.25s ease, filter 0.25s ease",
-                                }}
-                                className="animate-pulse-glow hero-primary-btn hover:brightness-105 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--pk-accent)] focus-visible:outline-offset-2"
+                                style={headerPrimaryCtaStyle}
+                                className={headerPrimaryCtaClassName}
                             >
                                 {t.writeUs}
                             </button>
@@ -389,17 +377,10 @@ export const Header = () => {
                         type="button"
                         onClick={() => { navigate("/napiste-nam"); setMenuOpen(false); }}
                         style={{
+                            ...headerPrimaryCtaStyle,
                             marginTop: "24px",
-                            backgroundColor: pk.accent,
-                            color: pk.ink,
-                            border: "none",
-                            borderRadius: "12px",
-                            padding: `${HEADER_CTA_PAD_Y}px ${HEADER_CTA_PAD_X}px`,
-                            fontFamily: "'Montserrat',sans-serif",
-                            fontWeight: 600,
-                            fontSize: "16px",
-                            cursor: "pointer",
                         }}
+                        className={headerPrimaryCtaClassName}
                     >
                         {t.writeUs}
                     </button>

@@ -1,4 +1,4 @@
-/** Mobile-only overlay: cursor + “tap/click for preview” (parent supplies positioning context). */
+/** Overlay: cursor + “tap/click for preview” (parent supplies positioning context). */
 export const MobilePreviewClickHint = ({ label }: { label: string }): JSX.Element => (
   <div className="pk-mobile-preview-click-hint" aria-hidden="true">
     <svg

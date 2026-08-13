@@ -28,16 +28,14 @@ export const NotFoundPage = (): JSX.Element => {
         <button
           type="button"
           onClick={() => navigate("/")}
-          className="animate-pulse-glow hero-primary-btn"
+          className="animate-pulse-glow hero-primary-btn landing-primary-cta"
           style={{
             padding: "9px 22px",
             borderRadius: "12px",
-            background: "var(--pk-gradient-popular)",
-            color: "#070B14",
             border: "none",
             fontFamily: "'Montserrat',sans-serif",
             fontWeight: 600,
-            fontSize: "14px",
+            fontSize: "16px",
             cursor: "pointer",
             transition: "transform 0.25s ease, filter 0.25s ease",
           }}

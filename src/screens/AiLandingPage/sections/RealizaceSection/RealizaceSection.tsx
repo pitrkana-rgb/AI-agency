@@ -9,12 +9,12 @@ import {
 import { useLanguage } from "../../../../i18n/LanguageContext";
 import { pk } from "../../../../design/pkLandingColors";
 import { MobilePreviewClickHint } from "../../../../components/MobilePreviewClickHint";
-import { PrototypePreviewImage } from "./PrototypePreviewImage";
+import { RealizacePreviewImage } from "./RealizacePreviewImage";
 
-const PROTOTYPE_ENTRANCE_ID = "prototype-showcase-entrance";
-const PROTOTYPE_CARD_STAGGER_MS = 250;
-const prototypeEntranceTotalMs = (cardCount: number) =>
-  PROTOTYPE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
+const REALIZACE_ENTRANCE_ID = "realizace-entrance";
+const REALIZACE_CARD_STAGGER_MS = 250;
+const realizaceEntranceTotalMs = (cardCount: number) =>
+  REALIZACE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
 const PREVIEW_MOBILE_FRAME_WIDTH_PX = 390;
 type PreviewViewport = "desktop" | "mobile";
 /** Light chrome on dark preview headers; dark chrome on light preview headers. */
@@ -88,7 +88,7 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://profithermsolution.cz/",
   },
   {
-    title: "TRIFER",
+    title: "Trifer",
     description:
       "Web pro společnost zaměřenou na výrobu a montáž ocelových konstrukcí pro firmy i soukromé zákazníky. Moderní prezentace služeb s důrazem na získávání nových poptávek.",
     imageId: "black-beard",
@@ -112,7 +112,7 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://profithermsolution.cz/",
   },
   {
-    title: "TRIFER",
+    title: "Trifer",
     description:
       "A website for a company specializing in the manufacture and assembly of steel structures for businesses and private clients. A modern presentation of services focused on generating new inquiries.",
     imageId: "black-beard",
@@ -127,7 +127,7 @@ const cardsEn: PrototypeCard[] = [
   },
 ];
 
-const PrototypeShowcaseMobileCard = ({
+const RealizaceMobileCard = ({
   card,
   onPreview,
   previewHintLabel,
@@ -156,7 +156,7 @@ const PrototypeShowcaseMobileCard = ({
       aria-label={card.title}
     >
       <div className="prototype-mobile-preview">
-        <PrototypePreviewImage
+        <RealizacePreviewImage
           imageId={card.imageId}
           className="prototype-mobile-preview-image"
           loading={priority ? "eager" : "lazy"}
@@ -172,15 +172,17 @@ const PrototypeShowcaseMobileCard = ({
   );
 };
 
-const PrototypeShowcaseItem = ({
+const RealizaceItem = ({
   card,
   onPreview,
   revealed,
+  previewHintLabel,
   priority = false,
 }: {
   card: PrototypeCard;
   onPreview: (card: PrototypeCard) => void;
   revealed: boolean;
+  previewHintLabel: string;
   priority?: boolean;
 }): JSX.Element => {
   const handleActivate = () => onPreview(card);
@@ -201,12 +203,13 @@ const PrototypeShowcaseItem = ({
       aria-label={card.title}
     >
       <div className="prototype-preview">
-        <PrototypePreviewImage
+        <RealizacePreviewImage
           imageId={card.imageId}
           className="prototype-preview-image"
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
         />
+        <MobilePreviewClickHint label={previewHintLabel} />
       </div>
       <div className="prototype-item-heading">
         <h3 className="prototype-item-title">{card.title}</h3>
@@ -216,25 +219,25 @@ const PrototypeShowcaseItem = ({
   );
 };
 
-export const PrototypeShowcaseSection = (): JSX.Element => {
+export const RealizaceSection = (): JSX.Element => {
   const { language } = useLanguage();
   const isEn = language === "en";
   const t = isEn
     ? {
-        heading: "Completed website showcases",
+        heading: "I create websites that deliver results",
         subheading:
-          "Real projects from concept to launch. Every website is designed for a specific business and its customers.",
+          "Fast, tailored, and focused on results. I build modern websites that look great, rank on Google, and help win new customers.",
         previewBack: "Back to showcase",
         previewBackShort: "Back",
         viewportDesktop: "Desktop layout",
         viewportMobile: "Mobile layout",
         viewportMode: "Display mode",
-        previewHint: "Tap for preview",
+        previewHint: "Click for preview",
       }
     : {
-        heading: "Ukázky hotových webů",
+        heading: "Tvořím webové stránky, které přinášejí výsledky",
         subheading:
-          "Ukázky reálných projektů od návrhu až po finální spuštění. Každý web navrhujeme na míru konkrétnímu podnikání a jeho zákazníkům.",
+          "Rychle, na míru a s důrazem na výsledky. Tvořím moderní webové stránky, které skvěle vypadají, jsou vidět na Googlu a pomáhají získávat nové zákazníky.",
         previewBack: "Zpět na ukázky",
         previewBackShort: "Zpět",
         viewportDesktop: "Rozložení pro počítač",
@@ -249,11 +252,11 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
   const [previewChrome, setPreviewChrome] = useState<PreviewChrome>("on-dark");
   const [previewMobileScreen, setPreviewMobileScreen] = useState(isPreviewMobileScreen);
   const [sectionRef, cardsVisible] = useInViewOnce({
-    id: "prototype-showcase",
+    id: "realizace",
     threshold: 0.38,
     rootMargin: "0px 0px -12% 0px",
   });
-  const entranceDone = hasBeenRevealed(PROTOTYPE_ENTRANCE_ID);
+  const entranceDone = hasBeenRevealed(REALIZACE_ENTRANCE_ID);
   const [revealedCount, setRevealedCount] = useState(
     entranceDone ? activeCards.length : 0,
   );
@@ -277,12 +280,12 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           () => {
             if (!cancelled) setRevealedCount(index + 1);
           },
-          index * PROTOTYPE_CARD_STAGGER_MS,
+          index * REALIZACE_CARD_STAGGER_MS,
         ),
       );
       doneTimer = window.setTimeout(() => {
-        if (!cancelled) markRevealedById(PROTOTYPE_ENTRANCE_ID);
-      }, prototypeEntranceTotalMs(activeCards.length));
+        if (!cancelled) markRevealedById(REALIZACE_ENTRANCE_ID);
+      }, realizaceEntranceTotalMs(activeCards.length));
     };
 
     const raf = window.requestAnimationFrame(() => {
@@ -383,7 +386,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
   return (
     <section
       ref={sectionRef}
-      className="prototype-showcase-section"
+      className="realizace-section"
       style={{
         width: "100%",
         backgroundColor: pk.page,
@@ -391,7 +394,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         marginTop: "-30px",
       }}
     >
-      <div className="prototype-showcase-inner" style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="realizace-inner" style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: "42px" }}>
           <h2
             className="pk-section-heading"
@@ -403,7 +406,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             {t.heading}
           </h2>
           <p
-            className="section-sub prototype-section-sub"
+            className="section-sub realizace-section-sub"
             style={{
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 400,
@@ -418,11 +421,12 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
 
         <div className="prototype-grid prototype-grid-desktop">
           {activeCards.map((card, index) => (
-            <PrototypeShowcaseItem
+            <RealizaceItem
               key={card.previewUrl}
               card={card}
               onPreview={handlePreview}
               revealed={entranceDone || revealedCount > index}
+              previewHintLabel={t.previewHint}
               priority={index < 3}
             />
           ))}
@@ -450,7 +454,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
                   className="prototype-mobile-slide"
                   style={{ flex: `0 0 ${100 / activeCards.length}%` }}
                 >
-                  <PrototypeShowcaseMobileCard
+                  <RealizaceMobileCard
                     card={card}
                     onPreview={handlePreview}
                     previewHintLabel={t.previewHint}
@@ -556,22 +560,23 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
 
       <style>{`
         @media (min-width: 901px) {
-          .prototype-showcase-section {
+          .realizace-section {
             padding-top: 30px !important;
           }
-          .prototype-section-sub{
+          .realizace-section-sub{
             max-width: 820px;
           }
           .prototype-grid{
-            gap: 40px;
-            max-width: 1280px;
-            margin: 0 auto;
+            gap: 28px;
+            max-width: none;
+            margin: 0;
+            width: 100%;
           }
         }
         .prototype-grid{
           display:grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 32px;
+          gap: 22px;
           align-items: start;
         }
         .prototype-mobile-carousel{ display:none; }
@@ -631,9 +636,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           max-height: none;
           background: rgb(15 23 42 / 0.04);
           box-shadow:
-            0 1px 0 rgb(255 255 255 / 0.65) inset,
-            0 4px 6px rgb(2 6 23 / 0.04),
-            0 12px 28px rgb(2 6 23 / 0.08);
+            1px 1px 2px rgb(2 6 23 / 0.1),
+            4px 4px 10px -2px rgb(2 6 23 / 0.18),
+            8px 10px 18px -8px rgb(2 6 23 / 0.22);
           transition:
             transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -644,9 +649,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         .prototype-item:focus-visible .prototype-preview{
           transform: translateZ(0) scale(1.012);
           box-shadow:
-            0 1px 0 rgb(255 255 255 / 0.7) inset,
-            0 8px 16px rgb(2 6 23 / 0.06),
-            0 20px 40px rgb(2 6 23 / 0.1);
+            2px 2px 4px rgb(2 6 23 / 0.14),
+            6px 8px 16px -2px rgb(2 6 23 / 0.24),
+            12px 16px 28px -8px rgb(2 6 23 / 0.3);
         }
         .prototype-preview-image{
           display: block;
@@ -671,7 +676,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           margin: 0;
           font-family: "Montserrat", sans-serif;
           font-weight: 800;
-          font-size: 20px;
+          font-size: 24px;
           line-height: 1.2;
           letter-spacing: -0.02em;
           color: var(--pk-ink);
@@ -920,11 +925,61 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           outline: 2px solid var(--pk-accent);
           outline-offset: 2px;
         }
+        .pk-mobile-preview-click-hint{
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          position: absolute;
+          right: 11px;
+          bottom: 11px;
+          z-index: 2;
+          max-width: calc(100% - 22px);
+          padding: 8px 12px 8px 10px;
+          border-radius: 11px;
+          background: rgb(0 0 0 / 0.47);
+          color: #fff;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          font-size: 15.18px;
+          line-height: 1.2;
+          letter-spacing: 0.01em;
+          pointer-events: none;
+          user-select: none;
+          text-shadow:
+            0 1px 3px rgb(0 0 0 / 0.55),
+            0 0 14px rgb(0 0 0 / 0.4);
+          filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.3));
+          animation: pkMobilePreviewHintPulse 3.2s ease-in-out infinite;
+        }
+        .pk-mobile-preview-click-hint__icon{
+          flex-shrink: 0;
+          width: 24px;
+          height: 24px;
+        }
+        .pk-mobile-preview-click-hint__label{
+          white-space: nowrap;
+        }
+        @keyframes pkMobilePreviewHintPulse{
+          0%, 100%{
+            opacity: 0.78;
+            transform: scale(0.98);
+          }
+          50%{
+            opacity: 1;
+            transform: scale(1.03);
+          }
+        }
+        @media (prefers-reduced-motion: reduce){
+          .pk-mobile-preview-click-hint{
+            animation: none;
+            opacity: 0.9;
+          }
+        }
         @media (max-width: 1024px){
-          .prototype-showcase-section{
+          .realizace-section{
             overflow: visible;
           }
-          .prototype-showcase-inner{
+          .realizace-inner{
             overflow: visible;
           }
           .prototype-grid-desktop{ display:none !important; }
@@ -1001,56 +1056,6 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             transform: translateZ(0);
             backface-visibility: hidden;
           }
-          .pk-mobile-preview-click-hint{
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            position: absolute;
-            right: 11px;
-            bottom: 11px;
-            z-index: 2;
-            max-width: calc(100% - 22px);
-            padding: 8px 12px 8px 10px;
-            border-radius: 11px;
-            background: rgb(0 0 0 / 0.34);
-            color: #fff;
-            font-family: "Montserrat", sans-serif;
-            font-weight: 500;
-            font-size: 12.65px;
-            line-height: 1.2;
-            letter-spacing: 0.01em;
-            pointer-events: none;
-            user-select: none;
-            text-shadow:
-              0 1px 3px rgb(0 0 0 / 0.55),
-              0 0 14px rgb(0 0 0 / 0.4);
-            filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.3));
-            animation: pkMobilePreviewHintPulse 3.2s ease-in-out infinite;
-          }
-          .pk-mobile-preview-click-hint__icon{
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-          }
-          .pk-mobile-preview-click-hint__label{
-            white-space: nowrap;
-          }
-          @keyframes pkMobilePreviewHintPulse{
-            0%, 100%{
-              opacity: 0.78;
-              transform: scale(0.98);
-            }
-            50%{
-              opacity: 1;
-              transform: scale(1.03);
-            }
-          }
-          @media (prefers-reduced-motion: reduce){
-            .pk-mobile-preview-click-hint{
-              animation: none;
-              opacity: 0.9;
-            }
-          }
           .prototype-mobile-heading{
             display: flex;
             align-items: center;
@@ -1062,7 +1067,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
             margin: 0;
             font-family: "Montserrat", sans-serif;
             font-weight: 800;
-            font-size: 17px;
+            font-size: 20.4px;
             line-height: 1.25;
             letter-spacing: -0.02em;
             color: var(--pk-ink);
@@ -1105,12 +1110,12 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
         @media (max-width: 768px){
           .prototype-preview{ border-radius: 14px; }
           .prototype-item{ gap: 14px; }
-          .prototype-item-title{ font-size: 18px; }
+          .prototype-item-title{ font-size: 21.6px; }
           .prototype-mobile-card{
             padding: 12px;
             border-radius: 14px;
           }
-          .prototype-showcase-inner{
+          .realizace-inner{
             padding-left: 18px;
             padding-right: 18px;
           }
@@ -1120,7 +1125,7 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           .prototype-mobile-slide{
             padding: 0 12px;
           }
-          .prototype-mobile-title{ font-size: 16px; }
+          .prototype-mobile-title{ font-size: 19.2px; }
           .prototype-mobile-body{ font-size: 13px; line-height: 1.5; }
           .prototype-preview-controls{
             left: auto;
@@ -1168,9 +1173,9 @@ export const PrototypeShowcaseSection = (): JSX.Element => {
           .prototype-item:hover .prototype-preview,
           .prototype-item:focus-visible .prototype-preview{
             box-shadow:
-              0 4px 6px rgb(2 6 23 / 0.04),
-              0 12px 28px rgb(2 6 23 / 0.08),
-              0 24px 48px rgb(2 6 23 / 0.06);
+              1px 1px 2px rgb(2 6 23 / 0.1),
+              4px 4px 10px -2px rgb(2 6 23 / 0.18),
+              8px 10px 18px -8px rgb(2 6 23 / 0.22);
           }
         }
       `}</style>
