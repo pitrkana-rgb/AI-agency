@@ -90,14 +90,14 @@ const cards: PrototypeCard[] = [
   {
     title: "Trifer",
     description:
-      "Web pro společnost zaměřenou na výrobu a montáž ocelových konstrukcí pro firmy i soukromé zákazníky. Moderní prezentace služeb s důrazem na získávání nových poptávek.",
+      "Firemní web zaměřený na výrobu a montáž ocelových konstrukcí pro firmy i soukromé zákazníky. Moderní prezentace služeb s důrazem na získávání nových poptávek.",
     imageId: "black-beard",
     previewUrl: "https://laser-steel-structures.vercel.app/",
   },
   {
     title: "Bazar-Sport-Motokros",
     description:
-      "Web pro sportovní bazar se zaměřením hlavně na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka sortimentu podle sezóny a snadný nákup pro aktivní zákazníky.",
+      "Web pro sportovní bazar se zaměřením na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka sortimentu podle sezóny a snadný nákup pro zákazníky.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
@@ -114,14 +114,14 @@ const cardsEn: PrototypeCard[] = [
   {
     title: "Trifer",
     description:
-      "A website for a company specializing in the manufacture and assembly of steel structures for businesses and private clients. A modern presentation of services focused on generating new inquiries.",
+      "A company website focused on the manufacture and assembly of steel structures for businesses and private clients. A modern presentation of services focused on generating new inquiries.",
     imageId: "black-beard",
     previewUrl: "https://laser-steel-structures.vercel.app/",
   },
   {
     title: "Bazar-Sport-Motokros",
     description:
-      "A sports shop site focused mainly on skis and winter gear, with bikes and cycling equipment in summer. Clear seasonal ranges and straightforward shopping for active customers year-round.",
+      "A sports shop site focused on skis and winter gear, with bikes and cycling equipment in summer. Clear seasonal ranges and straightforward shopping for customers year-round.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },

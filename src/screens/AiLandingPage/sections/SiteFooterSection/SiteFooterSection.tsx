@@ -18,7 +18,7 @@ export const SiteFooterSection = (): JSX.Element => {
     nav: "Navigation",
     contactTitle: "Contact",
     writeUs: "Contact me",
-    rights: "© 2025 PK-Digital. All rights reserved.",
+    rights: "© 2026 PK-Digital. All rights reserved.",
     privacy: "Privacy Policy",
     terms: "Terms of Use",
   } : {
@@ -30,7 +30,7 @@ export const SiteFooterSection = (): JSX.Element => {
     nav: "Navigace",
     contactTitle: "Kontakt",
     writeUs: "Napište mi",
-    rights: "© 2025 PK-Digital. Všechna práva vyhrazena.",
+    rights: "© 2026 PK-Digital. Všechna práva vyhrazena.",
     privacy: "Zásady ochrany soukromí",
     terms: "Podmínky užití",
   };
