@@ -409,9 +409,10 @@ export const ReadyToDesignSection = ({ avoidFooterOverlap = false }: ReadyToDesi
                         type="submit"
                         disabled={loading}
                         id="contact-form-submit"
-                        className={headerPrimaryCtaClassName}
+                        className={`${headerPrimaryCtaClassName} landing-primary-cta--on-dark`}
                         style={{
                           ...headerPrimaryCtaStyle,
+                          color: "#fff",
                           marginTop: "4px",
                           cursor: loading ? "wait" : "pointer",
                           display: "inline-flex",
@@ -452,7 +453,16 @@ export const ReadyToDesignSection = ({ avoidFooterOverlap = false }: ReadyToDesi
         }
         ${contactFormLayoutStyles}
         @media (max-width: 768px) {
-          .cta-form-shell { padding: 28px 18px 26px !important; border-radius: 26px !important; }
+          /* Page shell 24px + form pad 15px = CoNabízíme CTA inset */
+          .cta-form-shell { padding: 28px 15px 26px !important; border-radius: 26px !important; }
+          .contact-form-submit-wrap {
+            width: 100% !important;
+            display: flex !important;
+          }
+          #contact-form-submit {
+            width: 100% !important;
+            max-width: 100% !important;
+          }
           .cta-arrow-img { display: none !important; }
         }
         @media(prefers-reduced-motion:reduce){

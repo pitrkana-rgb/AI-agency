@@ -51,11 +51,15 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
 
   const t = isEn
     ? {
-        headingLines: [
+        headingLinesDesktop: [
           { text: "Get a free", tone: "plain" as const },
           { text: "website proposal", tone: "plain" as const },
           { text: "in 3 days,", tone: "gradient" as const },
           { text: "no strings attached", tone: "gradient" as const },
+        ],
+        headingLinesMobile: [
+          { text: "Get a free website proposal", tone: "plain" as const },
+          { text: "in 3 days, no strings attached", tone: "gradient" as const },
         ],
         steps: [
           {
@@ -79,11 +83,15 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         trust: "100% non-binding and confidential",
       }
     : {
-        headingLines: [
+        headingLinesDesktop: [
           { text: "Získejte návrh", tone: "plain" as const },
           { text: "webu zdarma", tone: "plain" as const },
           { text: "do 3 dnů", tone: "gradient" as const },
           { text: "bez závazků", tone: "gradient" as const },
+        ],
+        headingLinesMobile: [
+          { text: "Získejte návrh webu zdarma", tone: "plain" as const },
+          { text: "do 3 dnů bez závazků", tone: "gradient" as const },
         ],
         steps: [
           {
@@ -133,21 +141,40 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
             id="free-proposal-heading"
             className="pk-section-heading pk-section-heading--on-dark free-proposal-heading"
           >
-            {t.headingLines.map((line, index) => (
-              <span
-                key={`${line.text}-${index}`}
-                className={[
-                  "free-proposal-heading-line",
-                  "free-proposal-anim",
-                  index < 2 ? "free-proposal-anim--heading" : "free-proposal-anim--subheading",
-                  line.tone === "gradient" ? "free-proposal-heading-gradient" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                {line.text}
-              </span>
-            ))}
+            <span className="free-proposal-heading-desktop">
+              {t.headingLinesDesktop.map((line, index) => (
+                <span
+                  key={`d-${line.text}-${index}`}
+                  className={[
+                    "free-proposal-heading-line",
+                    "free-proposal-anim",
+                    index < 2 ? "free-proposal-anim--heading" : "free-proposal-anim--subheading",
+                    line.tone === "gradient" ? "free-proposal-heading-gradient" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {line.text}
+                </span>
+              ))}
+            </span>
+            <span className="free-proposal-heading-mobile">
+              {t.headingLinesMobile.map((line, index) => (
+                <span
+                  key={`m-${line.text}-${index}`}
+                  className={[
+                    "free-proposal-heading-line",
+                    "free-proposal-anim",
+                    index === 0 ? "free-proposal-anim--heading" : "free-proposal-anim--subheading",
+                    line.tone === "gradient" ? "free-proposal-heading-gradient" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {line.text}
+                </span>
+              ))}
+            </span>
           </h2>
         </div>
 
@@ -249,6 +276,12 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         }
         .free-proposal-heading {
           margin: 0;
+        }
+        .free-proposal-heading-desktop {
+          display: contents;
+        }
+        .free-proposal-heading-mobile {
+          display: none;
         }
         .free-proposal-heading-line {
           display: block;
@@ -406,6 +439,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           font-size: 16px;
           line-height: 1.2;
           letter-spacing: 0.01em;
+          text-transform: none;
           box-shadow:
             1px 2px 4px rgb(2 6 23 / 0.18),
             4px 8px 16px -2px rgb(224 64 251 / 0.35),
@@ -532,12 +566,22 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
 
         @media (max-width: 768px) {
           .free-proposal-inner {
-            padding: 40px 18px 44px;
+            /* Match CoNabízíme page shell (24px); CTA col adds 15px */
+            padding: 40px 24px 44px;
             gap: 30px;
           }
           .free-proposal-copy,
           .free-proposal-heading {
             text-align: center;
+          }
+          .free-proposal-heading-desktop {
+            display: none;
+          }
+          .free-proposal-heading-mobile {
+            display: contents;
+          }
+          .free-proposal-heading-line {
+            white-space: normal;
           }
           .free-proposal-steps {
             flex-direction: column;
@@ -596,8 +640,13 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           }
           .free-proposal-cta-col {
             max-width: none;
+            width: 100%;
+            box-sizing: border-box;
             padding-top: 22px;
+            padding-left: 15px;
+            padding-right: 15px;
             gap: 12px;
+            align-items: stretch;
           }
           .free-proposal-scribble {
             position: static;

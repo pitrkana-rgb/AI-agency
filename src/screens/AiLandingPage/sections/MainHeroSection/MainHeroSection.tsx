@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../../i18n/LanguageContext";
 import { HeroCompositeFrame } from "./HeroCompositeFrame";
 import { pk } from "../../../../design/pkLandingColors";
-import { scrollToSectionId } from "../../../../utils/scrollToSection";
 import {
   hasBeenRevealed,
   markRevealedById,
@@ -13,7 +12,7 @@ const HERO_ENTRANCE_ID = "hero-entrance";
 
 const HERO_TYPING = { typeMs: 1000, holdMs: 2000, deleteMs: 1000, startDelayMs: 1000 } as const;
 
-/** Align hero primary/secondary CTA height with header CTA. */
+/** Align hero primary CTA height with header CTA. */
 const HERO_CTA_PAD_Y = Math.round(11 * 0.8);
 const HERO_CTA_PAD_X = Math.round(28 * 0.8);
 
@@ -155,7 +154,6 @@ export const MainHeroSection = (): JSX.Element => {
     subheading:
       "I build modern websites and apps for your business — focused on speed, SEO, and higher conversions.",
     ctaPrimary: "Request a quote",
-    ctaSecondary: "Collaboration",
     trustUnderCta: "Reply within 24h and a free consultation",
   } : {
     headlineLine1: "Webové stránky na míru,",
@@ -163,7 +161,6 @@ export const MainHeroSection = (): JSX.Element => {
     subheading:
       "Moderní webové stránky a aplikace na míru se zaměřením na rychlost, SEO a vyšší konverze.",
     ctaPrimary: "Nezávazně poptat",
-    ctaSecondary: "Spolupráce",
     trustUnderCta: "Odpověď do 24h a konzultace zdarma",
   };
   const typingMessages = language === "en" ? HERO_TYPING_MESSAGES_EN : HERO_TYPING_MESSAGES_CS;
@@ -293,16 +290,19 @@ export const MainHeroSection = (): JSX.Element => {
           <button
             id="hero-primary-cta"
             type="button"
-            className="animate-pulse-glow hero-primary-btn landing-primary-cta"
+            className="animate-pulse-glow hero-primary-btn landing-primary-cta landing-primary-cta--on-dark"
             onClick={() => navigate("/napiste-nam")}
             style={{
-              color: pk.ink,
+              color: "#fff",
               border: "none",
               borderRadius: "12px",
               padding: `${HERO_CTA_PAD_Y}px ${HERO_CTA_PAD_X}px`,
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 600,
               fontSize: "16px",
+              lineHeight: 1.2,
+              letterSpacing: "0.01em",
+              textTransform: "none" as const,
               cursor: "pointer",
               transition: "transform 0.25s ease, filter 0.25s ease",
               whiteSpace: "nowrap",
@@ -313,33 +313,6 @@ export const MainHeroSection = (): JSX.Element => {
             onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-3px)"; }}
           >
             {t.ctaPrimary}
-          </button>
-
-          <button
-            id="hero-secondary-cta"
-            type="button"
-            className="hero-secondary-btn"
-            onClick={() => scrollToSectionId("features")}
-            style={{
-              background: pk.onDark05,
-              color: pk.onDark,
-              border: `1px solid ${pk.accent25}`,
-              borderRadius: "12px",
-              padding: `${HERO_CTA_PAD_Y}px ${HERO_CTA_PAD_X}px`,
-              fontFamily: "'Montserrat', sans-serif",
-              fontWeight: 500,
-              fontSize: "16px",
-              cursor: "pointer",
-              transition: "background 0.25s ease, border-color 0.25s ease, transform 0.25s ease",
-              whiteSpace: "nowrap",
-              backdropFilter: "blur(8px)",
-            }}
-            onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = pk.onDark10; b.style.borderColor = pk.onDark40; }}
-            onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = pk.onDark05; b.style.borderColor = pk.onDarkBorder20; }}
-            onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.98)"; }}
-            onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
-          >
-            {t.ctaSecondary}
           </button>
         </div>
 
@@ -466,7 +439,7 @@ export const MainHeroSection = (): JSX.Element => {
             margin-right: 0 !important;
           }
         }
-        #hero-primary-cta:focus-visible, #hero-secondary-cta:focus-visible {
+        #hero-primary-cta:focus-visible {
           outline: 2px solid var(--pk-accent); outline-offset: 3px;
         }
         .hero-headline-line1.hero-headline-part {
@@ -696,8 +669,9 @@ export const MainHeroSection = (): JSX.Element => {
             }
           }
           .hero-shell {
-            padding-left: 16px !important;
-            padding-right: 16px !important;
+            /* Match section page shell (CoNabízíme 24px) */
+            padding-left: 24px !important;
+            padding-right: 24px !important;
           }
           .hero-left-rail > .hero-content-shift {
             padding-top: 0 !important;
@@ -707,6 +681,15 @@ export const MainHeroSection = (): JSX.Element => {
             max-width: 100% !important;
             padding: 0 !important;
             margin-top: 20px !important;
+          }
+          /* Override entrance inline-block so CTA can span the offer-width rail */
+          .hero-actions-wrap {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+            padding-left: 15px;
+            padding-right: 15px;
           }
           .hero-headline {
             font-size: min(26.22px, 8.19vw) !important;
@@ -760,18 +743,26 @@ export const MainHeroSection = (): JSX.Element => {
             justify-content: center;
           }
           .hero-cta-row {
+            display: flex !important;
             flex-wrap: nowrap !important;
-            justify-content: center !important;
-            gap: 10px !important;
+            justify-content: stretch !important;
+            gap: 0 !important;
             width: 100%;
             max-width: 100%;
           }
-          .hero-primary-btn, .hero-secondary-btn {
-            flex: 0 1 auto;
+          .hero-primary-btn {
+            flex: 1 1 auto;
+            width: 100% !important;
+            max-width: 100% !important;
             min-width: 0;
-            padding: 9px 14px !important;
-            font-size: 13px !important;
+            box-sizing: border-box;
+            padding: 9px 22px !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.01em !important;
+            line-height: 1.2 !important;
             white-space: nowrap !important;
+            justify-content: center;
           }
         }
         @media (prefers-reduced-motion: reduce) {

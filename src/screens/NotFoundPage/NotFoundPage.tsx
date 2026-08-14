@@ -38,6 +38,9 @@ export const NotFoundPage = (): JSX.Element => {
             fontSize: "16px",
             cursor: "pointer",
             transition: "transform 0.25s ease, filter 0.25s ease",
+            width: "100%",
+            maxWidth: "calc(100% - 30px)",
+            boxSizing: "border-box",
           }}
           onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-3px)"; b.style.filter = "brightness(1.1)"; }}
           onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = ""; b.style.filter = ""; }}

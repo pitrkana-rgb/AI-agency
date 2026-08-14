@@ -26,18 +26,59 @@
   animation: pulse-glow 2.5s ease-out infinite;
 }
 
-/* Primary CTA: same fill as header “Nezávazná poptávka” (magenta→cyan gradient + ink text). */
+/* Primary CTA type + fill: match header / Získejte návrh zdarma button (color may vary per surface). */
 .landing-primary-cta {
   background-color: transparent !important;
   background-image: var(--pk-gradient-popular) !important;
   color: var(--pk-ink) !important;
   border: none;
   border-radius: 12px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 0.01em;
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.2 !important;
+  text-transform: none !important;
   transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.landing-primary-cta--on-dark {
+  color: #fff !important;
+}
+
+/*
+ * Mobile section CTAs: match CoNabízíme width.
+ * Offer rail = page shell 24px + card inner 15px → inset 39px each side.
+ * Buttons are width 100% of that rail; parents must use the same insets
+ * (see hero / free-proposal / form / about mobile styles).
+ */
+@media (max-width: 900px) {
+  :root {
+    --pk-mobile-cta-page-pad: 24px;
+    --pk-mobile-cta-inner-pad: 15px;
+  }
+
+  .landing-primary-cta,
+  .free-proposal-cta,
+  .offer-cta,
+  .pricing-cta,
+  #hero-primary-cta,
+  #contact-form-submit {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* Keep chrome CTAs compact (header + cookie banner) */
+  header .landing-primary-cta,
+  [role="dialog"] .landing-primary-cta {
+    width: auto !important;
+    max-width: none !important;
+    display: inline-flex !important;
+  }
 }
 
 /* Nav link underline hover animation */

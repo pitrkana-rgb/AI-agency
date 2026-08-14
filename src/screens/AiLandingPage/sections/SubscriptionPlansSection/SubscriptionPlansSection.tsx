@@ -199,10 +199,13 @@ const PricingCard = ({
           padding: "9px 22px",
           border: "none",
           borderRadius: "12px",
-          fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: "14px",
+          fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: "16px",
           color: pk.ink, cursor: "pointer",
           transition: "transform 0.25s ease, filter 0.25s ease",
           boxShadow: "none",
+          letterSpacing: "0.01em",
+          lineHeight: 1.2,
+          textTransform: "none" as const,
         }}
         onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
         onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
@@ -394,16 +397,17 @@ export const SubscriptionPlansSection = (): JSX.Element => {
             flex: 1 1 auto !important;
             gap: 16px !important;
             min-height: 0;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
+            /* Match CoNabízíme card inner 15px (page shell already 24px) */
+            padding-left: 15px !important;
+            padding-right: 15px !important;
           }
           .pricing-mobile-slide .pricing-card-outer {
             flex: 1 1 auto !important;
             min-height: 0;
           }
           .pricing-mobile-slide .pricing-cta {
-            padding: 10px 16px !important;
-            font-size: 14px !important;
+            padding: 9px 22px !important;
+            font-size: 16px !important;
             margin-top: auto !important;
             flex-shrink: 0;
           }

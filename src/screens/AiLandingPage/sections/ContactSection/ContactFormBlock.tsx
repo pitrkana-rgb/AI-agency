@@ -430,9 +430,15 @@ export const ContactFormBlock = (): JSX.Element => {
         }
         ${contactFormLayoutStyles}
         @media (max-width: 768px) {
-          .contact-form-card { padding: 28px 16px !important; }
+          /* Page shell 24px + form pad 15px = CoNabízíme CTA inset */
+          .contact-form-card { padding: 28px 15px !important; }
           .contact-form-submit-wrap {
+            width: 100% !important;
             justify-content: center !important;
+          }
+          #contact-form-submit {
+            width: 100% !important;
+            max-width: 100% !important;
           }
         }
       `}</style>

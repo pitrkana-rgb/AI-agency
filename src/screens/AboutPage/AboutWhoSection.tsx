@@ -598,7 +598,8 @@ export const AboutWhoSection = (): JSX.Element => {
             padding: 28px 0 64px;
           }
           .about-builder-shell {
-            padding: 0 20px;
+            /* Match CoNabízíme page shell */
+            padding: 0 24px;
           }
           .about-builder-card {
             padding: 16px;
@@ -614,10 +615,18 @@ export const AboutWhoSection = (): JSX.Element => {
           .about-builder-actions {
             flex-direction: column;
             align-items: stretch;
-          }
-          .about-builder-actions .hero-primary-btn {
             width: 100%;
+            box-sizing: border-box;
+            /* Match CoNabízíme card inner 15px */
+            padding-left: 15px;
+            padding-right: 15px;
+          }
+          .about-builder-actions .hero-primary-btn,
+          .about-builder-actions .landing-primary-cta {
+            width: 100%;
+            max-width: 100%;
             justify-content: center;
+            box-sizing: border-box;
           }
         }
 

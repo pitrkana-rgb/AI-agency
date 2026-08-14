@@ -1276,6 +1276,9 @@ export const CoNabizimeSection = (): JSX.Element => {
           font-family: "Montserrat", sans-serif;
           font-weight: 600;
           font-size: 16px;
+          line-height: 1.2;
+          letter-spacing: 0.01em;
+          text-transform: none;
           cursor: pointer;
           transition: filter 0.25s ease, transform 0.25s ease;
           display: inline-flex;
@@ -1536,7 +1539,7 @@ export const CoNabizimeSection = (): JSX.Element => {
             display: flex;
             justify-content: center;
             padding: 9px 22px !important;
-            font-size: 14px !important;
+            font-size: 16px !important;
             font-weight: 600;
             margin-top: 30px !important;
             flex-shrink: 0;
