@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, CheckCircle2, ClipboardPen, Monitor, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, ClipboardPen, Monitor } from "lucide-react";
 import {
   hasBeenRevealed,
   markRevealedById,
@@ -80,7 +80,6 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         ],
         scribble: "Non-binding & free",
         cta: "I want a free website proposal",
-        trust: "100% non-binding and confidential",
       }
     : {
         headingLinesDesktop: [
@@ -112,7 +111,6 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         ],
         scribble: "Nezávazně a zdarma",
         cta: "Chci návrh webu zdarma",
-        trust: "100% nezávazně a důvěrně",
       };
 
   return (
@@ -122,7 +120,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
       aria-labelledby="free-proposal-heading"
       style={{
         width: "100%",
-        background: pk.void,
+        background: pk.hero,
         color: pk.onDark,
       }}
     >
@@ -236,11 +234,6 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
             <span>{t.cta}</span>
             <ArrowRight size={18} strokeWidth={2.25} aria-hidden />
           </button>
-
-          <p className="free-proposal-trust free-proposal-anim free-proposal-anim--cta">
-            <ShieldCheck size={15} strokeWidth={2} aria-hidden />
-            <span>{t.trust}</span>
-          </p>
         </div>
       </div>
 
@@ -265,7 +258,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           z-index: 1;
           max-width: 1400px;
           margin: 0 auto;
-          padding: 56px 24px;
+          padding: 32px 24px 48px;
           display: grid;
           grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.55fr) minmax(250px, 0.85fr);
           gap: 36px 36px;
@@ -466,22 +459,6 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           outline: 2px solid var(--pk-accent);
           outline-offset: 3px;
         }
-        .free-proposal-trust {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin: 0;
-          font-family: "Montserrat", sans-serif;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 1.35;
-          color: rgb(255 255 255 / 0.58);
-        }
-        .free-proposal-trust svg {
-          flex-shrink: 0;
-          color: rgb(255 255 255 / 0.78);
-        }
 
         /* Entrance animation — start hidden */
         .free-proposal-anim {
@@ -507,42 +484,47 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           transform: translate3d(0, 0, 0);
           transition-delay: 280ms;
         }
+        .free-proposal-anim--step-1,
+        .free-proposal-anim--step-2,
+        .free-proposal-anim--step-3 {
+          transition-duration: 0.47s;
+        }
         .free-proposal-section.is-revealed .free-proposal-anim--step-1 {
           opacity: 1;
           transform: translate3d(0, 0, 0);
-          transition-delay: 780ms;
+          transition-delay: 520ms;
         }
         .free-proposal-section.is-revealed .free-proposal-anim--step-2 {
           opacity: 1;
           transform: translate3d(0, 0, 0);
-          transition-delay: 1280ms;
+          transition-delay: 853ms;
         }
         .free-proposal-section.is-revealed .free-proposal-anim--step-3 {
           opacity: 1;
           transform: translate3d(0, 0, 0);
-          transition-delay: 1780ms;
+          transition-delay: 1187ms;
         }
         .free-proposal-section.is-revealed .free-proposal-anim--cta {
           opacity: 1;
           transform: translate3d(0, 0, 0);
-          transition-delay: 2280ms;
+          transition-delay: 1520ms;
         }
         .free-proposal-section.is-revealed .free-proposal-scribble-text {
           opacity: 1;
           clip-path: inset(0 0 0 0);
-          transition-delay: 2780ms;
+          transition-delay: 1853ms;
         }
         .free-proposal-section.is-revealed .free-proposal-scribble-arrow {
           opacity: 1;
           transform: translate3d(0, 0, 0);
-          transition-delay: 3180ms;
+          transition-delay: 2120ms;
         }
 
         @media (max-width: 1180px) {
           .free-proposal-inner {
             grid-template-columns: 1fr;
             gap: 36px;
-            padding: 48px 24px;
+            padding: 32px 24px 48px;
           }
           .free-proposal-steps {
             gap: 8px;
@@ -566,8 +548,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
 
         @media (max-width: 768px) {
           .free-proposal-inner {
-            /* Match CoNabízíme page shell (24px); CTA col adds 15px */
-            padding: 40px 24px 44px;
+            padding: 20px 24px;
             gap: 30px;
           }
           .free-proposal-copy,

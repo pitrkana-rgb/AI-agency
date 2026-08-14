@@ -46,6 +46,27 @@
   color: #fff !important;
 }
 
+/* Desktop: Hero CTA is 50% wider than its original shrink-wrap; CoNabízíme matches. */
+@media (min-width: 769px) {
+  #hero-primary-cta {
+    width: 272px !important;
+    min-width: 272px !important;
+    max-width: 272px !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .offer-cta-desktop {
+    width: 272px !important;
+    min-width: 272px !important;
+    max-width: 272px !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+}
+
 /*
  * Mobile section CTAs: match CoNabízíme width.
  * Offer rail = page shell 24px + card inner 15px → inset 39px each side.

@@ -1337,6 +1337,9 @@ export const CoNabizimeSection = (): JSX.Element => {
         .offer-cta-desktop{
           margin-top: 20px;
           align-self: flex-start;
+          width: 272px;
+          box-sizing: border-box;
+          justify-content: center;
         }
         .offer-cta-mobile{
           display:none;

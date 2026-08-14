@@ -13,6 +13,13 @@ type Review = {
 
 const reviews: Review[] = [
   {
+    id: "4",
+    author: "Michal Šutera",
+    date: "14. 8. 2026",
+    text: "Neskutečně profesionální přístup jak pracovní tak osobní. Pána mohu jen doporučit.",
+    avatarBg: pk.gradientPopular,
+  },
+  {
     id: "1",
     author: "Pavel Zezula",
     date: "19. 3. 2026",
@@ -34,6 +41,11 @@ const reviews: Review[] = [
     avatarBg: pk.avatarC,
   },
 ];
+
+const GOOGLE_REVIEW_COUNT = 6;
+const DESKTOP_VISIBLE = 3;
+const DESKTOP_GAP_PX = 16;
+const DESKTOP_INTERVAL_MS = 5000;
 
 function initialsFrom(name: string): string {
   const p = name.split(/\s+/).filter(Boolean);
@@ -267,12 +279,86 @@ export const ClientTestimonialsSection = (): JSX.Element => {
               text: "Great communication and a result exactly as agreed. The e-shop rebuild was delivered on time and customers appreciate the new look and loading speed.",
             };
           }
+          if (r.id === "4") {
+            return {
+              ...r,
+              text: "Incredibly professional approach, both at work and personally. I can only recommend him.",
+            };
+          }
           return r;
         })
       : reviews;
 
   const activeReview = localizedReviews[carouselIndex] ?? localizedReviews[0]!;
   const [viewportWidthPx, setViewportWidthPx] = useState(0);
+  const desktopViewportRef = useRef<HTMLDivElement | null>(null);
+  const [desktopViewportW, setDesktopViewportW] = useState(0);
+  const [desktopOffset, setDesktopOffset] = useState(0);
+  const [desktopJump, setDesktopJump] = useState(false);
+  const [desktopPaused, setDesktopPaused] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 901px)").matches,
+  );
+  const desktopLoop = [...localizedReviews, ...localizedReviews.slice(0, DESKTOP_VISIBLE)];
+  const desktopSlideW =
+    desktopViewportW > 0
+      ? (desktopViewportW - DESKTOP_GAP_PX * (DESKTOP_VISIBLE - 1)) / DESKTOP_VISIBLE
+      : 0;
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 901px)");
+    const sync = () => setIsDesktop(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const el = desktopViewportRef.current;
+    if (!el || !isDesktop) return;
+    const measure = () => {
+      const w = el.clientWidth;
+      if (w > 0) setDesktopViewportW(w);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isDesktop]);
+
+  useEffect(() => {
+    if (!isDesktop || desktopPaused) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const id = window.setInterval(() => {
+      setDesktopOffset((o) => o + 1);
+    }, DESKTOP_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, [isDesktop, desktopPaused]);
+
+  const onDesktopTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (desktopOffset < n) return;
+    setDesktopJump(true);
+    setDesktopOffset(0);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setDesktopJump(false));
+    });
+  };
+  const desktopActive = desktopOffset % n;
+  const goDesktopTo = (i: number) => {
+    if (i === desktopActive) return;
+    if (desktopOffset >= n) {
+      setDesktopJump(true);
+      setDesktopOffset(i);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setDesktopJump(false));
+      });
+      return;
+    }
+    setDesktopOffset(i);
+  };
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -365,7 +451,7 @@ export const ClientTestimonialsSection = (): JSX.Element => {
                 <GoogleStars size={26} />
                 <span className="gr-stats-score">5 / 5</span>
               </div>
-              <p className="gr-stats-sub">{isEn ? "5 Google reviews" : "5 Google recenzí"}</p>
+              <p className="gr-stats-sub">{isEn ? `${GOOGLE_REVIEW_COUNT} Google reviews` : `${GOOGLE_REVIEW_COUNT} Google recenzí`}</p>
               <p className="gr-stats-note">
                 {isEn
                   ? "Clients value my professionalism, speed, and results that drive real growth."
@@ -382,11 +468,56 @@ export const ClientTestimonialsSection = (): JSX.Element => {
             </div>
           </aside>
 
-          {/* Desktop / tablet: grid */}
-          <div className="gr-cards-grid gr-cards-desktop">
-            {localizedReviews.map((r) => (
-              <ReviewCard key={r.id} r={r} />
-            ))}
+          {/* Desktop: 3-card infinite auto carousel */}
+          <div
+            className="gr-cards-desktop"
+            onMouseEnter={() => setDesktopPaused(true)}
+            onMouseLeave={() => setDesktopPaused(false)}
+          >
+            <div
+              className="gr-desktop-viewport"
+              ref={desktopViewportRef}
+              aria-label={isEn ? "Reviews carousel" : "Recenze — carousel"}
+            >
+              <div
+                className={`gr-desktop-track${desktopJump ? " is-jumping" : ""}`}
+                onTransitionEnd={onDesktopTransitionEnd}
+                style={{
+                  transform:
+                    desktopSlideW > 0
+                      ? `translate3d(-${desktopOffset * (desktopSlideW + DESKTOP_GAP_PX)}px, 0, 0)`
+                      : undefined,
+                }}
+              >
+                {desktopLoop.map((r, i) => (
+                  <div
+                    key={`${r.id}-d-${i}`}
+                    className="gr-desktop-slide"
+                    style={
+                      desktopSlideW > 0
+                        ? { flex: `0 0 ${desktopSlideW}px`, width: desktopSlideW }
+                        : undefined
+                    }
+                  >
+                    <ReviewCard r={r} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="gr-desktop-dots gr-carousel-dots" role="tablist" aria-label={isEn ? "Review picker" : "Výběr recenze"}>
+              {localizedReviews.map((r, i) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === desktopActive}
+                  aria-label={isEn ? `Review ${i + 1}` : `Recenze ${i + 1}`}
+                  onClick={() => goDesktopTo(i)}
+                  className="gr-carousel-dot"
+                  data-active={i === desktopActive ? "true" : undefined}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Mobile: one row carousel */}
@@ -624,12 +755,50 @@ export const ClientTestimonialsSection = (): JSX.Element => {
           border-radius: 4px;
         }
         .gr-cards-desktop {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 16px;
+          position: relative;
+          display: block;
           flex: 1 1 0;
           min-width: 0;
           padding-bottom: 16px;
+        }
+        .gr-desktop-viewport {
+          overflow: hidden;
+          width: 100%;
+        }
+        .gr-desktop-track {
+          display: flex;
+          flex-wrap: nowrap;
+          gap: 16px;
+          align-items: stretch;
+          transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: transform;
+        }
+        .gr-desktop-track.is-jumping {
+          transition: none;
+        }
+        .gr-desktop-slide {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+        .gr-desktop-slide .gr-review-card {
+          height: 100%;
+        }
+        .gr-desktop-dots {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -15px;
+          height: 16px;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .google-reviews-section--on-hero .gr-desktop-dots .gr-carousel-dot {
+          background: rgb(255 255 255 / 0.32);
+        }
+        .google-reviews-section--on-hero .gr-desktop-dots .gr-carousel-dot[data-active="true"] {
+          background: var(--pk-on-dark);
         }
         .gr-carousel-mobile {
           display: none;
@@ -698,11 +867,6 @@ export const ClientTestimonialsSection = (): JSX.Element => {
         .gr-carousel-dot[data-active="true"] {
           width: 36px;
           background: var(--pk-ink);
-        }
-        @media (max-width: 1100px) {
-          .gr-cards-desktop {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
         }
         @media (min-width: 901px) {
           .gr-carousel-mobile {
@@ -876,7 +1040,8 @@ export const ClientTestimonialsSection = (): JSX.Element => {
           }
         }
         @media (prefers-reduced-motion: reduce) {
-          .gr-carousel-track {
+          .gr-carousel-track,
+          .gr-desktop-track {
             transition: none !important;
           }
         }
