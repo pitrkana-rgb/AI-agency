@@ -390,8 +390,9 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         }
         .free-proposal-scribble-text {
           display: inline-block;
-          font-family: "Caveat", cursive;
+          font-family: "Caveat", cursive !important;
           font-weight: 600;
+          font-style: normal;
           font-size: 28px;
           line-height: 1;
           white-space: nowrap;

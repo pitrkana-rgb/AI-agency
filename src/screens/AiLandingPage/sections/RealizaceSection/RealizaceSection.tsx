@@ -97,7 +97,7 @@ const cards: PrototypeCard[] = [
   {
     title: "Bazar-Sport-Motokros",
     description:
-      "Web pro sportovní bazar se zaměřením na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka sortimentu podle sezóny a snadný nákup pro zákazníky.",
+      "Web pro sportovní bazar se zaměřením na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka služeb s možností snadno publikovat novinky.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
@@ -121,7 +121,7 @@ const cardsEn: PrototypeCard[] = [
   {
     title: "Bazar-Sport-Motokros",
     description:
-      "A sports shop site focused on skis and winter gear, with bikes and cycling equipment in summer. Clear seasonal ranges and straightforward shopping for customers year-round.",
+      "A sports shop site focused on skis and winter gear, with bikes and cycling equipment in summer. A clear offer of services with an easy way to publish news.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },

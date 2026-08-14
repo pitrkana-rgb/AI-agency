@@ -155,6 +155,7 @@ export const MainHeroSection = (): JSX.Element => {
       "I build modern websites and apps for your business — focused on speed, SEO, and higher conversions.",
     ctaPrimary: "Request a quote",
     trustUnderCta: "Reply within 24h and a free consultation",
+    scribble: "Free website proposal in 3 days",
   } : {
     headlineLine1: "Webové stránky na míru,",
     headlineLine2Accent: "které přivádějí zákazníky",
@@ -162,6 +163,7 @@ export const MainHeroSection = (): JSX.Element => {
       "Moderní webové stránky a aplikace na míru se zaměřením na rychlost, SEO a vyšší konverze.",
     ctaPrimary: "Nezávazně poptat",
     trustUnderCta: "Odpověď do 24h a konzultace zdarma",
+    scribble: "Návrh webu zdarma do 3 dnů",
   };
   const typingMessages = language === "en" ? HERO_TYPING_MESSAGES_EN : HERO_TYPING_MESSAGES_CS;
   const [entrancePhase, setEntrancePhase] = useState<"" | "play-entrance" | "hero-entrance-done">(
@@ -194,7 +196,7 @@ export const MainHeroSection = (): JSX.Element => {
     const timer = window.setTimeout(() => {
       markRevealedById(HERO_ENTRANCE_ID);
       setEntrancePhase("hero-entrance-done");
-    }, 3200);
+    }, 6300);
     return () => window.clearTimeout(timer);
   }, [entrancePhase]);
 
@@ -314,6 +316,9 @@ export const MainHeroSection = (): JSX.Element => {
           >
             {t.ctaPrimary}
           </button>
+          <span className="hero-cta-scribble" aria-hidden="true">
+            {t.scribble}
+          </span>
         </div>
 
         <p
@@ -441,6 +446,56 @@ export const MainHeroSection = (): JSX.Element => {
         }
         #hero-primary-cta:focus-visible {
           outline: 2px solid var(--pk-accent); outline-offset: 3px;
+        }
+        .hero-cta-scribble {
+          display: none;
+        }
+        @media (min-width: 901px) {
+          .hero-cta-row {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 18px;
+            width: auto;
+            max-width: none;
+          }
+          .hero-cta-scribble {
+            display: inline-block;
+            flex-shrink: 0;
+            font-family: "Caveat", cursive !important;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 34.65px;
+            line-height: 1;
+            white-space: nowrap;
+            color: #d06dff;
+            pointer-events: none;
+            transform: translate(-90px, 130px) rotate(-6deg);
+            clip-path: inset(0 100% 0 0);
+            opacity: 0;
+            transition:
+              clip-path 2.5s linear,
+              opacity 0.35s linear;
+            will-change: clip-path, opacity;
+          }
+          .hero-section-mobile.play-entrance .hero-cta-scribble {
+            opacity: 1;
+            clip-path: inset(0 0 0 0);
+            transition-delay: 3100ms;
+          }
+          .hero-section-mobile.hero-entrance-done .hero-cta-scribble {
+            opacity: 1;
+            clip-path: inset(0 0 0 0);
+            transition: none;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-cta-scribble {
+            opacity: 1 !important;
+            clip-path: inset(0 0 0 0) !important;
+            transition: none !important;
+          }
         }
         .hero-headline-line1.hero-headline-part {
           display: block;
@@ -749,6 +804,9 @@ export const MainHeroSection = (): JSX.Element => {
             gap: 0 !important;
             width: 100%;
             max-width: 100%;
+          }
+          .hero-cta-scribble {
+            display: none !important;
           }
           .hero-primary-btn {
             flex: 1 1 auto;
