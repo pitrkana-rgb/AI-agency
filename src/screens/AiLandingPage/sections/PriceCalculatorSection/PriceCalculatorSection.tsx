@@ -507,16 +507,16 @@ export const PriceCalculatorSection = (): JSX.Element => {
                 }}
                 style={{
                   width: "100%",
-                  padding: "9px 22px",
+                  padding: "11px 22px",
                   border: "none",
                   borderRadius: "12px",
                   color: pk.ink,
                   fontFamily: "'Montserrat',sans-serif",
-                  fontWeight: 600,
-                  fontSize: "16px",
-                  letterSpacing: "0.01em",
-                  lineHeight: 1.2,
-                  textTransform: "none" as const,
+                  fontWeight: 700,
+                  fontSize: "13px",
+                  letterSpacing: "0.06em",
+                  lineHeight: 1,
+                  textTransform: "uppercase" as const,
                   cursor: "pointer",
                   transition: "all 280ms cubic-bezier(0.2,0.8,0.2,1)",
                   boxShadow: `0 12px 32px ${pk.accent25}`,
@@ -525,6 +525,8 @@ export const PriceCalculatorSection = (): JSX.Element => {
                   justifyContent: "center",
                   gap: "8px",
                   margin: "0 auto",
+                  minHeight: 37,
+                  boxSizing: "border-box",
                 }}
                 onMouseEnter={(e) => {
                   const b = e.currentTarget as HTMLButtonElement;

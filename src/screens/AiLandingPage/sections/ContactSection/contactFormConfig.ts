@@ -3,14 +3,12 @@ export const CONTACT_SERVICE_OPTIONS_CS = [
   "Webové stránky na míru",
   "Modernizace webových stránek",
   "Webové aplikace",
-  "Automatizace procesů",
 ] as const;
 
 export const CONTACT_SERVICE_OPTIONS_EN = [
   "New website",
   "Website modernization",
   "Web applications",
-  "Process automation",
 ] as const;
 
 export type LeadFormState = {

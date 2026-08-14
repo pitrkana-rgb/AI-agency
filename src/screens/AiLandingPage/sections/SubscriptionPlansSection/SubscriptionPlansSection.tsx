@@ -196,16 +196,18 @@ const PricingCard = ({
         onClick={() => navigate("/napiste-nam")}
         style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-          padding: "9px 22px",
+          padding: "11px 22px",
           border: "none",
           borderRadius: "12px",
-          fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: "16px",
+          fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: "13px",
           color: pk.ink, cursor: "pointer",
           transition: "transform 0.25s ease, filter 0.25s ease",
           boxShadow: "none",
-          letterSpacing: "0.01em",
-          lineHeight: 1.2,
-          textTransform: "none" as const,
+          letterSpacing: "0.06em",
+          lineHeight: 1,
+          textTransform: "uppercase" as const,
+          minHeight: 37,
+          boxSizing: "border-box",
         }}
         onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = "brightness(1.1)"; b.style.transform = "translateY(-2px)"; }}
         onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.filter = ""; b.style.transform = ""; }}
@@ -406,8 +408,12 @@ export const SubscriptionPlansSection = (): JSX.Element => {
             min-height: 0;
           }
           .pricing-mobile-slide .pricing-cta {
-            padding: 9px 22px !important;
-            font-size: 16px !important;
+            padding: 11px 22px !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.06em !important;
+            text-transform: uppercase !important;
+            min-height: 37px !important;
             margin-top: auto !important;
             flex-shrink: 0;
           }

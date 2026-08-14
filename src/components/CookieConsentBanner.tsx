@@ -63,14 +63,17 @@ export const CookieConsentBanner = (): JSX.Element | null => {
           onClick={() => hide("all")}
           className="landing-primary-cta"
           style={{
-            padding: "9px 22px",
+            padding: "11px 22px",
             borderRadius: "12px",
             border: "none",
             fontFamily: "'Montserrat',sans-serif",
-            fontWeight: 600,
-            fontSize: "16px",
-            letterSpacing: "0.01em",
-            lineHeight: 1.2,
+            fontWeight: 700,
+            fontSize: "13px",
+            letterSpacing: "0.06em",
+            lineHeight: 1,
+            textTransform: "uppercase" as const,
+            minHeight: 37,
+            boxSizing: "border-box",
             cursor: "pointer",
           }}
         >

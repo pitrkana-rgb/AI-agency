@@ -5,8 +5,8 @@ import { useLanguage } from "../i18n/LanguageContext";
 import companyLogoV4BlackUrl from "../../Images/Company_logo_V4_black.png";
 import { pk } from "../design/pkLandingColors";
 import {
-  headerPrimaryCtaClassName,
-  headerPrimaryCtaStyle,
+  headerNavMatchedCtaClassName,
+  headerNavMatchedCtaStyle,
 } from "../design/headerCtaStyle";
 import { scrollToSectionId } from "../utils/scrollToSection";
 
@@ -34,6 +34,7 @@ export const Header = () => {
 
     const t = language === "en" ? {
         navServices: "Services",
+        navPricing: "Pricing",
         navReference: "Reference",
         navFaq: "FAQ",
         navContact: "About me",
@@ -43,6 +44,7 @@ export const Header = () => {
         backHomeAria: "PK Digital – back to homepage",
     } : {
         navServices: "Služby",
+        navPricing: "Ceník",
         navReference: "Reference",
         navFaq: "Časté dotazy",
         navContact: "O mě",
@@ -54,6 +56,7 @@ export const Header = () => {
 
     const navigationItems = [
         { label: t.navServices, targetId: "co-nabizime" as const, path: "/" as const },
+        { label: t.navPricing, path: "/cenik" as const },
         { label: t.navReference, targetId: "reference" as const, path: "/" as const },
         { label: t.navFaq, targetId: "faq" as const, path: "/" as const },
         { label: t.navContact, path: "/o-me" as const },
@@ -63,6 +66,15 @@ export const Header = () => {
         if (item.path === "/kontakt") {
             if (location.pathname !== "/kontakt") {
                 navigate("/kontakt");
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+            setMenuOpen(false);
+            return;
+        }
+        if (item.path === "/cenik" || item.path === "/o-me") {
+            if (location.pathname !== item.path) {
+                navigate(item.path);
             } else {
                 window.scrollTo({ top: 0, behavior: "smooth" });
             }
@@ -92,6 +104,7 @@ export const Header = () => {
 
     const navItemIsActive = (item: (typeof navigationItems)[number]) => {
         if (item.path === "/o-me") return location.pathname === "/o-me";
+        if (item.path === "/cenik") return location.pathname === "/cenik";
         return false;
     };
 
@@ -149,7 +162,7 @@ export const Header = () => {
                                 <span
                                     style={{
                                         fontFamily: "'Montserrat', sans-serif",
-                                        fontWeight: 600,
+                                        fontWeight: 700,
                                         fontSize: "13px",
                                         color: navItemIsActive(item) ? pk.brand4 : pk.ink,
                                         transition: "color 0.2s ease",
@@ -216,8 +229,8 @@ export const Header = () => {
                             <button
                                 type="button"
                                 onClick={() => navigate("/napiste-nam")}
-                                style={headerPrimaryCtaStyle}
-                                className={headerPrimaryCtaClassName}
+                                style={headerNavMatchedCtaStyle}
+                                className={headerNavMatchedCtaClassName}
                             >
                                 {t.writeUs}
                             </button>
@@ -311,7 +324,7 @@ export const Header = () => {
                                 border: "none",
                                 cursor: "pointer",
                                 fontFamily: "'Montserrat', sans-serif",
-                                fontWeight: 600,
+                                fontWeight: 700,
                                 fontSize: "16px",
                                 color: navItemIsActive(item) ? pk.brand4 : pk.ink82,
                                 textAlign: "left",
@@ -377,10 +390,10 @@ export const Header = () => {
                         type="button"
                         onClick={() => { navigate("/napiste-nam"); setMenuOpen(false); }}
                         style={{
-                            ...headerPrimaryCtaStyle,
+                            ...headerNavMatchedCtaStyle,
                             marginTop: "24px",
                         }}
-                        className={headerPrimaryCtaClassName}
+                        className={headerNavMatchedCtaClassName}
                     >
                         {t.writeUs}
                     </button>

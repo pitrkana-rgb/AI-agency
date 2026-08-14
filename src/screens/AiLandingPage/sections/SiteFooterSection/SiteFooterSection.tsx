@@ -10,8 +10,8 @@ export const SiteFooterSection = (): JSX.Element => {
   const { language } = useLanguage();
 
   const t = language === "en" ? {
-    home: "Home",
     services: "Services",
+    pricing: "Pricing",
     faq: "FAQ",
     contact: "About me",
     footerDesc: "I design modern websites, automate processes, and build AI agents for your business.",
@@ -22,8 +22,8 @@ export const SiteFooterSection = (): JSX.Element => {
     privacy: "Privacy Policy",
     terms: "Terms of Use",
   } : {
-    home: "Domů",
     services: "Služby",
+    pricing: "Ceník",
     faq: "Časté dotazy",
     contact: "O mě",
     footerDesc: "Navrhuji moderní weby, automatizuji procesy a stavím AI agenty pro vaše podnikání.",
@@ -36,16 +36,16 @@ export const SiteFooterSection = (): JSX.Element => {
   };
 
   const navLinks = [
-    { label: t.home, id: "hero", path: "/" },
     { label: t.services, id: "co-nabizime", path: "/" },
+    { label: t.pricing, id: undefined, path: "/cenik" },
     { label: t.faq, id: "faq", path: "/" },
     { label: t.contact, id: undefined, path: "/o-me" },
   ] as const;
 
   const handleNavClick = (link: typeof navLinks[0]) => {
-    if (link.path === "/o-me") {
-      if (location.pathname !== "/o-me") {
-        navigate("/o-me");
+    if (link.path === "/o-me" || link.path === "/cenik") {
+      if (location.pathname !== link.path) {
+        navigate(link.path);
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -66,11 +66,11 @@ export const SiteFooterSection = (): JSX.Element => {
       {/* Orange gradient top border */}
       <div style={{ height: "1px", background: pk.gradientFooterRule }} />
 
-      <div className="footer-wrapper" style={{ maxWidth: "1400px", margin: "0 auto", padding: "56px 24px 40px" }}>
-        <div className="footer-top" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "48px", flexWrap: "wrap", marginBottom: "48px" }}>
+      <div className="footer-wrapper" style={{ maxWidth: "1400px", margin: "0 auto", padding: "48px 24px 32px" }}>
+        <div className="footer-top" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "48px", flexWrap: "wrap", marginBottom: "36px" }}>
 
           {/* Brand */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "300px" }}>
+          <div className="footer-brand" style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "460px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img
                 src={companyLogoV4Url}
@@ -79,7 +79,7 @@ export const SiteFooterSection = (): JSX.Element => {
                 style={{ height: "72px", width: "auto", display: "block" }}
               />
             </div>
-            <p style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 400, fontSize: "14px", color: pk.onDark, lineHeight: 1.65, margin: 0 }}>
+            <p className="footer-brand-desc" style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 400, fontSize: "14px", color: pk.onDark, lineHeight: 1.55, margin: 0 }}>
               {t.footerDesc}
             </p>
           </div>
@@ -152,13 +152,14 @@ export const SiteFooterSection = (): JSX.Element => {
       </div>
       <style>{`
         @media(max-width:768px){
-          .footer-wrapper { padding: 40px 20px 28px !important; }
+          .footer-wrapper { padding: 32px 20px 24px !important; }
           .footer-top {
             flex-direction: column !important;
-            gap: 32px !important;
-            margin-bottom: 32px !important;
+            gap: 28px !important;
+            margin-bottom: 28px !important;
           }
           /* Brand block: full width on top */
+          .footer-top > .footer-brand,
           .footer-top > div:first-child {
             max-width: 100% !important;
             width: 100% !important;

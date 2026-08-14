@@ -30,16 +30,20 @@ export const NotFoundPage = (): JSX.Element => {
           onClick={() => navigate("/")}
           className="animate-pulse-glow hero-primary-btn landing-primary-cta"
           style={{
-            padding: "9px 22px",
+            padding: "11px 22px",
             borderRadius: "12px",
             border: "none",
             fontFamily: "'Montserrat',sans-serif",
-            fontWeight: 600,
-            fontSize: "16px",
+            fontWeight: 700,
+            fontSize: "13px",
+            letterSpacing: "0.06em",
+            lineHeight: 1,
+            textTransform: "uppercase" as const,
             cursor: "pointer",
             transition: "transform 0.25s ease, filter 0.25s ease",
             width: "100%",
             maxWidth: "calc(100% - 30px)",
+            minHeight: 37,
             boxSizing: "border-box",
           }}
           onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-3px)"; b.style.filter = "brightness(1.1)"; }}

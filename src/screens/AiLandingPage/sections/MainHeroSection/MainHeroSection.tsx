@@ -13,7 +13,7 @@ const HERO_ENTRANCE_ID = "hero-entrance";
 const HERO_TYPING = { typeMs: 1000, holdMs: 2000, deleteMs: 1000, startDelayMs: 1000 } as const;
 
 /** Align hero primary CTA height with header CTA. */
-const HERO_CTA_PAD_Y = Math.round(11 * 0.8);
+const HERO_CTA_PAD_Y = Math.round(11 * 0.8 * 1.2);
 const HERO_CTA_PAD_X = Math.round(28 * 0.8);
 
 const HERO_TYPING_MESSAGES_CS = [
@@ -300,11 +300,11 @@ export const MainHeroSection = (): JSX.Element => {
               borderRadius: "12px",
               padding: `${HERO_CTA_PAD_Y}px ${HERO_CTA_PAD_X}px`,
               fontFamily: "'Montserrat', sans-serif",
-              fontWeight: 600,
-              fontSize: "16px",
-              lineHeight: 1.2,
-              letterSpacing: "0.01em",
-              textTransform: "none" as const,
+              fontWeight: 700,
+              fontSize: "13px",
+              lineHeight: 1,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
               cursor: "pointer",
               transition: "transform 0.25s ease, filter 0.25s ease",
               whiteSpace: "nowrap",
@@ -469,20 +469,20 @@ export const MainHeroSection = (): JSX.Element => {
             font-size: 34.65px;
             line-height: 1;
             white-space: nowrap;
-            color: #d06dff;
+            color: #fff;
             pointer-events: none;
             transform: translate(-90px, 130px) rotate(-6deg);
             clip-path: inset(0 100% 0 0);
             opacity: 0;
             transition:
-              clip-path 2.5s linear,
+              clip-path 2s linear,
               opacity 0.35s linear;
             will-change: clip-path, opacity;
           }
           .hero-section-mobile.play-entrance .hero-cta-scribble {
             opacity: 1;
             clip-path: inset(0 0 0 0);
-            transition-delay: 3100ms;
+            transition-delay: 2600ms;
           }
           .hero-section-mobile.hero-entrance-done .hero-cta-scribble {
             opacity: 1;
@@ -814,12 +814,14 @@ export const MainHeroSection = (): JSX.Element => {
             max-width: 100% !important;
             min-width: 0;
             box-sizing: border-box;
-            padding: 9px 22px !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
-            letter-spacing: 0.01em !important;
-            line-height: 1.2 !important;
+            padding: 11px 22px !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.06em !important;
+            line-height: 1 !important;
+            text-transform: uppercase !important;
             white-space: nowrap !important;
+            min-height: 37px !important;
             justify-content: center;
           }
         }

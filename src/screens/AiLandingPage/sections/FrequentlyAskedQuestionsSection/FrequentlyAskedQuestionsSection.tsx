@@ -95,7 +95,7 @@ export const FrequentlyAskedQuestionsSection = (): JSX.Element => {
   const { language } = useLanguage();
   const isEn = language === "en";
   const items: readonly FaqItem[] = isEn ? faqDataEn : faqData;
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
   const leftColumn = items.slice(0, FAQ_COLUMN_SIZE);
   const rightColumn = items.slice(FAQ_COLUMN_SIZE);
 

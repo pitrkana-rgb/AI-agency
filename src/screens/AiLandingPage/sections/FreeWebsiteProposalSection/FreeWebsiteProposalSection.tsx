@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, CheckCircle2, ClipboardPen, Monitor } from "lucide-react";
+import { CheckCircle2, ClipboardPen, Monitor } from "lucide-react";
 import {
   hasBeenRevealed,
   markRevealedById,
@@ -79,7 +79,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           },
         ],
         scribble: "Non-binding & free",
-        cta: "I want a free website proposal",
+        cta: "I want a free proposal",
       }
     : {
         headingLinesDesktop: [
@@ -110,7 +110,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           },
         ],
         scribble: "Nezávazně a zdarma",
-        cta: "Chci návrh webu zdarma",
+        cta: "Chci návrh zdarma",
       };
 
   return (
@@ -231,8 +231,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
             className="free-proposal-cta free-proposal-anim free-proposal-anim--cta"
             onClick={() => scrollToSectionId("kontakt")}
           >
-            <span>{t.cta}</span>
-            <ArrowRight size={18} strokeWidth={2.25} aria-hidden />
+            {t.cta}
           </button>
         </div>
       </div>
@@ -418,22 +417,22 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
           width: 100%;
-          min-height: 0;
           margin-top: 34px;
-          padding: 9px 22px;
+          padding: 11px 22px;
           border: none;
           border-radius: 12px;
           cursor: pointer;
           background-image: var(--pk-gradient-popular);
           color: #fff;
           font-family: "Montserrat", sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 1.2;
-          letter-spacing: 0.01em;
-          text-transform: none;
+          font-weight: 700;
+          font-size: 13px;
+          line-height: 1;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          min-height: 37px;
+          box-sizing: border-box;
           box-shadow:
             1px 2px 4px rgb(2 6 23 / 0.18),
             4px 8px 16px -2px rgb(224 64 251 / 0.35),
@@ -647,9 +646,9 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           }
           .free-proposal-cta {
             margin-top: 0;
-            min-height: 0;
-            font-size: 16px;
-            padding: 9px 22px;
+            min-height: 37px;
+            font-size: 13px;
+            padding: 11px 22px;
           }
         }
 

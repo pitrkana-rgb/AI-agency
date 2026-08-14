@@ -26,24 +26,86 @@
   animation: pulse-glow 2.5s ease-out infinite;
 }
 
-/* Primary CTA type + fill: match header / Získejte návrh zdarma button (color may vary per surface). */
+/* Primary CTA type + fill: match header nav CTA (13px / 700 / uppercase). */
 .landing-primary-cta {
   background-color: transparent !important;
   background-image: var(--pk-gradient-popular) !important;
   color: var(--pk-ink) !important;
   border: none;
   border-radius: 12px;
-  font-family: "Montserrat", sans-serif !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-  letter-spacing: 0.01em !important;
-  line-height: 1.2 !important;
-  text-transform: none !important;
   transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.landing-primary-cta,
+.free-proposal-cta {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  box-sizing: border-box !important;
+  min-height: 37px !important;
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .landing-primary-cta--on-dark {
   color: #fff !important;
+}
+
+/* Soft glossy light sweep — all primary CTAs */
+.landing-primary-cta,
+.free-proposal-cta {
+  position: relative;
+  isolation: isolate;
+}
+.landing-primary-cta::before,
+.free-proposal-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background-image: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 40%,
+    rgb(255 255 255 / 0.12) 46%,
+    rgb(255 255 255 / 0.48) 50%,
+    rgb(255 255 255 / 0.12) 54%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: 145% 0;
+  filter: blur(2.5px);
+  animation: landing-cta-shimmer 3.5s linear infinite;
+}
+@keyframes landing-cta-shimmer {
+  0% {
+    background-position: 145% 0;
+  }
+  /* 1.3s of 3.5s cycle ≈ 37.14% */
+  37.14% {
+    background-position: -45% 0;
+  }
+  37.15%,
+  100% {
+    background-position: -45% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-primary-cta::before,
+  .free-proposal-cta::before {
+    animation: none !important;
+    opacity: 0 !important;
+  }
 }
 
 /* Desktop: Hero CTA is 50% wider than its original shrink-wrap; CoNabízíme matches. */
@@ -93,13 +155,23 @@
     align-items: center !important;
   }
 
-  /* Keep chrome CTAs compact (header + cookie banner) */
+  /* Keep chrome CTAs compact if ever shown; drawer can stay full width */
   header .landing-primary-cta,
   [role="dialog"] .landing-primary-cta {
     width: auto !important;
     max-width: none !important;
     display: inline-flex !important;
   }
+}
+
+/* Header CTA matches nav link type: 13px / 600 / uppercase */
+header .landing-primary-cta,
+.header-nav-matched-cta {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
 }
 
 /* Nav link underline hover animation */

@@ -356,20 +356,6 @@ const slides: Slide[] = [
     cta: "Nezávazná konzultace",
     imageAssetId: "web-app",
   },
-  {
-    id: "automatizace-ai",
-    title: "Automatizace procesů a AI agenti",
-    description: "Získejte více zákazníků a snižte náklady díky chytré automatizaci",
-    features: [
-      { before: "", bold: "Automatizace procesů", after: " bez rutinní manuální práce" },
-      { before: "", bold: "Okamžité zpracování požadavků", after: " 24 hodin denně bez čekání" },
-      { before: "", bold: "Snížení provozních nákladů", after: " až o desítky procent" },
-      { before: "", bold: "Automatické sběry dat", after: " a propojení firemních systémů" },
-      { before: "", bold: "Úspora času zaměstnanců", after: " díky chytrému workflow systému" },
-    ],
-    cta: "Nezávazná konzultace",
-    imageAssetId: "ai-bot",
-  },
 ];
 
 const slidesEn: Slide[] = [
@@ -421,20 +407,6 @@ const slidesEn: Slide[] = [
     ],
     cta: "Free consultation",
     imageAssetId: "web-app",
-  },
-  {
-    id: "automatizace-ai",
-    title: "Process automation and AI agents",
-    description: "Get more customers and reduce costs with smart automation",
-    features: [
-      { bold: "Automation of routine manual work", rest: "" },
-      { bold: "Immediate request processing 24 hours a day", rest: "" },
-      { bold: "Lower operating costs", rest: "" },
-      { bold: "Automatic data collection", rest: "" },
-      { bold: "Employee time savings", rest: "" },
-    ],
-    cta: "Free consultation",
-    imageAssetId: "ai-bot",
   },
 ];
 
@@ -510,8 +482,8 @@ export const CoNabizimeSection = (): JSX.Element => {
   };
 
   const navItems = isEn
-    ? ["Website creation", "Website modernization", "Web applications", "Process automation"]
-    : ["Tvorba stránek", "Modernizace stránek", "Webové aplikace", "Automatizace procesů"];
+    ? ["Website creation", "Website modernization", "Web applications"]
+    : ["Tvorba stránek", "Modernizace stránek", "Webové aplikace"];
 
   useEffect(() => {
     activeIdxRef.current = activeIdx;
@@ -751,9 +723,10 @@ export const CoNabizimeSection = (): JSX.Element => {
                         }}
                         style={{
                           fontFamily: "'Montserrat', sans-serif",
-                          fontWeight: 600,
-                          fontSize: "16px",
-                          letterSpacing: "0",
+                          fontWeight: 700,
+                          fontSize: "13px",
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase" as const,
                           transition: "transform 0.25s ease, filter 0.25s ease",
                         }}
                         onMouseEnter={(e) => {
@@ -838,9 +811,10 @@ export const CoNabizimeSection = (): JSX.Element => {
                       className={`offer-cta offer-cta-mobile animate-pulse-glow hero-primary-btn landing-primary-cta ${revealItemClass(ctaVisible)}`}
                       style={{
                         fontFamily: "'Montserrat', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "16px",
-                        letterSpacing: "0",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase" as const,
                         transition: "transform 0.25s ease, filter 0.25s ease",
                       }}
                       onMouseEnter={(e) => {
@@ -872,7 +846,7 @@ export const CoNabizimeSection = (): JSX.Element => {
         }
         .offer-tabs-desktop{
           display:grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 8px;
           width: 90%;
           max-width: 90%;
@@ -1272,19 +1246,21 @@ export const CoNabizimeSection = (): JSX.Element => {
           color: var(--pk-ink);
           border: none;
           border-radius: 12px;
-          padding: 9px 22px;
+          padding: 11px 22px;
           font-family: "Montserrat", sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 1.2;
-          letter-spacing: 0.01em;
-          text-transform: none;
+          font-weight: 700;
+          font-size: 13px;
+          line-height: 1;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
           cursor: pointer;
           transition: filter 0.25s ease, transform 0.25s ease;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           white-space: nowrap;
+          min-height: 37px;
+          box-sizing: border-box;
         }
         /* Card title highlight matches section heading */
         .offer-title-accent{
@@ -1541,9 +1517,10 @@ export const CoNabizimeSection = (): JSX.Element => {
             box-sizing: border-box;
             display: flex;
             justify-content: center;
-            padding: 9px 22px !important;
-            font-size: 16px !important;
-            font-weight: 600;
+            padding: 11px 22px !important;
+            font-size: 13px !important;
+            font-weight: 700;
+            min-height: 37px;
             margin-top: 30px !important;
             flex-shrink: 0;
           }
