@@ -12,6 +12,7 @@ export const CenikPage = (): JSX.Element => {
 
   return (
     <LandingStylePageRoot
+      className="cenik-page-root"
       style={{
         backgroundColor: pk.page,
         backgroundImage: "none",
@@ -27,8 +28,12 @@ export const CenikPage = (): JSX.Element => {
       <SiteFooterSection />
 
       <style>{`
+        .cenik-page-root {
+          overflow-x: clip !important;
+        }
         .cenik-page-main {
           padding-top: 120px;
+          overflow: visible;
         }
         @media (max-width: 768px) {
           .cenik-page-main {

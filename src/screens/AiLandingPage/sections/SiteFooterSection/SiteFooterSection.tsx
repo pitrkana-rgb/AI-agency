@@ -37,8 +37,8 @@ export const SiteFooterSection = (): JSX.Element => {
 
   const navLinks = [
     { label: t.services, id: "co-nabizime", path: "/" },
-    { label: t.pricing, id: undefined, path: "/cenik" },
     { label: t.faq, id: "faq", path: "/" },
+    { label: t.pricing, id: undefined, path: "/cenik" },
     { label: t.contact, id: undefined, path: "/o-me" },
   ] as const;
 

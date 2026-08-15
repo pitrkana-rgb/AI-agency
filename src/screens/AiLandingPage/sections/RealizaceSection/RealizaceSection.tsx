@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Monitor, Smartphone } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ChevronLeft, ChevronRight, Monitor, Smartphone } from "lucide-react";
 import {
   hasBeenRevealed,
   markRevealedById,
@@ -8,6 +9,10 @@ import {
 } from "../../../../hooks/useInViewOnce";
 import { useLanguage } from "../../../../i18n/LanguageContext";
 import { pk } from "../../../../design/pkLandingColors";
+import {
+  headerPrimaryCtaClassName,
+  headerPrimaryCtaStyle,
+} from "../../../../design/headerCtaStyle";
 import { MobilePreviewClickHint } from "../../../../components/MobilePreviewClickHint";
 import { RealizacePreviewImage } from "./RealizacePreviewImage";
 
@@ -15,7 +20,7 @@ const REALIZACE_ENTRANCE_ID = "realizace-entrance";
 const REALIZACE_CARD_STAGGER_MS = 250;
 const realizaceEntranceTotalMs = (cardCount: number) =>
   REALIZACE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
-const PREVIEW_MOBILE_FRAME_WIDTH_PX = 390;
+const PREVIEW_MOBILE_FRAME_WIDTH_PX = 430;
 type PreviewViewport = "desktop" | "mobile";
 /** Light chrome on dark preview headers; dark chrome on light preview headers. */
 type PreviewChrome = "on-dark" | "on-light";
@@ -220,6 +225,7 @@ const RealizaceItem = ({
 };
 
 export const RealizaceSection = (): JSX.Element => {
+  const navigate = useNavigate();
   const { language } = useLanguage();
   const isEn = language === "en";
   const t = isEn
@@ -233,6 +239,9 @@ export const RealizaceSection = (): JSX.Element => {
         viewportMobile: "Mobile layout",
         viewportMode: "Display mode",
         previewHint: "Click for preview",
+        similarCta: "I want a similar website",
+        previewPrev: "Previous project",
+        previewNext: "Next project",
       }
     : {
         heading: "Tvořím webové stránky, které přinášejí výsledky",
@@ -244,6 +253,9 @@ export const RealizaceSection = (): JSX.Element => {
         viewportMobile: "Rozložení pro mobil",
         viewportMode: "Režim zobrazení",
         previewHint: "Klikněte pro náhled",
+        similarCta: "Chci podobný web",
+        previewPrev: "Předchozí projekt",
+        previewNext: "Další projekt",
       };
 
   const activeCards = isEn ? cardsEn : cards;
@@ -251,6 +263,8 @@ export const RealizaceSection = (): JSX.Element => {
   const [previewViewport, setPreviewViewport] = useState<PreviewViewport>("desktop");
   const [previewChrome, setPreviewChrome] = useState<PreviewChrome>("on-dark");
   const [previewMobileScreen, setPreviewMobileScreen] = useState(isPreviewMobileScreen);
+  const [previewFrameVisible, setPreviewFrameVisible] = useState(true);
+  const previewSwitchTimerRef = useRef<number | null>(null);
   const [sectionRef, cardsVisible] = useInViewOnce({
     id: "realizace",
     threshold: 0.38,
@@ -328,14 +342,41 @@ export const RealizaceSection = (): JSX.Element => {
       suppressCardClickRef.current = false;
       return;
     }
+    setPreviewFrameVisible(true);
     setPreviewViewport(isPreviewMobileScreen() ? "mobile" : "desktop");
     setActivePreview(card);
   };
 
   const closePreview = () => {
+    if (previewSwitchTimerRef.current != null) {
+      window.clearTimeout(previewSwitchTimerRef.current);
+      previewSwitchTimerRef.current = null;
+    }
     setActivePreview(null);
     setPreviewViewport("desktop");
     setPreviewChrome("on-dark");
+    setPreviewFrameVisible(true);
+  };
+
+  const switchPreviewByOffset = (offset: number) => {
+    if (!activePreview || activeCards.length < 2) return;
+    const currentIndex = activeCards.findIndex(
+      (card) => card.previewUrl === activePreview.previewUrl,
+    );
+    if (currentIndex < 0) return;
+    const nextIndex = (currentIndex + offset + activeCards.length) % activeCards.length;
+    const nextCard = activeCards[nextIndex];
+    if (!nextCard || nextCard.previewUrl === activePreview.previewUrl) return;
+
+    if (previewSwitchTimerRef.current != null) {
+      window.clearTimeout(previewSwitchTimerRef.current);
+    }
+    setPreviewFrameVisible(false);
+    previewSwitchTimerRef.current = window.setTimeout(() => {
+      setActivePreview(nextCard);
+      setPreviewFrameVisible(true);
+      previewSwitchTimerRef.current = null;
+    }, 180);
   };
 
   useEffect(() => {
@@ -370,7 +411,18 @@ export const RealizaceSection = (): JSX.Element => {
   useEffect(() => {
     if (!activePreview) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closePreview();
+      if (event.key === "Escape") {
+        closePreview();
+        return;
+      }
+      if (previewMobileScreen) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        switchPreviewByOffset(-1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        switchPreviewByOffset(1);
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -378,7 +430,7 @@ export const RealizaceSection = (): JSX.Element => {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-  }, [activePreview]);
+  }, [activePreview, previewMobileScreen, activeCards]);
 
   const showDesktopMobileFrame =
     !previewMobileScreen && previewViewport === "mobile";
@@ -486,71 +538,135 @@ export const RealizaceSection = (): JSX.Element => {
       {activePreview
         ? createPortal(
           <div
-            className={`prototype-preview-overlay${previewMobileScreen ? " prototype-preview-overlay--native-mobile" : ""}`}
+            className={`prototype-preview-overlay${
+              previewMobileScreen
+                ? " prototype-preview-overlay--native-mobile"
+                : " prototype-preview-overlay--studio"
+            }`}
             role="dialog"
             aria-modal="true"
             aria-label={activePreview.title}
           >
+            {!previewMobileScreen ? (
+              <div className="prototype-preview-veil" aria-hidden="true" />
+            ) : null}
+
             <div
-              className={`prototype-preview-scroll${showDesktopMobileFrame ? " prototype-preview-scroll--device-mobile" : ""}`}
+              className={`prototype-preview-controls prototype-preview-controls--${
+                previewMobileScreen ? previewChrome : "studio"
+              }`}
+              role="toolbar"
+              aria-label={isEn ? "Prototype preview controls" : "Ovládání náhledu prototypu"}
+            >
+              {previewMobileScreen ? (
+                <div className="prototype-preview-controls-group">
+                  <button
+                    type="button"
+                    className="prototype-preview-back"
+                    onClick={closePreview}
+                  >
+                    <span className="prototype-preview-back-label prototype-preview-back-label--full">
+                      {t.previewBack}
+                    </span>
+                    <span className="prototype-preview-back-label prototype-preview-back-label--short">
+                      {t.previewBackShort}
+                    </span>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="prototype-preview-controls-side prototype-preview-controls-side--left" />
+                  <div className="prototype-preview-controls-center">
+                    <div
+                      className="prototype-preview-viewport"
+                      role="group"
+                      aria-label={t.viewportMode}
+                    >
+                      <span className="prototype-preview-viewport-label">{t.viewportMode}</span>
+                      <button
+                        type="button"
+                        className="prototype-preview-viewport-btn"
+                        aria-pressed={previewViewport === "desktop"}
+                        aria-label={t.viewportDesktop}
+                        onClick={() => setPreviewViewport("desktop")}
+                      >
+                        <Monitor size={18} strokeWidth={2} aria-hidden />
+                      </button>
+                      <button
+                        type="button"
+                        className="prototype-preview-viewport-btn"
+                        aria-pressed={previewViewport === "mobile"}
+                        aria-label={t.viewportMobile}
+                        onClick={() => setPreviewViewport("mobile")}
+                      >
+                        <Smartphone size={18} strokeWidth={2} aria-hidden />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="prototype-preview-controls-side prototype-preview-controls-side--right">
+                    <button
+                      type="button"
+                      className={`${headerPrimaryCtaClassName} prototype-preview-similar-cta`}
+                      style={headerPrimaryCtaStyle}
+                      onClick={() => {
+                        closePreview();
+                        navigate("/napiste-nam");
+                      }}
+                    >
+                      {t.similarCta}
+                    </button>
+                    <button
+                      type="button"
+                      className="prototype-preview-back"
+                      onClick={closePreview}
+                    >
+                      <span className="prototype-preview-back-label prototype-preview-back-label--full">
+                        {t.previewBack}
+                      </span>
+                      <span className="prototype-preview-back-label prototype-preview-back-label--short">
+                        {t.previewBackShort}
+                      </span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {!previewMobileScreen ? (
+              <>
+                <button
+                  type="button"
+                  className="prototype-preview-nav prototype-preview-nav--prev"
+                  aria-label={t.previewPrev}
+                  onClick={() => switchPreviewByOffset(-1)}
+                >
+                  <ChevronLeft size={22} strokeWidth={2} aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  className="prototype-preview-nav prototype-preview-nav--next"
+                  aria-label={t.previewNext}
+                  onClick={() => switchPreviewByOffset(1)}
+                >
+                  <ChevronRight size={22} strokeWidth={2} aria-hidden />
+                </button>
+              </>
+            ) : null}
+
+            <div
+              className={`prototype-preview-scroll${showDesktopMobileFrame ? " prototype-preview-scroll--device-mobile" : ""}${
+                previewFrameVisible ? " is-visible" : " is-fading"
+              }`}
             >
               <div
                 className={`prototype-preview-stage${showDesktopMobileFrame ? " prototype-preview-stage--device-mobile" : ""}`}
               >
                 <iframe
+                  key={activePreview.previewUrl}
                   src={activePreview.previewUrl}
                   title={activePreview.title}
                   className="prototype-preview-frame"
                 />
-              </div>
-            </div>
-
-            <div
-              className={`prototype-preview-controls prototype-preview-controls--${previewChrome}`}
-              role="toolbar"
-              aria-label={isEn ? "Prototype preview controls" : "Ovládání náhledu prototypu"}
-            >
-              <div className="prototype-preview-controls-group">
-                {!previewMobileScreen ? (
-                  <div
-                    className="prototype-preview-viewport"
-                    role="group"
-                    aria-label={t.viewportMode}
-                  >
-                    <span className="prototype-preview-viewport-label">{t.viewportMode}</span>
-                    <button
-                      type="button"
-                      className="prototype-preview-viewport-btn"
-                      aria-pressed={previewViewport === "desktop"}
-                      aria-label={t.viewportDesktop}
-                      onClick={() => setPreviewViewport("desktop")}
-                    >
-                      <Monitor size={18} strokeWidth={2} aria-hidden />
-                    </button>
-                    <button
-                      type="button"
-                      className="prototype-preview-viewport-btn"
-                      aria-pressed={previewViewport === "mobile"}
-                      aria-label={t.viewportMobile}
-                      onClick={() => setPreviewViewport("mobile")}
-                    >
-                      <Smartphone size={18} strokeWidth={2} aria-hidden />
-                    </button>
-                  </div>
-                ) : null}
-
-                <button
-                  type="button"
-                  className="prototype-preview-back"
-                  onClick={closePreview}
-                >
-                  <span className="prototype-preview-back-label prototype-preview-back-label--full">
-                    {t.previewBack}
-                  </span>
-                  <span className="prototype-preview-back-label prototype-preview-back-label--short">
-                    {t.previewBackShort}
-                  </span>
-                </button>
               </div>
             </div>
           </div>,
@@ -709,6 +825,28 @@ export const RealizaceSection = (): JSX.Element => {
           background: var(--pk-page);
           overflow: hidden;
         }
+        .prototype-preview-veil{
+          display: none;
+        }
+        .prototype-preview-overlay--studio{
+          background: transparent;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-veil{
+          display: block;
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(
+              180deg,
+              rgb(255 255 255 / 0.78) 0%,
+              rgb(255 255 255 / 0.7) 45%,
+              rgb(255 255 255 / 0.74) 100%
+            );
+          backdrop-filter: blur(18px) saturate(1.08);
+          -webkit-backdrop-filter: blur(18px) saturate(1.08);
+        }
         .prototype-preview-scroll{
           position: absolute;
           inset: 0;
@@ -717,14 +855,103 @@ export const RealizaceSection = (): JSX.Element => {
           overflow: auto;
           -webkit-overflow-scrolling: touch;
           background: var(--pk-page);
+          z-index: 1;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-scroll{
+          top: auto;
+          left: 50%;
+          right: auto;
+          bottom: 2.2vh;
+          transform: translateX(-50%);
+          width: min(95vw, 1840px);
+          height: calc(100dvh - 12.5vh);
+          max-height: calc(100dvh - 12.5vh);
+          overflow: hidden;
+          background: transparent;
+          border-radius: 18px;
+          opacity: 1;
+          transition:
+            width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+            height 420ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 180ms ease;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-scroll.is-fading{
+          opacity: 0;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-nav{
+          position: absolute;
+          top: calc(12.5vh + (100dvh - 14.7vh) / 2);
+          transform: translateY(-50%);
+          z-index: 6;
+          width: 46px;
+          height: 46px;
+          border-radius: 999px;
+          border: 1px solid rgb(15 23 42 / 0.08);
+          background: rgb(255 255 255 / 0.78);
+          backdrop-filter: blur(14px) saturate(1.1);
+          -webkit-backdrop-filter: blur(14px) saturate(1.1);
+          color: var(--pk-ink);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow:
+            0 1px 2px rgb(15 23 42 / 0.04),
+            0 10px 28px rgb(15 23 42 / 0.1);
+          transition:
+            background 220ms ease,
+            transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 220ms ease,
+            border-color 220ms ease;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-nav--prev{
+          left: max(10px, calc((100vw - min(95vw, 1840px)) / 2 - 8px));
+        }
+        .prototype-preview-overlay--studio .prototype-preview-nav--next{
+          right: max(10px, calc((100vw - min(95vw, 1840px)) / 2 - 8px));
+        }
+        .prototype-preview-overlay--studio:has(.prototype-preview-scroll--device-mobile) .prototype-preview-nav--prev{
+          left: max(10px, calc(50% - ${PREVIEW_MOBILE_FRAME_WIDTH_PX / 2}px - 58px));
+        }
+        .prototype-preview-overlay--studio:has(.prototype-preview-scroll--device-mobile) .prototype-preview-nav--next{
+          right: max(10px, calc(50% - ${PREVIEW_MOBILE_FRAME_WIDTH_PX / 2}px - 58px));
+        }
+        .prototype-preview-overlay--studio .prototype-preview-nav:hover{
+          background: rgb(255 255 255 / 0.94);
+          transform: translateY(-50%) scale(1.04);
+          box-shadow:
+            0 2px 8px rgb(15 23 42 / 0.06),
+            0 14px 34px rgb(15 23 42 / 0.14);
+        }
+        .prototype-preview-overlay--studio .prototype-preview-nav:focus-visible{
+          outline: 2px solid var(--pk-accent);
+          outline-offset: 3px;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-scroll:not(.prototype-preview-scroll--device-mobile){
+          background: var(--pk-page);
+          box-shadow:
+            0 0 0 1px rgb(15 23 42 / 0.06),
+            0 28px 80px rgb(15 23 42 / 0.16),
+            0 8px 24px rgb(15 23 42 / 0.08);
         }
         .prototype-preview-scroll--device-mobile{
           background: var(--pk-slate-tint-08);
+        }
+        .prototype-preview-overlay--studio .prototype-preview-scroll--device-mobile{
+          background: transparent;
+          box-shadow: none;
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
         }
         .prototype-preview-stage{
           width: 100%;
           min-height: 100%;
           height: 100%;
+          transition:
+            width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
         }
         .prototype-preview-stage--device-mobile{
           width: min(${PREVIEW_MOBILE_FRAME_WIDTH_PX}px, 100%);
@@ -734,6 +961,26 @@ export const RealizaceSection = (): JSX.Element => {
           box-shadow:
             0 0 0 1px var(--pk-slate-tint-10),
             0 18px 48px rgb(2 6 23 / 0.08);
+        }
+        .prototype-preview-overlay--studio .prototype-preview-stage--device-mobile{
+          width: ${PREVIEW_MOBILE_FRAME_WIDTH_PX}px;
+          max-width: min(${PREVIEW_MOBILE_FRAME_WIDTH_PX}px, 100%);
+          flex: 0 0 auto;
+          border-radius: 18px;
+          overflow: hidden;
+          box-shadow:
+            0 0 0 1px rgb(15 23 42 / 0.08),
+            0 28px 80px rgb(15 23 42 / 0.18),
+            0 8px 24px rgb(15 23 42 / 0.1);
+        }
+        .prototype-preview-overlay--studio .prototype-preview-stage--device-mobile .prototype-preview-frame{
+          width: ${PREVIEW_MOBILE_FRAME_WIDTH_PX}px;
+          min-width: ${PREVIEW_MOBILE_FRAME_WIDTH_PX}px;
+          max-width: ${PREVIEW_MOBILE_FRAME_WIDTH_PX}px;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-stage:not(.prototype-preview-stage--device-mobile){
+          border-radius: 18px;
+          overflow: hidden;
         }
         .prototype-preview-frame{
           display: block;
@@ -755,6 +1002,11 @@ export const RealizaceSection = (): JSX.Element => {
           margin: 0;
           box-shadow: none;
           background: var(--pk-page);
+          border-radius: 0;
+          transform: none;
+          top: 0;
+          left: 0;
+          bottom: 0;
         }
         @media (max-width: ${PREVIEW_MOBILE_BREAKPOINT_PX}px){
           .prototype-preview-viewport{
@@ -788,8 +1040,48 @@ export const RealizaceSection = (): JSX.Element => {
           gap: 10px;
           pointer-events: auto;
         }
+        .prototype-preview-controls-center,
+        .prototype-preview-controls-side{
+          display: none;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-controls{
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 10.5vh;
+          min-height: 76px;
+          max-height: 104px;
+          padding: 0 clamp(20px, 3vw, 40px);
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: center;
+          gap: 16px;
+          box-sizing: border-box;
+          pointer-events: none;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-controls-center,
+        .prototype-preview-overlay--studio .prototype-preview-controls-side{
+          display: flex;
+          align-items: center;
+          pointer-events: auto;
+          min-width: 0;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-controls-center{
+          justify-content: center;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-controls-side--left{
+          justify-content: flex-start;
+        }
+        .prototype-preview-overlay--studio .prototype-preview-controls-side--right{
+          justify-content: flex-end;
+          gap: 12px;
+        }
+        .prototype-preview-similar-cta{
+          flex-shrink: 0;
+          white-space: nowrap;
+        }
         @media (min-width: 901px){
-          .prototype-preview-controls{
+          .prototype-preview-overlay:not(.prototype-preview-overlay--studio) .prototype-preview-controls{
             left: auto;
             right: 0;
             padding-right: 30px;
@@ -814,7 +1106,9 @@ export const RealizaceSection = (): JSX.Element => {
             transform 200ms ease;
         }
         .prototype-preview-controls--on-dark .prototype-preview-back,
-        .prototype-preview-controls--on-dark .prototype-preview-viewport{
+        .prototype-preview-controls--on-dark .prototype-preview-viewport,
+        .prototype-preview-controls--studio .prototype-preview-back,
+        .prototype-preview-controls--studio .prototype-preview-viewport{
           background: rgb(255 255 255 / 0.9);
           border: 1px solid rgb(255 255 255 / 0.34);
           box-shadow:
@@ -828,6 +1122,14 @@ export const RealizaceSection = (): JSX.Element => {
           box-shadow:
             0 2px 8px rgb(2 6 23 / 0.18),
             0 10px 32px rgb(2 6 23 / 0.22);
+        }
+        .prototype-preview-controls--studio .prototype-preview-back,
+        .prototype-preview-controls--studio .prototype-preview-viewport{
+          background: rgb(255 255 255 / 0.82);
+          border: 1px solid rgb(15 23 42 / 0.08);
+          box-shadow:
+            0 1px 2px rgb(15 23 42 / 0.04),
+            0 8px 24px rgb(15 23 42 / 0.08);
         }
         .prototype-preview-back{
           justify-content: center;
@@ -847,14 +1149,17 @@ export const RealizaceSection = (): JSX.Element => {
           white-space: nowrap;
           user-select: none;
         }
-        .prototype-preview-controls--on-dark .prototype-preview-back{
+        .prototype-preview-controls--on-dark .prototype-preview-back,
+        .prototype-preview-controls--studio .prototype-preview-back{
           color: var(--pk-ink);
         }
         .prototype-preview-controls--on-light .prototype-preview-back{
           color: #fff;
         }
         .prototype-preview-controls--on-dark .prototype-preview-back:hover,
-        .prototype-preview-controls--on-dark .prototype-preview-viewport:hover{
+        .prototype-preview-controls--on-dark .prototype-preview-viewport:hover,
+        .prototype-preview-controls--studio .prototype-preview-back:hover,
+        .prototype-preview-controls--studio .prototype-preview-viewport:hover{
           background: rgb(255 255 255 / 0.96);
           transform: translateY(-1px);
           box-shadow:
@@ -879,7 +1184,8 @@ export const RealizaceSection = (): JSX.Element => {
         .prototype-preview-viewport{
           gap: 10px;
         }
-        .prototype-preview-controls--on-dark .prototype-preview-viewport-label{
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-label,
+        .prototype-preview-controls--studio .prototype-preview-viewport-label{
           color: var(--pk-ink);
         }
         .prototype-preview-controls--on-light .prototype-preview-viewport-label{
@@ -899,19 +1205,22 @@ export const RealizaceSection = (): JSX.Element => {
           flex-shrink: 0;
           transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
         }
-        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn{
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn,
+        .prototype-preview-controls--studio .prototype-preview-viewport-btn{
           color: var(--pk-ink);
         }
         .prototype-preview-controls--on-light .prototype-preview-viewport-btn{
           color: rgb(255 255 255 / 0.88);
         }
-        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn:hover{
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn:hover,
+        .prototype-preview-controls--studio .prototype-preview-viewport-btn:hover{
           color: var(--pk-brand-4);
         }
         .prototype-preview-controls--on-light .prototype-preview-viewport-btn:hover{
           color: #fff;
         }
-        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn[aria-pressed="true"]{
+        .prototype-preview-controls--on-dark .prototype-preview-viewport-btn[aria-pressed="true"],
+        .prototype-preview-controls--studio .prototype-preview-viewport-btn[aria-pressed="true"]{
           background: rgb(255 255 255 / 0.95);
           color: var(--pk-brand-4);
           box-shadow: 0 2px 10px rgb(2 6 23 / 0.08);
