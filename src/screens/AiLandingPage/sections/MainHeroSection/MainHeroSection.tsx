@@ -1,7 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../../i18n/LanguageContext";
-import { HeroCompositeFrame } from "./HeroCompositeFrame";
+import {
+  HeroCompositeFrame,
+  HeroFrameDots,
+  useHeroPreviewCarousel,
+} from "./HeroCompositeFrame";
 import { pk } from "../../../../design/pkLandingColors";
 import {
   hasBeenRevealed,
@@ -166,6 +170,7 @@ export const MainHeroSection = (): JSX.Element => {
     scribble: "Návrh webu zdarma do 3 dnů",
   };
   const typingMessages = language === "en" ? HERO_TYPING_MESSAGES_EN : HERO_TYPING_MESSAGES_CS;
+  const { activeIdx: heroPreviewIdx, selectIdx: selectHeroPreview } = useHeroPreviewCarousel(true);
   const [entrancePhase, setEntrancePhase] = useState<"" | "play-entrance" | "hero-entrance-done">(
     () => (hasBeenRevealed(HERO_ENTRANCE_ID) ? "hero-entrance-done" : ""),
   );
@@ -283,7 +288,7 @@ export const MainHeroSection = (): JSX.Element => {
 
         {/* Mobile-only: show PC frame under subheading */}
         <div className="hero-mobile-frame" aria-hidden="true">
-          <HeroCompositeFrame imgClassName="hero-mobile-frame-img" />
+          <HeroCompositeFrame imgClassName="hero-mobile-frame-img" activeIdx={heroPreviewIdx} />
         </div>
 
         {/* CTAs */}
@@ -377,7 +382,7 @@ export const MainHeroSection = (): JSX.Element => {
 
           {/* Right media: PC frame (desktop only) */}
           <div className="hero-media" aria-hidden="true">
-            <HeroCompositeFrame imgClassName="hero-pc-frame" />
+            <HeroCompositeFrame imgClassName="hero-pc-frame" activeIdx={heroPreviewIdx} />
           </div>
         </div>
       </div>
@@ -385,7 +390,6 @@ export const MainHeroSection = (): JSX.Element => {
       {/* Desktop-only: constrain PC frame to page width rail */}
       <div
         className="hero-media-rail"
-        aria-hidden="true"
         style={{
           position: "absolute",
           top: 0,
@@ -394,11 +398,19 @@ export const MainHeroSection = (): JSX.Element => {
           transform: "translateX(-50%)",
           width: "min(100%, 1400px)",
           pointerEvents: "none",
-          zIndex: 2,
+          /* Above .hero-shell (z-10) so gallery dots receive clicks */
+          zIndex: 20,
         }}
       >
-        <div className="hero-media-rail-inner">
-          <HeroCompositeFrame imgClassName="hero-pc-frame" />
+        <div className="hero-media-rail-anchor">
+          <div className="hero-media-rail-inner">
+            <HeroCompositeFrame imgClassName="hero-pc-frame" activeIdx={heroPreviewIdx} />
+          </div>
+          <HeroFrameDots
+            className="hero-media-rail-dots"
+            activeIdx={heroPreviewIdx}
+            onSelect={selectHeroPreview}
+          />
         </div>
       </div>
 
@@ -578,6 +590,7 @@ export const MainHeroSection = (): JSX.Element => {
         }
         .hero-mobile-frame{ display:none; }
         .hero-media-rail{ display:none; }
+        .hero-media-rail-anchor{ display:none; }
         .hero-media-rail-inner{ display:none; }
         @media (min-width: 769px) {
           .hero-actions-wrap {
@@ -626,16 +639,38 @@ export const MainHeroSection = (): JSX.Element => {
           /* Use page-width rail for right media alignment */
           .hero-media{ display:none !important; }
           .hero-media-rail{ display:block !important; }
-          .hero-media-rail-inner{
-            display: block;
+          .hero-media-rail-anchor{
+            display: flex !important;
+            flex-direction: column;
+            align-items: flex-end;
             position: absolute;
             right: 20px;
             top: 50%;
-            /* Single scale for frame + screen slots. 0.7168 × 1.1 ≈ +10% vs prior desktop size. */
-            transform: translateY(calc(-50% + 50px)) scale(0.78848);
-            transform-origin: right center;
+            transform: translateY(calc(-50% + 50px));
             width: min(56vw, 920px);
             max-width: 920px;
+            pointer-events: none;
+          }
+          .hero-media-rail-inner{
+            display: block !important;
+            width: 100%;
+            /* Scale only the frame — dots stay outside so hit targets match visuals */
+            transform: scale(0.78848);
+            transform-origin: right top;
+            pointer-events: none;
+            /* Collapse unused layout under the scaled frame (scale origin: top) */
+            margin-bottom: calc(-100% * 1024 / 1536 * 0.21152);
+          }
+          .hero-media-rail-inner .hero-composite-anim{
+            pointer-events: none;
+          }
+          .hero-media-rail-dots{
+            pointer-events: auto !important;
+            z-index: 30;
+            margin-top: 18px;
+            /* Match visual width of scaled frame (origin right) */
+            width: 78.848%;
+            align-self: flex-end;
           }
           .hero-media-rail-inner .hero-pc-frame{
             width: 100%;

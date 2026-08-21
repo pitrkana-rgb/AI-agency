@@ -21,6 +21,10 @@ const REALIZACE_CARD_STAGGER_MS = 250;
 const realizaceEntranceTotalMs = (cardCount: number) =>
   REALIZACE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
 const PREVIEW_MOBILE_FRAME_WIDTH_PX = 430;
+/** Fade out before remounting iframe on desktop↔mobile switch. */
+const PREVIEW_VIEWPORT_SWITCH_MS = 180;
+/** Keep frame faded briefly so width/ratio animation reads first. */
+const PREVIEW_VIEWPORT_REVEAL_MS = 60;
 type PreviewViewport = "desktop" | "mobile";
 /** Light chrome on dark preview headers; dark chrome on light preview headers. */
 type PreviewChrome = "on-dark" | "on-light";
@@ -29,12 +33,16 @@ const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   profitherm: "on-dark",
   "black-beard": "on-dark",
   "bazar-sport-motokros": "on-light",
+  danzezula: "on-dark",
+  dentist: "on-light",
 };
 
 /** Per-prototype chrome pinned over thumbnail luminance detection. */
 const PREVIEW_CHROME_OVERRIDE: Partial<Record<string, PreviewChrome>> = {
   "bazar-sport-motokros": "on-light",
   "black-beard": "on-dark",
+  danzezula: "on-dark",
+  dentist: "on-light",
 };
 
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
@@ -86,18 +94,18 @@ const isPreviewMobileScreen = (): boolean =>
 
 const cards: PrototypeCard[] = [
   {
-    title: "Profitherm Solution",
-    description:
-      "Web zaměřený na dotační programy a rekonstrukce domů na klíč. Jasně vysvětluje služby, buduje důvěru a pomáhá přivádět kvalitní poptávky od majitelů nemovitostí.",
-    imageId: "profitherm",
-    previewUrl: "https://profithermsolution.cz/",
-  },
-  {
     title: "Trifer",
     description:
       "Firemní web zaměřený na výrobu a montáž ocelových konstrukcí pro firmy i soukromé zákazníky. Moderní prezentace služeb s důrazem na získávání nových poptávek.",
     imageId: "black-beard",
     previewUrl: "https://laser-steel-structures.vercel.app/",
+  },
+  {
+    title: "Profitherm Solution",
+    description:
+      "Web zaměřený na dotační programy a rekonstrukce domů na klíč. Jasně vysvětluje služby, buduje důvěru a pomáhá přivádět kvalitní poptávky od majitelů nemovitostí.",
+    imageId: "profitherm",
+    previewUrl: "https://profithermsolution.cz/",
   },
   {
     title: "Bazar-Sport-Motokros",
@@ -106,16 +114,23 @@ const cards: PrototypeCard[] = [
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
+  {
+    title: "Dentio",
+    description:
+      "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
+    imageId: "dentist",
+    previewUrl: "https://dentio.vercel.app/",
+  },
+  {
+    title: "Zezula Finance",
+    description:
+      "Komplexní finanční služby pro jednodušší cestu k financování. Kalkulátor úvěrů, přehledná nabídka řešení a možnost ověřit bonitu zdarma.",
+    imageId: "danzezula",
+    previewUrl: "https://danielzezula.vercel.app/",
+  },
 ];
 
 const cardsEn: PrototypeCard[] = [
-  {
-    title: "Profitherm Solution",
-    description:
-      "A website focused on grant programs and turnkey home renovations. It explains services clearly, builds trust, and brings quality inquiries from property owners.",
-    imageId: "profitherm",
-    previewUrl: "https://profithermsolution.cz/",
-  },
   {
     title: "Trifer",
     description:
@@ -124,11 +139,32 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://laser-steel-structures.vercel.app/",
   },
   {
+    title: "Profitherm Solution",
+    description:
+      "A website focused on grant programs and turnkey home renovations. It explains services clearly, builds trust, and brings quality inquiries from property owners.",
+    imageId: "profitherm",
+    previewUrl: "https://profithermsolution.cz/",
+  },
+  {
     title: "Bazar-Sport-Motokros",
     description:
       "A sports shop site focused on skis and winter gear, with bikes and cycling equipment in summer. A clear offer of services with an easy way to publish news.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
+  },
+  {
+    title: "Dentio",
+    description:
+      "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
+    imageId: "dentist",
+    previewUrl: "https://dentio.vercel.app/",
+  },
+  {
+    title: "Zezula Finance",
+    description:
+      "Comprehensive financial services for a simpler path to financing. Loan calculator, a clear offer of solutions, and a free creditworthiness check.",
+    imageId: "danzezula",
+    previewUrl: "https://danielzezula.vercel.app/",
   },
 ];
 
@@ -264,7 +300,10 @@ export const RealizaceSection = (): JSX.Element => {
   const [previewChrome, setPreviewChrome] = useState<PreviewChrome>("on-dark");
   const [previewMobileScreen, setPreviewMobileScreen] = useState(isPreviewMobileScreen);
   const [previewFrameVisible, setPreviewFrameVisible] = useState(true);
+  const [previewIframeEpoch, setPreviewIframeEpoch] = useState(0);
+  const [previewIframeLoaded, setPreviewIframeLoaded] = useState(false);
   const previewSwitchTimerRef = useRef<number | null>(null);
+  const previewViewportTimerRef = useRef<number | null>(null);
   const [sectionRef, cardsVisible] = useInViewOnce({
     id: "realizace",
     threshold: 0.38,
@@ -342,6 +381,12 @@ export const RealizaceSection = (): JSX.Element => {
       suppressCardClickRef.current = false;
       return;
     }
+    if (previewViewportTimerRef.current != null) {
+      window.clearTimeout(previewViewportTimerRef.current);
+      previewViewportTimerRef.current = null;
+    }
+    setPreviewIframeLoaded(false);
+    setPreviewIframeEpoch((n) => n + 1);
     setPreviewFrameVisible(true);
     setPreviewViewport(isPreviewMobileScreen() ? "mobile" : "desktop");
     setActivePreview(card);
@@ -352,10 +397,15 @@ export const RealizaceSection = (): JSX.Element => {
       window.clearTimeout(previewSwitchTimerRef.current);
       previewSwitchTimerRef.current = null;
     }
+    if (previewViewportTimerRef.current != null) {
+      window.clearTimeout(previewViewportTimerRef.current);
+      previewViewportTimerRef.current = null;
+    }
     setActivePreview(null);
     setPreviewViewport("desktop");
     setPreviewChrome("on-dark");
     setPreviewFrameVisible(true);
+    setPreviewIframeLoaded(false);
   };
 
   const switchPreviewByOffset = (offset: number) => {
@@ -372,11 +422,31 @@ export const RealizaceSection = (): JSX.Element => {
       window.clearTimeout(previewSwitchTimerRef.current);
     }
     setPreviewFrameVisible(false);
+    setPreviewIframeLoaded(false);
     previewSwitchTimerRef.current = window.setTimeout(() => {
       setActivePreview(nextCard);
+      setPreviewIframeEpoch((n) => n + 1);
       setPreviewFrameVisible(true);
       previewSwitchTimerRef.current = null;
-    }, 180);
+    }, PREVIEW_VIEWPORT_SWITCH_MS);
+  };
+
+  /** Desktop↔mobile: animate frame ratio, remount iframe so site loaders play again. */
+  const changePreviewViewport = (next: PreviewViewport) => {
+    if (previewMobileScreen || next === previewViewport) return;
+    if (previewViewportTimerRef.current != null) {
+      window.clearTimeout(previewViewportTimerRef.current);
+    }
+    setPreviewFrameVisible(false);
+    setPreviewIframeLoaded(false);
+    previewViewportTimerRef.current = window.setTimeout(() => {
+      setPreviewViewport(next);
+      setPreviewIframeEpoch((n) => n + 1);
+      previewViewportTimerRef.current = window.setTimeout(() => {
+        setPreviewFrameVisible(true);
+        previewViewportTimerRef.current = null;
+      }, PREVIEW_VIEWPORT_REVEAL_MS);
+    }, PREVIEW_VIEWPORT_SWITCH_MS);
   };
 
   useEffect(() => {
@@ -588,7 +658,7 @@ export const RealizaceSection = (): JSX.Element => {
                         className="prototype-preview-viewport-btn"
                         aria-pressed={previewViewport === "desktop"}
                         aria-label={t.viewportDesktop}
-                        onClick={() => setPreviewViewport("desktop")}
+                        onClick={() => changePreviewViewport("desktop")}
                       >
                         <Monitor size={18} strokeWidth={2} aria-hidden />
                       </button>
@@ -597,7 +667,7 @@ export const RealizaceSection = (): JSX.Element => {
                         className="prototype-preview-viewport-btn"
                         aria-pressed={previewViewport === "mobile"}
                         aria-label={t.viewportMobile}
-                        onClick={() => setPreviewViewport("mobile")}
+                        onClick={() => changePreviewViewport("mobile")}
                       >
                         <Smartphone size={18} strokeWidth={2} aria-hidden />
                       </button>
@@ -659,13 +729,27 @@ export const RealizaceSection = (): JSX.Element => {
               }`}
             >
               <div
-                className={`prototype-preview-stage${showDesktopMobileFrame ? " prototype-preview-stage--device-mobile" : ""}`}
+                className={`prototype-preview-stage${showDesktopMobileFrame ? " prototype-preview-stage--device-mobile" : ""}${
+                  previewIframeLoaded ? " is-content-ready" : " is-content-loading"
+                }`}
               >
+                {!previewIframeLoaded ? (
+                  <div className="prototype-preview-loading" aria-hidden="true">
+                    <div className="prototype-preview-loading-shine" />
+                    <div className="prototype-preview-loading-lines">
+                      <span />
+                      <span />
+                      <span />
+                      <span />
+                    </div>
+                  </div>
+                ) : null}
                 <iframe
-                  key={activePreview.previewUrl}
+                  key={`${activePreview.previewUrl}::${previewViewport}::${previewIframeEpoch}`}
                   src={activePreview.previewUrl}
                   title={activePreview.title}
-                  className="prototype-preview-frame"
+                  className={`prototype-preview-frame${previewIframeLoaded ? " is-loaded" : ""}`}
+                  onLoad={() => setPreviewIframeLoaded(true)}
                 />
               </div>
             </div>
@@ -871,9 +955,10 @@ export const RealizaceSection = (): JSX.Element => {
           border-radius: 18px;
           opacity: 1;
           transition:
-            width 420ms cubic-bezier(0.22, 1, 0.36, 1),
-            height 420ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1),
+            width 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            height 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            max-height 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 560ms cubic-bezier(0.22, 1, 0.36, 1),
             opacity 180ms ease;
         }
         .prototype-preview-overlay--studio .prototype-preview-scroll.is-fading{
@@ -907,9 +992,21 @@ export const RealizaceSection = (): JSX.Element => {
         }
         .prototype-preview-overlay--studio .prototype-preview-nav--prev{
           left: max(10px, calc((100vw - min(95vw, 1840px)) / 2 - 8px));
+          transition:
+            left 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            background 220ms ease,
+            transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 220ms ease,
+            border-color 220ms ease;
         }
         .prototype-preview-overlay--studio .prototype-preview-nav--next{
           right: max(10px, calc((100vw - min(95vw, 1840px)) / 2 - 8px));
+          transition:
+            right 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            background 220ms ease,
+            transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 220ms ease,
+            border-color 220ms ease;
         }
         .prototype-preview-overlay--studio:has(.prototype-preview-scroll--device-mobile) .prototype-preview-nav--prev{
           left: max(10px, calc(50% - ${PREVIEW_MOBILE_FRAME_WIDTH_PX / 2}px - 58px));
@@ -946,12 +1043,15 @@ export const RealizaceSection = (): JSX.Element => {
           justify-content: center;
         }
         .prototype-preview-stage{
+          position: relative;
           width: 100%;
           min-height: 100%;
           height: 100%;
           transition:
-            width 420ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+            width 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            max-width 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 560ms cubic-bezier(0.22, 1, 0.36, 1),
+            border-radius 560ms cubic-bezier(0.22, 1, 0.36, 1);
         }
         .prototype-preview-stage--device-mobile{
           width: min(${PREVIEW_MOBILE_FRAME_WIDTH_PX}px, 100%);
@@ -982,6 +1082,69 @@ export const RealizaceSection = (): JSX.Element => {
           border-radius: 18px;
           overflow: hidden;
         }
+        .prototype-preview-loading{
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          overflow: hidden;
+          background: linear-gradient(180deg, #f7f8fa 0%, #eef1f5 100%);
+          pointer-events: none;
+        }
+        .prototype-preview-loading-shine{
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            105deg,
+            transparent 35%,
+            rgb(255 255 255 / 0.55) 50%,
+            transparent 65%
+          );
+          transform: translateX(-120%);
+          animation: prototypePreviewShine 1.15s ease-in-out infinite;
+        }
+        .prototype-preview-loading-lines{
+          position: absolute;
+          left: 8%;
+          right: 8%;
+          top: 14%;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .prototype-preview-loading-lines span{
+          display: block;
+          height: 12px;
+          border-radius: 8px;
+          background: rgb(15 23 42 / 0.08);
+        }
+        .prototype-preview-loading-lines span:nth-child(1){ width: 42%; height: 18px; }
+        .prototype-preview-loading-lines span:nth-child(2){ width: 78%; }
+        .prototype-preview-loading-lines span:nth-child(3){ width: 64%; }
+        .prototype-preview-loading-lines span:nth-child(4){ width: 88%; height: 120px; margin-top: 8px; }
+        .prototype-preview-stage--device-mobile .prototype-preview-loading-lines{
+          left: 10%;
+          right: 10%;
+          top: 10%;
+          gap: 12px;
+        }
+        .prototype-preview-stage--device-mobile .prototype-preview-loading-lines span:nth-child(4){
+          height: 160px;
+        }
+        @keyframes prototypePreviewShine{
+          0%{ transform: translateX(-120%); }
+          100%{ transform: translateX(120%); }
+        }
+        @media (prefers-reduced-motion: reduce){
+          .prototype-preview-loading-shine{
+            animation: none;
+            opacity: 0.35;
+            transform: none;
+          }
+          .prototype-preview-overlay--studio .prototype-preview-scroll,
+          .prototype-preview-stage{
+            transition-duration: 0.01ms !important;
+          }
+        }
         .prototype-preview-frame{
           display: block;
           width: 100%;
@@ -991,6 +1154,11 @@ export const RealizaceSection = (): JSX.Element => {
           margin: 0;
           padding: 0;
           background: var(--pk-page);
+          opacity: 0;
+          transition: opacity 280ms ease;
+        }
+        .prototype-preview-frame.is-loaded{
+          opacity: 1;
         }
         .prototype-preview-overlay--native-mobile .prototype-preview-scroll,
         .prototype-preview-overlay--native-mobile .prototype-preview-stage,

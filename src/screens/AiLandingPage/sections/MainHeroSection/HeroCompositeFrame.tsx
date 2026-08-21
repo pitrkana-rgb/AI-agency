@@ -1,5 +1,7 @@
-import { useEffect, useState, type CSSProperties, memo } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, memo } from "react";
 import { ResponsiveWebpImage } from "../../../../components/ResponsiveWebpImage";
+import { useLanguage } from "../../../../i18n/LanguageContext";
+import { pk } from "../../../../design/pkLandingColors";
 import heroFrameV3Url from "../../../../../Images/Hero_PC_frame_V3.png";
 import {
   HERO_DESKTOP_INTRINSIC,
@@ -18,6 +20,8 @@ const FRAME_NATURAL = { w: 1536, h: 1024 } as const;
 
 const ROTATE_MS = 3000;
 const FADE_MS = 850;
+/** Pause autoplay after manual selection so the choice is readable. */
+const MANUAL_PAUSE_MS = 8000;
 
 /** Screen cutouts in original image coordinates (scale with frame). */
 const DESKTOP_SCREEN = { x: 65, y: 68, w: 1108, h: 600 } as const;
@@ -107,32 +111,145 @@ const HeroScreenCarousel = ({
   );
 };
 
+export function useHeroPreviewCarousel(enabled = true) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const count = HERO_PROJECT_IDS.length;
+  const pauseUntilRef = useRef(0);
+
+  useEffect(() => {
+    if (!enabled || count <= 1) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = window.setInterval(() => {
+      if (Date.now() < pauseUntilRef.current) return;
+      setActiveIdx((i) => (i + 1) % count);
+    }, ROTATE_MS);
+
+    return () => window.clearInterval(timer);
+  }, [count, enabled]);
+
+  const selectIdx = useCallback(
+    (idx: number) => {
+      setActiveIdx(idx % count);
+      pauseUntilRef.current = Date.now() + MANUAL_PAUSE_MS;
+    },
+    [count],
+  );
+
+  return {
+    activeIdx: count > 0 ? activeIdx % count : 0,
+    selectIdx,
+    projectIds: HERO_PROJECT_IDS,
+  };
+}
+
+export const HeroFrameDots = memo(function HeroFrameDots({
+  activeIdx,
+  onSelect,
+  className,
+}: {
+  activeIdx: number;
+  onSelect: (idx: number) => void;
+  className?: string;
+}): JSX.Element | null {
+  const { language } = useLanguage();
+  const isEn = language === "en";
+  const count = HERO_PROJECT_IDS.length;
+  if (count <= 1) return null;
+
+  return (
+    <div
+      className={["hero-frame-dots", className].filter(Boolean).join(" ")}
+      role="tablist"
+      aria-label={isEn ? "Website preview gallery" : "Galerie náhledů webů"}
+    >
+      {HERO_PROJECT_IDS.map((projectId, i) => (
+        <button
+          key={projectId}
+          type="button"
+          role="tab"
+          aria-selected={i === activeIdx}
+          aria-label={
+            isEn ? `Show website preview ${i + 1}` : `Zobrazit náhled webu ${i + 1}`
+          }
+          className="hero-frame-dot"
+          data-active={i === activeIdx ? "true" : undefined}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onSelect(i);
+          }}
+          onPointerDown={(event) => {
+            event.stopPropagation();
+          }}
+        />
+      ))}
+      <style>{`
+        .hero-frame-dots {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          min-height: 28px;
+          pointer-events: auto;
+          position: relative;
+          z-index: 30;
+        }
+        .hero-frame-dot {
+          position: relative;
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          border: none;
+          padding: 0;
+          margin: 0;
+          background: rgb(255 255 255 / 0.32);
+          cursor: pointer;
+          pointer-events: auto;
+          transition: width 0.25s ease, background 0.25s ease;
+        }
+        .hero-frame-dot::before {
+          content: "";
+          position: absolute;
+          inset: -14px -12px;
+        }
+        .hero-frame-dot[data-active="true"] {
+          width: 36px;
+          background: var(--pk-on-dark);
+        }
+        .hero-frame-dot:focus-visible {
+          outline: 2px solid ${pk.accent};
+          outline-offset: 3px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-frame-dot {
+            transition: none !important;
+          }
+        }
+      `}</style>
+    </div>
+  );
+});
+
 type HeroCompositeFrameProps = {
   imgClassName?: string;
   wrapperClassName?: string;
   /** When false, skips hero entrance fade class (e.g. embedded in offer card). */
   animateEntrance?: boolean;
+  /** Controlled carousel index (desktop + phone stay in sync). */
+  activeIdx?: number;
 };
 
 export const HeroCompositeFrame = memo(function HeroCompositeFrame({
   imgClassName,
   wrapperClassName,
   animateEntrance = true,
+  activeIdx: controlledIdx,
 }: HeroCompositeFrameProps) {
-  const [activeIdx, setActiveIdx] = useState(0);
+  const internal = useHeroPreviewCarousel(controlledIdx === undefined);
+  const safeIdx = controlledIdx !== undefined ? controlledIdx : internal.activeIdx;
   const count = HERO_PROJECT_IDS.length;
-
-  useEffect(() => {
-    if (count <= 1) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return;
-
-    const timer = window.setInterval(() => {
-      setActiveIdx((i) => (i + 1) % count);
-    }, ROTATE_MS);
-
-    return () => window.clearInterval(timer);
-  }, [count]);
+  const idx = count > 0 ? safeIdx % count : 0;
 
   const desktopSlot = {
     position: "absolute" as const,
@@ -162,11 +279,11 @@ export const HeroCompositeFrame = memo(function HeroCompositeFrame({
     background: "rgb(15 23 42 / 0.06)",
   };
 
-  const safeIdx = count > 0 ? activeIdx % count : 0;
-
   return (
     <div
-      className={[animateEntrance ? "hero-composite-anim" : "", wrapperClassName].filter(Boolean).join(" ")}
+      className={[animateEntrance ? "hero-composite-anim" : "", wrapperClassName]
+        .filter(Boolean)
+        .join(" ")}
       style={{
         position: "relative",
         width: "100%",
@@ -178,7 +295,7 @@ export const HeroCompositeFrame = memo(function HeroCompositeFrame({
         <HeroScreenCarousel
           projectIds={HERO_PROJECT_IDS}
           variant="desktop"
-          activeIdx={safeIdx}
+          activeIdx={idx}
           className="hero-project-shot"
         />
       </div>
@@ -186,7 +303,7 @@ export const HeroCompositeFrame = memo(function HeroCompositeFrame({
         <HeroScreenCarousel
           projectIds={HERO_PROJECT_IDS}
           variant="mobile"
-          activeIdx={safeIdx}
+          activeIdx={idx}
           className="hero-project-shot hero-project-shot--phone"
         />
       </div>
