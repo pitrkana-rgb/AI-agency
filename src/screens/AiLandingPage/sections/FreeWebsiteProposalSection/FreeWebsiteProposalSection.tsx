@@ -520,34 +520,76 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           transition-delay: 2120ms;
         }
 
-        @media (max-width: 1180px) {
+        /* Smaller desktop / laptop — keep horizontal layout, tighten spacing */
+        @media (max-width: 1180px) and (min-width: 769px) {
           .free-proposal-inner {
-            grid-template-columns: 1fr;
-            gap: 36px;
-            padding: 32px 24px 48px;
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.45fr) minmax(190px, 0.72fr);
+            gap: 18px 18px;
+            padding: 28px 20px 40px;
+          }
+          .free-proposal-heading {
+            font-size: clamp(22px, 2.6vw, 34px);
+          }
+          .free-proposal-heading-line {
+            white-space: normal;
           }
           .free-proposal-steps {
             gap: 8px;
           }
+          .free-proposal-step-arrow {
+            left: -6px;
+            font-size: 18px;
+          }
+          .free-proposal-step-icon {
+            width: 36px;
+            height: 36px;
+          }
+          .free-proposal-step-icon svg {
+            width: 36px;
+            height: 36px;
+          }
+          .free-proposal-step-title {
+            font-size: 15px;
+            white-space: normal;
+          }
           .free-proposal-step-body {
+            font-size: 13px;
+            line-height: 1.35;
             max-width: none;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
           }
           .free-proposal-cta-col {
-            padding-left: 0;
-            border-left: none;
-            border-top: 1px solid rgb(255 255 255 / 0.12);
-            padding-top: 28px;
-            max-width: 420px;
+            padding-left: 16px;
+            border-left: 1px solid rgb(255 255 255 / 0.12);
+            border-top: none;
+            padding-top: 0;
+            max-width: none;
+          }
+          .free-proposal-cta {
+            margin-top: 28px;
+            padding: 11px 12px;
+            font-size: 11px;
+            letter-spacing: 0.04em;
           }
           .free-proposal-scribble {
-            right: auto;
-            left: 12px;
-            top: 8px;
+            right: 4px;
+            top: -18px;
+            left: auto;
+          }
+          .free-proposal-scribble-text {
+            font-size: 22px;
+          }
+          .free-proposal-scribble-arrow {
+            width: 48px;
+            height: 32px;
+            margin-right: 10px;
           }
         }
 
         @media (max-width: 768px) {
           .free-proposal-inner {
+            grid-template-columns: 1fr;
             padding: 20px 24px;
             gap: 30px;
           }
@@ -628,6 +670,8 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
             padding-right: 15px;
             gap: 12px;
             align-items: stretch;
+            border-left: none;
+            border-top: 1px solid rgb(255 255 255 / 0.12);
           }
           .free-proposal-scribble {
             position: static;

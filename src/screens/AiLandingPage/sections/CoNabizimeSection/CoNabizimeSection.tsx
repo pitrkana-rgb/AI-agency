@@ -642,7 +642,7 @@ export const CoNabizimeSection = (): JSX.Element => {
               maxWidth: "980px",
             }}
           >
-            {isEn ? "Custom websites, apps, and automation" : "Weby, aplikace a automatizace na míru"}
+            {isEn ? "Custom websites and applications" : "Tvorba webových stránek a aplikací na míru"}
           </h2>
           <p
             className="section-sub offer-subheading"
@@ -656,8 +656,8 @@ export const CoNabizimeSection = (): JSX.Element => {
             }}
           >
             {isEn
-              ? "I create custom websites and applications, modernize corporate websites, and automate processes. By combining modern design, SEO, and AI technology, I help companies grow and win new customers."
-              : "Tvořím webové stránky a aplikace na míru, modernizuji firemní weby a automatizuji procesy. Spojením moderního designu, SEO a AI technologií pomáhám firmám růst a získávat nové zákazníky."}
+              ? "I build new websites, modernize existing ones, and develop custom web applications — always with a focus on modern design, speed, and winning new customers."
+              : "Tvořím nové webové stránky, modernizuji stávající weby a vyvíjím webové aplikace na míru. Vždy s důrazem na moderní design, rychlost a získávání nových zákazníků."}
           </p>
           <h3
             className={`offer-mobile-card-title pk-section-heading${cardVisible ? " is-visible" : ""}`}

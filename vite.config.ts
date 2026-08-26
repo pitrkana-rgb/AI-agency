@@ -68,7 +68,7 @@ function siteMetadataHtmlPlugin(): Plugin {
           `<meta name="twitter:image:alt" content="${escapeHtmlAttr(tw.imageAlt)}"`,
         )
         .replace(
-          /"image": "https:\/\/pk-digital\.cz\/og-image\.png\?v=\d+"/,
+          /"image": "https:\/\/pk-digital\.cz\/(?:og-image|metadata_preview)\.png\?v=\d+"/,
           `"image": "${img}"`,
         )
         .replace(

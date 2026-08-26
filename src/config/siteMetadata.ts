@@ -1,6 +1,6 @@
 /**
  * Site-wide metadata (Next.js `export const metadata` equivalent for this Vite SPA).
- * Injected into index.html at build/dev via vite.config.ts — keep OG image in sync with `Images/metadata.png`.
+ * Injected into index.html at build/dev via vite.config.ts — keep OG image in sync with `Images/metadata_preview.png`.
  */
 
 export const SITE_URL = "https://pk-digital.cz" as const;
@@ -8,18 +8,17 @@ export const SITE_URL = "https://pk-digital.cz" as const;
 /** Canonical favicon (public/favicon-v2.png) — SERP, browser tab, PWA. */
 export const faviconUrl = `${SITE_URL}/favicon-v2.png`;
 
-/** Bump when `public/og-image.png` changes (cache bust for Facebook, LinkedIn, Discord, Google). */
-export const OG_IMAGE_VERSION = 6;
+/** Bump when `public/metadata_preview.png` changes (cache bust for Facebook, LinkedIn, Discord, Google). */
+export const OG_IMAGE_VERSION = 7;
 
-export const siteTitle =
-  "Tvorba webových stránek a aplikací na míru, automatizace a AI";
+export const siteTitle = "Tvorba webových stránek na míru | PK-Digital";
 
 export const siteDescription =
-  "Zajišťujeme kompletní webové služby. Naší prací je tvorba webových stránek a aplikací na míru, včetně automatizace. Získejte prototyp zdarma do 3 dnů.";
+  "Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace.";
 
-const ogImagePath = `/og-image.png?v=${OG_IMAGE_VERSION}`;
+const ogImagePath = `/metadata_preview.png?v=${OG_IMAGE_VERSION}`;
 const ogImageAlt =
-  "PK Digital – tvorba webových stránek a aplikací na míru, ukázka hero sekce s mockupy";
+  "PK Digital – tvorba webových stránek na míru, ukázka hero sekce s mockupy";
 
 export const siteMetadata = {
   metadataBase: SITE_URL,
@@ -35,8 +34,8 @@ export const siteMetadata = {
     images: [
       {
         url: ogImagePath,
-        width: 1200,
-        height: 630,
+        width: 1734,
+        height: 907,
         type: "image/png",
         alt: ogImageAlt,
       },
