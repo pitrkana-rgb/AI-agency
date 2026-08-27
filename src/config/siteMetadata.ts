@@ -11,10 +11,10 @@ export const faviconUrl = `${SITE_URL}/favicon-v2.png`;
 /** Bump when `public/metadata_preview.png` changes (cache bust for Facebook, LinkedIn, Discord, Google). */
 export const OG_IMAGE_VERSION = 7;
 
-export const siteTitle = "Tvorba webových stránek na míru | PK-Digital";
+export const siteTitle = "Tvorba webových stránek a aplikací | PK Digital";
 
 export const siteDescription =
-  "Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace.";
+  "Tvoříme moderní webové stránky a webové aplikace na míru. Rychlé dodání, profesionální design a prototyp zdarma do 3 dnů.";
 
 const ogImagePath = `/metadata_preview.png?v=${OG_IMAGE_VERSION}`;
 const ogImageAlt =

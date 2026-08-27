@@ -5,11 +5,11 @@ export const HERO_MOBILE_WIDTHS = [320, 480, 640, 960, 1280] as const;
 
 /** Desktop screen inside PC frame (~72% of composite width at max rail size). */
 export const HERO_DESKTOP_SIZES =
-  "(min-width: 1024px) 540px, (min-width: 769px) 48vw, 85vw";
+  "(min-width: 1024px) 560px, (min-width: 769px) 40vw, 85vw";
 
-/** Phone cutout in frame corner. */
+/** Phone cutout in frame corner — prefer 2× sources for crisp device-slot rendering. */
 export const HERO_MOBILE_SIZES =
-  "(min-width: 1024px) 170px, (min-width: 769px) 20vw, 75vw";
+  "(min-width: 1024px) 280px, (min-width: 769px) 28vw, 75vw";
 
 export const HERO_DESKTOP_INTRINSIC = { width: 1108, height: 600 } as const;
 export const HERO_MOBILE_INTRINSIC = { width: 327, height: 750 } as const;

@@ -7,6 +7,15 @@ html {
   color-scheme: light;
 }
 
+html.pk-bootstrapping #app {
+  /* Empty during font wait — avoid painting fallback type, then swapping */
+  visibility: hidden;
+}
+
+html.pk-fonts-ready #app {
+  visibility: visible;
+}
+
 body {
   margin: 0;
   background-color: #ffffff;
@@ -18,6 +27,18 @@ body {
 
 #app {
   min-height: 100vh;
+}
+
+/* Reserve hero chrome space so first React paint matches final layout */
+.hero-section-mobile {
+  min-height: max(100vh, 920px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .hero-section-mobile {
+    min-height: auto;
+  }
 }
 
 /* Scroll-reveal wrapper: never hide before/after hydration */
@@ -50,6 +71,9 @@ body {
     transform: translateY(24px);
   }
   .hero-composite-anim {
+    opacity: 0;
+  }
+  .hero-media-rail-dots {
     opacity: 0;
   }
 
@@ -85,5 +109,10 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .hero-composite-anim,
+  .hero-media-rail-dots {
+    opacity: 1;
   }
 }

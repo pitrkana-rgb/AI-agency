@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../../i18n/LanguageContext";
 import { pk } from "../../../../design/pkLandingColors";
 import pcFrameUrl from "../../../../../Images/PC_frame.png";
-import { HeroCompositeFrame } from "../MainHeroSection/HeroCompositeFrame";
+import { HeroCompositeFrame, HeroFrameDots, useHeroPreviewCarousel } from "../MainHeroSection/HeroCompositeFrame";
 import { OfferResponsiveAsset } from "./OfferResponsiveAsset";
 import { preloadOfferSlideMedia } from "./offerMediaPreload";
 import type { BeforeAfterConfig, Slide, SlideFeature } from "./offerSlideTypes";
@@ -418,6 +418,8 @@ export const CoNabizimeSection = (): JSX.Element => {
   const isEn = language === "en";
   const activeSlides = isEn ? slidesEn : slides;
   const activeSlide = activeSlides[activeIdx];
+  const { activeIdx: offerHeroPreviewIdx, selectIdx: selectOfferHeroPreview } =
+    useHeroPreviewCarousel(activeSlide.id === "tvorba-webu");
   const [cardVisible, setCardVisible] = useState(true);
   const switchTimeoutRef = useRef<number | null>(null);
   const touchStartX = useRef<number>(0);
@@ -506,12 +508,22 @@ export const CoNabizimeSection = (): JSX.Element => {
 
     if (!isTabChange && hasBeenRevealed(OFFER_CONTENT_REVEAL_ID)) {
       const slide = activeSlides[activeIdx];
-      setHeaderVisible(true);
-      setVisibleBulletCount(slide?.features.length ?? 0);
-      setCtaVisible(true);
-      setMediaMounted(true);
-      setImageVisible(true);
-      return;
+      void (async () => {
+        if (slide) await preloadOfferSlideMedia(slide, isOfferMobile);
+        if (cancelled) return;
+        setHeaderVisible(true);
+        setVisibleBulletCount(slide?.features.length ?? 0);
+        setCtaVisible(true);
+        setMediaMounted(true);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (!cancelled) setImageVisible(true);
+          });
+        });
+      })();
+      return () => {
+        cancelled = true;
+      };
     }
 
     resetOfferReveal();
@@ -535,8 +547,11 @@ export const CoNabizimeSection = (): JSX.Element => {
       }
 
       setMediaMounted(true);
+      // Wait for layout + decoded bitmaps before fading the media shell in.
       requestAnimationFrame(() => {
-        if (!cancelled) setImageVisible(true);
+        requestAnimationFrame(() => {
+          if (!cancelled) setImageVisible(true);
+        });
       });
 
       setHeaderVisible(true);
@@ -752,8 +767,18 @@ export const CoNabizimeSection = (): JSX.Element => {
                       className={`offer-gallery-media-shell${imageVisible ? " is-in" : ""}`}
                     >
                     {activeSlide.id === "tvorba-webu" ? (
-                      <div className="offer-hero-frame" aria-hidden="true">
-                        <HeroCompositeFrame animateEntrance={false} />
+                      <div className="offer-hero-stack">
+                        <div className="offer-hero-frame">
+                          <HeroCompositeFrame
+                            animateEntrance={false}
+                            activeIdx={offerHeroPreviewIdx}
+                          />
+                        </div>
+                        <HeroFrameDots
+                          className="offer-hero-frame-dots"
+                          activeIdx={offerHeroPreviewIdx}
+                          onSelect={selectOfferHeroPreview}
+                        />
                       </div>
                     ) : activeSlide.imageAssetId ? (
                       <div className={`offer-simple-media${activeSlide.id === "automatizace-ai" ? " offer-simple-media--ai-bot" : ""}`}>
@@ -1122,11 +1147,12 @@ export const CoNabizimeSection = (): JSX.Element => {
           justify-content:center;
           padding: 5px 0;
         }
-        /* Desktop: slightly smaller right-side visuals */
+        /* Desktop: size via width (not transform) so embedded previews stay sharp */
         @media(min-width:901px){
           .offer-gallery-right{
-            transform: scale(0.85);
-            transform-origin: center;
+            flex: 1 1 47.8%;
+            max-width: 47.8%;
+            transform: none;
           }
         }
 
@@ -1156,9 +1182,35 @@ export const CoNabizimeSection = (): JSX.Element => {
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
         }
+        .offer-hero-stack{
+          width: 100%;
+          max-width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 14px;
+        }
         .offer-hero-frame{
           width: 100%;
           max-width: 100%;
+          pointer-events: none;
+        }
+        .offer-hero-frame-dots{
+          pointer-events: auto;
+          width: 100%;
+          z-index: 2;
+          opacity: 0;
+          transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .offer-gallery-media-shell.is-in .offer-hero-frame-dots{
+          opacity: 1;
+        }
+        /* Hero dots are white/on-dark — adapt for light offer cards */
+        .offer-hero-frame-dots .hero-frame-dot{
+          background: rgb(15 23 42 / 0.22);
+        }
+        .offer-hero-frame-dots .hero-frame-dot[data-active="true"]{
+          background: var(--pk-brand-4);
         }
 
         /* kebab-case required — camelCase is ignored in plain <style> (was blocking font-weight) */
@@ -1464,7 +1516,9 @@ export const CoNabizimeSection = (): JSX.Element => {
           }
           .offer-gallery-right{
             width: 100%;
+            max-width: none;
             flex: 0 0 auto;
+            transform: none;
           }
           .offer-title-wrap{
             text-align: center;

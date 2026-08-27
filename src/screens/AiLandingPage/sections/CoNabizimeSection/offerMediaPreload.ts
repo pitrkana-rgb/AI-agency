@@ -1,9 +1,9 @@
 import type { Slide } from "./offerSlideTypes";
 import { webpDefaultSrc } from "../../../../utils/responsiveWebp";
 import {
-  heroDesktopBasePath,
-  heroMobileBasePath,
-} from "../MainHeroSection/heroPreviewAssets";
+  getHeroCompositePreloadUrls,
+  preloadHeroCompositeAssets,
+} from "../MainHeroSection/heroCompositePreload";
 import { offerSlideBasePath } from "./offerPreviewAssets";
 
 const preloadImage = (src: string): Promise<void> =>
@@ -12,7 +12,11 @@ const preloadImage = (src: string): Promise<void> =>
     const done = () => resolve();
     img.onload = done;
     img.onerror = done;
+    img.decoding = "async";
     img.src = src;
+    if (typeof img.decode === "function") {
+      void img.decode().then(done).catch(done);
+    }
   });
 
 const preloadCache = new Map<string, Promise<void>>();
@@ -20,10 +24,7 @@ const preloadCache = new Map<string, Promise<void>>();
 export const getOfferPreloadUrls = (slide: Slide, isMobile: boolean): string[] => {
   switch (slide.id) {
     case "tvorba-webu":
-      return [
-        webpDefaultSrc(heroDesktopBasePath("profitherm"), isMobile ? 960 : 1280),
-        webpDefaultSrc(heroMobileBasePath("profitherm"), 640),
-      ];
+      return getHeroCompositePreloadUrls();
     case "upgrade-webu":
       return [
         webpDefaultSrc(offerSlideBasePath("modernizace-before"), isMobile ? 720 : 960),
@@ -38,8 +39,6 @@ export const getOfferPreloadUrls = (slide: Slide, isMobile: boolean): string[] =
   }
 };
 
-const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-
 /** Preload only assets for the active slide; cached per slide + viewport. */
 export const preloadOfferSlideMedia = (
   slide: Slide,
@@ -49,13 +48,20 @@ export const preloadOfferSlideMedia = (
   const cached = preloadCache.get(cacheKey);
   if (cached) return cached;
 
-  const urls = getOfferPreloadUrls(slide, isMobile);
-  const budgetMs = isMobile ? 480 : 2400;
+  // Reuse shared hero composite preload for the first offer card.
+  if (slide.id === "tvorba-webu") {
+    const task = preloadHeroCompositeAssets(3600);
+    preloadCache.set(cacheKey, task);
+    return task;
+  }
 
+  const urls = getOfferPreloadUrls(slide, isMobile);
   const task = Promise.race([
-    Promise.all(urls.map(preloadImage)),
-    sleep(budgetMs),
-  ]).then(() => undefined);
+    Promise.all(urls.map(preloadImage)).then(() => undefined),
+    new Promise<void>((resolve) => {
+      window.setTimeout(resolve, 3600);
+    }),
+  ]);
 
   preloadCache.set(cacheKey, task);
   return task;

@@ -193,6 +193,10 @@ export const Header = () => {
                 alt="PK Digital logo"
                 className="header-logo"
                 style={{ height: "59.2px", width: "auto", display: "block" }}
+                width={200}
+                height={59}
+                decoding="async"
+                fetchPriority="high"
               />
             </button>
           </div>

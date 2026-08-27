@@ -762,6 +762,10 @@ export const RealizaceSection = (): JSX.Element => {
         @media (min-width: 901px) {
           .realizace-section {
             padding-top: 30px !important;
+            overflow: visible;
+          }
+          .realizace-inner{
+            overflow: visible;
           }
           .realizace-section-sub{
             max-width: 820px;
@@ -771,6 +775,7 @@ export const RealizaceSection = (): JSX.Element => {
             max-width: none;
             margin: 0;
             width: 100%;
+            overflow: visible;
           }
         }
         .prototype-grid{
@@ -778,6 +783,7 @@ export const RealizaceSection = (): JSX.Element => {
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 22px;
           align-items: start;
+          overflow: visible;
         }
         .prototype-mobile-carousel{ display:none; }
         .prototype-item{
@@ -795,6 +801,8 @@ export const RealizaceSection = (): JSX.Element => {
           -webkit-tap-highlight-color: transparent;
           transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
           text-align: center;
+          position: relative;
+          z-index: 1;
         }
         @media (min-width: 901px) {
           .prototype-grid-desktop .prototype-item{
@@ -814,12 +822,14 @@ export const RealizaceSection = (): JSX.Element => {
           .prototype-grid-desktop .prototype-item.prototype-item--revealed:hover,
           .prototype-grid-desktop .prototype-item.prototype-item--revealed:focus-visible{
             transform: translate3d(0, -6px, 0);
+            z-index: 8;
           }
         }
         @media (max-width: 900px) {
           .prototype-item:hover,
           .prototype-item:focus-visible{
             transform: translateY(-6px);
+            z-index: 8;
           }
         }
         .prototype-item:focus-visible{
@@ -830,30 +840,37 @@ export const RealizaceSection = (): JSX.Element => {
           position: relative;
           isolation: isolate;
           border-radius: 16px;
-          overflow: hidden;
+          overflow: visible;
           aspect-ratio: 16 / 9;
           width: 100%;
           max-height: none;
-          background: rgb(15 23 42 / 0.04);
-          box-shadow:
-            1px 1px 2px rgb(2 6 23 / 0.1),
-            4px 4px 10px -2px rgb(2 6 23 / 0.18),
-            8px 10px 18px -8px rgb(2 6 23 / 0.22);
+          background: transparent;
+          box-shadow: none;
           transition:
             transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
           transform: translateZ(0);
+          transform-origin: center center;
           backface-visibility: hidden;
         }
-        .prototype-item:hover .prototype-preview,
-        .prototype-item:focus-visible .prototype-preview{
-          transform: translateZ(0) scale(1.012);
+        .prototype-preview::before{
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 16px;
+          background: rgb(15 23 42 / 0.04);
           box-shadow:
-            2px 2px 4px rgb(2 6 23 / 0.14),
-            6px 8px 16px -2px rgb(2 6 23 / 0.24),
-            12px 16px 28px -8px rgb(2 6 23 / 0.3);
+            2px 2px 4px rgb(2 6 23 / 0.2),
+            8px 8px 20px -2px rgb(2 6 23 / 0.36),
+            16px 20px 36px -8px rgb(2 6 23 / 0.44);
+          transition: box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+          z-index: 0;
+          pointer-events: none;
         }
         .prototype-preview-image{
+          position: absolute;
+          inset: 0;
+          z-index: 1;
           display: block;
           width: 100%;
           height: 100%;
@@ -861,9 +878,22 @@ export const RealizaceSection = (): JSX.Element => {
           object-fit: cover;
           object-position: top center;
           image-rendering: auto;
+          border-radius: 16px;
           -webkit-font-smoothing: antialiased;
           transform: translateZ(0);
           backface-visibility: hidden;
+        }
+        .prototype-item:hover .prototype-preview,
+        .prototype-item:focus-visible .prototype-preview{
+          transform: translateZ(0) scale(1.2);
+          z-index: 2;
+        }
+        .prototype-item:hover .prototype-preview::before,
+        .prototype-item:focus-visible .prototype-preview::before{
+          box-shadow:
+            4px 4px 8px rgb(2 6 23 / 0.28),
+            12px 16px 32px -2px rgb(2 6 23 / 0.48),
+            24px 32px 56px -8px rgb(2 6 23 / 0.6);
         }
         .prototype-item-heading{
           display: flex;

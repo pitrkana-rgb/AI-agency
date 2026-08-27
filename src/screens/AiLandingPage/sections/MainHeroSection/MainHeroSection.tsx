@@ -6,6 +6,7 @@ import {
   HeroFrameDots,
   useHeroPreviewCarousel,
 } from "./HeroCompositeFrame";
+import { preloadHeroCompositeAssets } from "./heroCompositePreload";
 import { pk } from "../../../../design/pkLandingColors";
 import {
   hasBeenRevealed,
@@ -155,37 +156,174 @@ export const MainHeroSection = (): JSX.Element => {
   const t = language === "en" ? {
     headlineLine1: "Tailored websites,",
     headlineLine2Accent: "that bring you customers",
-    subheading:
-      "I build modern websites and apps for your business — focused on speed, SEO, and higher conversions.",
+    subheadingLine1: "I build modern websites and apps for your business —",
+    subheadingLine2: "focused on speed, SEO, and higher conversions.",
     ctaPrimary: "Request a quote",
     trustUnderCta: "Reply within 24h and a free consultation",
     scribble: "Free website proposal in 3 days",
   } : {
     headlineLine1: "Webové stránky na míru,",
     headlineLine2Accent: "které přivádějí zákazníky",
-    subheading:
-      "Moderní webové stránky a aplikace na míru se zaměřením na rychlost, SEO a vyšší konverze.",
+    subheadingLine1: "Moderní webové stránky a aplikace na míru",
+    subheadingLine2: "se zaměřením na rychlost, SEO a vyšší konverze.",
     ctaPrimary: "Nezávazně poptat",
     trustUnderCta: "Odpověď do 24h a konzultace zdarma",
     scribble: "Návrh webu zdarma do 3 dnů",
   };
   const typingMessages = language === "en" ? HERO_TYPING_MESSAGES_EN : HERO_TYPING_MESSAGES_CS;
   const { activeIdx: heroPreviewIdx, selectIdx: selectHeroPreview } = useHeroPreviewCarousel(true);
-  const [entrancePhase, setEntrancePhase] = useState<"" | "play-entrance" | "hero-entrance-done">(
-    () => (hasBeenRevealed(HERO_ENTRANCE_ID) ? "hero-entrance-done" : ""),
-  );
+  /** Empty until preview assets decode — avoids frame/content pop before entrance. */
+  const [entrancePhase, setEntrancePhase] = useState<"" | "play-entrance" | "hero-entrance-done">("");
+  const [previewAssetsReady, setPreviewAssetsReady] = useState(false);
+  const entranceStartedRef = useRef(false);
+  const heroCopyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void preloadHeroCompositeAssets().then(() => {
+      if (!cancelled) setPreviewAssetsReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /** Desktop: keep headline/subheading/typing on fixed line counts by fluidly fitting font size. */
   useLayoutEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      markRevealedById(HERO_ENTRANCE_ID);
-      setEntrancePhase("hero-entrance-done");
-      return;
-    }
-    if (hasBeenRevealed(HERO_ENTRANCE_ID)) {
-      setEntrancePhase("hero-entrance-done");
-      return;
+    const root = heroCopyRef.current;
+    if (!root) return;
+
+    const desktopMq = window.matchMedia("(min-width: 769px)");
+
+    const fitNowrapGroup = (
+      el: HTMLElement | null,
+      lineSelector: string,
+      maxPx: number,
+      minPx: number,
+    ) => {
+      if (!el) return;
+      const available = el.clientWidth;
+      if (available <= 1) return;
+      el.style.setProperty("font-size", `${maxPx}px`, "important");
+      const lines = lineSelector
+        ? Array.from(el.querySelectorAll<HTMLElement>(lineSelector))
+        : [el];
+      const longest = Math.max(...lines.map((line) => line.scrollWidth), 1);
+      const next = Math.min(maxPx, Math.max(minPx, maxPx * (available / longest)));
+      el.style.setProperty("font-size", `${next.toFixed(2)}px`, "important");
+    };
+
+    const fitTypingToLongest = (el: HTMLElement | null, maxPx: number, minPx: number) => {
+      if (!el) return;
+      const available = el.clientWidth;
+      if (available <= 1) return;
+
+      const probe = document.createElement("span");
+      probe.setAttribute("aria-hidden", "true");
+      probe.style.cssText =
+        "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;" +
+        "font-family:Montserrat,sans-serif;font-weight:600;letter-spacing:0.04em;";
+      probe.style.fontSize = `${maxPx}px`;
+      const longestMsg = typingMessages.reduce(
+        (a, b) => (a.length >= b.length ? a : b),
+        typingMessages[0] ?? "",
+      );
+      probe.textContent = `✓ ${longestMsg}|`;
+      document.body.appendChild(probe);
+      const longest = Math.max(probe.scrollWidth, 1);
+      probe.remove();
+
+      const next = Math.min(maxPx, Math.max(minPx, maxPx * (available / longest)));
+      el.style.setProperty("font-size", `${next.toFixed(2)}px`, "important");
+    };
+
+    const fit = () => {
+      if (!desktopMq.matches) {
+        root.querySelectorAll<HTMLElement>(
+          ".hero-headline, .hero-subheading, .hero-typing-line",
+        ).forEach((el) => {
+          el.style.removeProperty("font-size");
+        });
+        return;
+      }
+      fitNowrapGroup(
+        root.querySelector<HTMLElement>(".hero-headline"),
+        ".hero-headline-line1, .hero-headline-line2",
+        41.6,
+        15,
+      );
+      fitNowrapGroup(
+        root.querySelector<HTMLElement>(".hero-subheading"),
+        ".hero-subheading-line",
+        22.1,
+        13,
+      );
+      fitTypingToLongest(
+        root.querySelector<HTMLElement>(".hero-typing-line"),
+        26,
+        13.5,
+      );
+    };
+
+    fit();
+    const ro = new ResizeObserver(() => {
+      window.requestAnimationFrame(fit);
+    });
+    ro.observe(root);
+    desktopMq.addEventListener("change", fit);
+    window.addEventListener("resize", fit, { passive: true });
+
+    // Refit after fonts settle (avoids 3-line flash from fallback metrics).
+    let fontRefresh = 0;
+    if (document.fonts?.ready) {
+      void document.fonts.ready.then(() => {
+        fontRefresh = window.requestAnimationFrame(fit);
+      });
     }
 
+    return () => {
+      ro.disconnect();
+      desktopMq.removeEventListener("change", fit);
+      window.removeEventListener("resize", fit);
+      if (fontRefresh) cancelAnimationFrame(fontRefresh);
+    };
+  }, [
+    language,
+    t.headlineLine1,
+    t.headlineLine2Accent,
+    t.subheadingLine1,
+    t.subheadingLine2,
+    typingMessages,
+  ]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void preloadHeroCompositeAssets().then(() => {
+      if (!cancelled) setPreviewAssetsReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!previewAssetsReady || entranceStartedRef.current) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || hasBeenRevealed(HERO_ENTRANCE_ID)) {
+      entranceStartedRef.current = true;
+      markRevealedById(HERO_ENTRANCE_ID);
+      let innerRaf = 0;
+      const outerRaf = requestAnimationFrame(() => {
+        innerRaf = requestAnimationFrame(() => setEntrancePhase("hero-entrance-done"));
+      });
+      return () => {
+        cancelAnimationFrame(outerRaf);
+        if (innerRaf) cancelAnimationFrame(innerRaf);
+      };
+    }
+
+    entranceStartedRef.current = true;
     let innerRaf = 0;
     const outerRaf = requestAnimationFrame(() => {
       innerRaf = requestAnimationFrame(() => setEntrancePhase("play-entrance"));
@@ -194,7 +332,7 @@ export const MainHeroSection = (): JSX.Element => {
       cancelAnimationFrame(outerRaf);
       if (innerRaf) cancelAnimationFrame(innerRaf);
     };
-  }, []);
+  }, [previewAssetsReady]);
 
   useEffect(() => {
     if (entrancePhase !== "play-entrance") return;
@@ -234,6 +372,7 @@ export const MainHeroSection = (): JSX.Element => {
           <div className="hero-left-rail">
           <div className="hero-content-shift">
             <div
+              ref={heroCopyRef}
               className="flex flex-col items-center md:items-start hero-content-wrap"
               style={{ width: "100%", maxWidth: "none", padding: 0 }}
             >
@@ -275,12 +414,15 @@ export const MainHeroSection = (): JSX.Element => {
           fontFamily: "'Montserrat', sans-serif",
           fontWeight: 400,
           fontSize: "clamp(14px, 2.0vw, 17px)",
-          lineHeight: 1.65,
+          lineHeight: 1.55,
           color: pk.onDark,
           maxWidth: "640px",
           margin: "0 0 20px 0",
         }}>
-          <span className="hero-subheading-part hero-subheading-part-left">{t.subheading}</span>
+          <span className="hero-subheading-part hero-subheading-part-left">
+            <span className="hero-subheading-line">{t.subheadingLine1}</span>
+            <span className="hero-subheading-line">{t.subheadingLine2}</span>
+          </span>
         </p>
         </div>
 
@@ -610,11 +752,42 @@ export const MainHeroSection = (): JSX.Element => {
           .hero-google-overview {
             justify-content: flex-start !important;
           }
+          /*
+            Fluid desktop type: continuous vw/cqi scaling (no stepped breakpoints)
+            so size eases as the viewport narrows beside the right-side frame.
+          */
+          .hero-content-wrap {
+            container-type: inline-size;
+            container-name: hero-copy;
+          }
           .hero-headline {
-            font-size: clamp(16.9px, 4.68vw, 41.6px) !important;
+            /* Fallback fluid size; JS fit overrides with exact px on desktop */
+            font-size: clamp(15.5px, 7.2cqi + 0.35rem, 41.6px) !important;
+            transition: font-size 160ms ease;
           }
           .hero-subheading {
-            font-size: clamp(18.2px, 2.6vw, 22.1px) !important;
+            font-size: clamp(13.5px, 3.05cqi + 0.45rem, 22.1px) !important;
+            line-height: 1.5 !important;
+            transition: font-size 160ms ease;
+          }
+          .hero-typing-line {
+            font-size: clamp(13.5px, 3.2cqi + 0.4rem, 26px) !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            justify-content: flex-start !important;
+            transition: font-size 160ms ease;
+          }
+          /* Lock desktop line counts — shrink type instead of adding wraps */
+          .hero-headline-line1,
+          .hero-headline-line2 {
+            white-space: nowrap;
+          }
+          .hero-subheading-part {
+            display: block;
+          }
+          .hero-subheading-line {
+            display: block;
+            white-space: nowrap;
           }
           /* Left content aligns with header logo rail */
           .hero-left-rail{
@@ -647,19 +820,15 @@ export const MainHeroSection = (): JSX.Element => {
             right: 20px;
             top: 50%;
             transform: translateY(calc(-50% + 50px));
-            width: min(56vw, 920px);
-            max-width: 920px;
+            /* Layout width = former visual size after scale(0.78848) — avoids transform blur */
+            width: min(44.15488vw, 725.4016px);
+            max-width: 725.4016px;
             pointer-events: none;
           }
           .hero-media-rail-inner{
             display: block !important;
             width: 100%;
-            /* Scale only the frame — dots stay outside so hit targets match visuals */
-            transform: scale(0.78848);
-            transform-origin: right top;
             pointer-events: none;
-            /* Collapse unused layout under the scaled frame (scale origin: top) */
-            margin-bottom: calc(-100% * 1024 / 1536 * 0.21152);
           }
           .hero-media-rail-inner .hero-composite-anim{
             pointer-events: none;
@@ -668,9 +837,18 @@ export const MainHeroSection = (): JSX.Element => {
             pointer-events: auto !important;
             z-index: 30;
             margin-top: 18px;
-            /* Match visual width of scaled frame (origin right) */
-            width: 78.848%;
+            width: 100%;
             align-self: flex-end;
+            opacity: 0;
+          }
+          .hero-section-mobile.hero-entrance-done .hero-media-rail-dots {
+            opacity: 1;
+          }
+          @media (prefers-reduced-motion: no-preference) {
+            .hero-section-mobile.play-entrance .hero-media-rail-dots {
+              animation: heroCompositeFadeIn 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+              animation-delay: 1000ms;
+            }
           }
           .hero-media-rail-inner .hero-pc-frame{
             width: 100%;
@@ -702,13 +880,17 @@ export const MainHeroSection = (): JSX.Element => {
             box-sizing: border-box;
           }
           .hero-headline {
-            width: 60% !important;
-            max-width: 60% !important;
+            width: auto !important;
+            max-width: 100% !important;
             box-sizing: border-box;
           }
           .hero-subheading {
-            width: 62% !important;
-            max-width: 62% !important;
+            width: auto !important;
+            max-width: 100% !important;
+          }
+          .hero-typing-line {
+            max-width: 100% !important;
+            width: 100% !important;
           }
           .hero-headline {
             margin-left: 0;
@@ -803,6 +985,9 @@ export const MainHeroSection = (): JSX.Element => {
             margin-right: auto !important;
             margin-bottom: 20px !important;
           }
+          .hero-subheading-line {
+            white-space: normal;
+          }
           .hero-trust-under-cta {
             margin-left: auto !important;
             margin-right: auto !important;
@@ -868,7 +1053,8 @@ export const MainHeroSection = (): JSX.Element => {
             filter: none !important;
           }
           .hero-media-rail-inner .hero-composite-anim,
-          .hero-mobile-frame .hero-composite-anim {
+          .hero-mobile-frame .hero-composite-anim,
+          .hero-media-rail-dots {
             animation: none !important;
             opacity: 1 !important;
           }

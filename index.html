@@ -14,10 +14,10 @@
   <!-- ═══════════════════════════════════════════════════════════
          PRIMARY META TAGS (single source of truth for SERP + social copy)
   ════════════════════════════════════════════════════════════════ -->
-  <title>Tvorba webových stránek na míru | PK-Digital</title>
-  <meta name="title" content="Tvorba webových stránek na míru | PK-Digital" />
+  <title>Tvorba webových stránek a aplikací | PK Digital</title>
+  <meta name="title" content="Tvorba webových stránek a aplikací | PK Digital" />
   <meta name="description"
-    content="Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace." />
+    content="Tvoříme moderní webové stránky a webové aplikace na míru. Rychlé dodání, profesionální design a prototyp zdarma do 3 dnů." />
   <meta name="keywords"
     content="tvorba webových stránek, modernizace webu, AI nástroje, AI chatbot, automatizace procesů, webová agentura, PK Digital, web na míru, rychlý web, SEO optimalizace, lead generation" />
   <meta name="author" content="PK Digital" />
@@ -41,9 +41,9 @@
   <meta property="og:url" content="https://pk-digital.cz/" />
   <meta property="og:site_name" content="PK Digital" />
   <meta property="og:locale" content="cs_CZ" />
-  <meta property="og:title" content="Tvorba webových stránek na míru | PK-Digital" />
+  <meta property="og:title" content="Tvorba webových stránek a aplikací | PK Digital" />
   <meta property="og:description"
-    content="Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace." />
+    content="Tvoříme moderní webové stránky a webové aplikace na míru. Rychlé dodání, profesionální design a prototyp zdarma do 3 dnů." />
   <!-- OG image: Images/metadata_preview.png → public/metadata_preview.png (synced via src/config/siteMetadata.ts) -->
   <meta property="og:image" content="https://pk-digital.cz/metadata_preview.png?v=7" />
   <meta property="og:image:secure_url" content="https://pk-digital.cz/metadata_preview.png?v=7" />
@@ -59,9 +59,9 @@
   <meta name="twitter:site" content="@pkdigital_cz" />
   <meta name="twitter:creator" content="@pkdigital_cz" />
   <meta name="twitter:url" content="https://pk-digital.cz/" />
-  <meta name="twitter:title" content="Tvorba webových stránek na míru | PK-Digital" />
+  <meta name="twitter:title" content="Tvorba webových stránek a aplikací | PK Digital" />
   <meta name="twitter:description"
-    content="Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace." />
+    content="Tvoříme moderní webové stránky a webové aplikace na míru. Rychlé dodání, profesionální design a prototyp zdarma do 3 dnů." />
   <meta name="twitter:image" content="https://pk-digital.cz/metadata_preview.png?v=7" />
   <meta name="twitter:image:alt" content="PK Digital – tvorba webových stránek na míru, ukázka hero sekce s mockupy" />
 
@@ -84,7 +84,7 @@
       "url": "https://pk-digital.cz",
       "logo": "https://pk-digital.cz/favicon-v2.png",
       "image": "https://pk-digital.cz/metadata_preview.png?v=7",
-      "description": "Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace.",
+      "description": "Tvoříme moderní webové stránky a webové aplikace na míru. Rychlé dodání, profesionální design a prototyp zdarma do 3 dnů.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Němčice 329",
@@ -141,7 +141,7 @@
       "@id": "https://pk-digital.cz/#website",
       "name": "PK Digital",
       "url": "https://pk-digital.cz",
-      "description": "Profesionální webové stránky na míru pro firmy a podnikatele. Návrh webu zdarma do 3 dnů, moderní design, SEO a rychlá realizace.",
+      "description": "Tvoříme moderní webové stránky a webové aplikace na míru. Rychlé dodání, profesionální design a prototyp zdarma do 3 dnů.",
       "inLanguage": "cs-CZ",
       "publisher": { "@id": "https://pk-digital.cz/#organization" }
     }
@@ -156,25 +156,49 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <!-- ═══════════════════════════════════════════════════════════
-         CRITICAL FIRST PAINT (before JS — prevents FOUC / hidden hero text)
-  ════════════════════════════════════════════════════════════════ -->
-  <link href="pk-critical.css" rel="stylesheet" />
-
-  <!-- ═══════════════════════════════════════════════════════════
-         PERFORMANCE: PRECONNECT & FONTS
+         FONTS (early) + CRITICAL FIRST PAINT
   ════════════════════════════════════════════════════════════════ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Montserrat only above-the-fold; Caveat loads later for scribble accents -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
+  <link href="pk-critical.css" rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap"
     rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
   />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </noscript>
   <link href="pk-landing-tokens.css" rel="stylesheet" />
   <link href="tailwind.css" rel="stylesheet" />
+  <!-- Warm hero LCP candidates (first project in carousel) -->
+  <link
+    rel="preload"
+    as="image"
+    href="/hero-previews/profitherm/desktop/preview-1280.webp"
+    type="image/webp"
+    fetchpriority="high"
+  />
+  <link
+    rel="preload"
+    as="image"
+    href="/hero-previews/profitherm/mobile/preview-640.webp"
+    type="image/webp"
+  />
 </head>
 
 <body>

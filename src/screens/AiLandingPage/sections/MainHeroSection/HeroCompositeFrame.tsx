@@ -40,8 +40,6 @@ const shotLayerStyle: CSSProperties = {
   pointerEvents: "none",
   transition: `opacity ${FADE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
   willChange: "opacity",
-  transform: "translateZ(0)",
-  backfaceVisibility: "hidden",
   imageRendering: "auto",
 };
 
@@ -57,8 +55,9 @@ const mobileShotLayerStyle: CSSProperties = {
   pointerEvents: "none",
   transition: `opacity ${FADE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
   willChange: "opacity",
-  transform: "translateZ(0)",
-  backfaceVisibility: "hidden",
+  /* Avoid GPU layer + fractional parent scales that soften phone-slot previews */
+  transform: "none",
+  backfaceVisibility: "visible",
   imageRendering: "auto",
   clipPath: "inset(0 0 10px 0)",
 };
@@ -315,6 +314,7 @@ export const HeroCompositeFrame = memo(function HeroCompositeFrame({
         width={FRAME_NATURAL.w}
         height={FRAME_NATURAL.h}
         decoding="async"
+        fetchPriority="high"
         style={{
           width: "100%",
           height: "auto",
@@ -330,6 +330,11 @@ export const HeroCompositeFrame = memo(function HeroCompositeFrame({
         .hero-project-shot {
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
+        }
+        .hero-project-shot--phone {
+          -webkit-backface-visibility: visible;
+          backface-visibility: visible;
+          transform: none !important;
         }
         @media (prefers-reduced-motion: reduce) {
           .hero-project-shot {
