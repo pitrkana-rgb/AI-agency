@@ -21,10 +21,8 @@ const REALIZACE_CARD_STAGGER_MS = 250;
 const realizaceEntranceTotalMs = (cardCount: number) =>
   REALIZACE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
 const PREVIEW_MOBILE_FRAME_WIDTH_PX = 430;
-/** Fade out before remounting iframe on desktop↔mobile switch. */
-const PREVIEW_VIEWPORT_SWITCH_MS = 180;
-/** Keep frame faded briefly so width/ratio animation reads first. */
-const PREVIEW_VIEWPORT_REVEAL_MS = 60;
+/** Fade out before swapping iframe on prev/next project switch. */
+const PREVIEW_PROJECT_SWITCH_MS = 180;
 type PreviewViewport = "desktop" | "mobile";
 /** Light chrome on dark preview headers; dark chrome on light preview headers. */
 type PreviewChrome = "on-dark" | "on-light";
@@ -35,6 +33,7 @@ const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   "bazar-sport-motokros": "on-light",
   danzezula: "on-dark",
   dentist: "on-light",
+  "jan-novak": "on-dark",
 };
 
 /** Per-prototype chrome pinned over thumbnail luminance detection. */
@@ -43,6 +42,7 @@ const PREVIEW_CHROME_OVERRIDE: Partial<Record<string, PreviewChrome>> = {
   "black-beard": "on-dark",
   danzezula: "on-dark",
   dentist: "on-light",
+  "jan-novak": "on-dark",
 };
 
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
@@ -115,6 +115,13 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
   {
+    title: "Zezula Finance",
+    description:
+      "Komplexní finanční služby pro jednodušší cestu k financování. Kalkulátor úvěrů, přehledná nabídka řešení a možnost ověřit bonitu zdarma.",
+    imageId: "danzezula",
+    previewUrl: "https://danielzezula.vercel.app/",
+  },
+  {
     title: "Dentio",
     description:
       "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
@@ -122,11 +129,11 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://dentio.vercel.app/",
   },
   {
-    title: "Zezula Finance",
+    title: "Jan Novák - Fitness",
     description:
-      "Komplexní finanční služby pro jednodušší cestu k financování. Kalkulátor úvěrů, přehledná nabídka řešení a možnost ověřit bonitu zdarma.",
-    imageId: "danzezula",
-    previewUrl: "https://danielzezula.vercel.app/",
+      "Landing page osobního trenéra zaměřená na získávání nových klientů. Přehledně představuje tréninky, výsledky spolupráce a umožňuje zájemcům snadno odeslat nezávaznou poptávku.",
+    imageId: "jan-novak",
+    previewUrl: "https://fitness-trainer-alpha.vercel.app/",
   },
 ];
 
@@ -153,6 +160,13 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
   {
+    title: "Zezula Finance",
+    description:
+      "Comprehensive financial services for a simpler path to financing. Loan calculator, a clear offer of solutions, and a free creditworthiness check.",
+    imageId: "danzezula",
+    previewUrl: "https://danielzezula.vercel.app/",
+  },
+  {
     title: "Dentio",
     description:
       "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
@@ -160,11 +174,11 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://dentio.vercel.app/",
   },
   {
-    title: "Zezula Finance",
+    title: "Jan Novák - Fitness",
     description:
-      "Comprehensive financial services for a simpler path to financing. Loan calculator, a clear offer of solutions, and a free creditworthiness check.",
-    imageId: "danzezula",
-    previewUrl: "https://danielzezula.vercel.app/",
+      "A personal trainer landing page focused on acquiring new clients. It clearly presents training options, client results, and lets prospects send a no-obligation inquiry with ease.",
+    imageId: "jan-novak",
+    previewUrl: "https://fitness-trainer-alpha.vercel.app/",
   },
 ];
 
@@ -303,7 +317,6 @@ export const RealizaceSection = (): JSX.Element => {
   const [previewIframeEpoch, setPreviewIframeEpoch] = useState(0);
   const [previewIframeLoaded, setPreviewIframeLoaded] = useState(false);
   const previewSwitchTimerRef = useRef<number | null>(null);
-  const previewViewportTimerRef = useRef<number | null>(null);
   const [sectionRef, cardsVisible] = useInViewOnce({
     id: "realizace",
     threshold: 0.38,
@@ -381,10 +394,6 @@ export const RealizaceSection = (): JSX.Element => {
       suppressCardClickRef.current = false;
       return;
     }
-    if (previewViewportTimerRef.current != null) {
-      window.clearTimeout(previewViewportTimerRef.current);
-      previewViewportTimerRef.current = null;
-    }
     setPreviewIframeLoaded(false);
     setPreviewIframeEpoch((n) => n + 1);
     setPreviewFrameVisible(true);
@@ -396,10 +405,6 @@ export const RealizaceSection = (): JSX.Element => {
     if (previewSwitchTimerRef.current != null) {
       window.clearTimeout(previewSwitchTimerRef.current);
       previewSwitchTimerRef.current = null;
-    }
-    if (previewViewportTimerRef.current != null) {
-      window.clearTimeout(previewViewportTimerRef.current);
-      previewViewportTimerRef.current = null;
     }
     setActivePreview(null);
     setPreviewViewport("desktop");
@@ -428,25 +433,13 @@ export const RealizaceSection = (): JSX.Element => {
       setPreviewIframeEpoch((n) => n + 1);
       setPreviewFrameVisible(true);
       previewSwitchTimerRef.current = null;
-    }, PREVIEW_VIEWPORT_SWITCH_MS);
+    }, PREVIEW_PROJECT_SWITCH_MS);
   };
 
-  /** Desktop↔mobile: animate frame ratio, remount iframe so site loaders play again. */
+  /** Desktop↔mobile: resize frame only — keep the same loaded iframe (no reload). */
   const changePreviewViewport = (next: PreviewViewport) => {
     if (previewMobileScreen || next === previewViewport) return;
-    if (previewViewportTimerRef.current != null) {
-      window.clearTimeout(previewViewportTimerRef.current);
-    }
-    setPreviewFrameVisible(false);
-    setPreviewIframeLoaded(false);
-    previewViewportTimerRef.current = window.setTimeout(() => {
-      setPreviewViewport(next);
-      setPreviewIframeEpoch((n) => n + 1);
-      previewViewportTimerRef.current = window.setTimeout(() => {
-        setPreviewFrameVisible(true);
-        previewViewportTimerRef.current = null;
-      }, PREVIEW_VIEWPORT_REVEAL_MS);
-    }, PREVIEW_VIEWPORT_SWITCH_MS);
+    setPreviewViewport(next);
   };
 
   useEffect(() => {
@@ -745,7 +738,7 @@ export const RealizaceSection = (): JSX.Element => {
                   </div>
                 ) : null}
                 <iframe
-                  key={`${activePreview.previewUrl}::${previewViewport}::${previewIframeEpoch}`}
+                  key={`${activePreview.previewUrl}::${previewIframeEpoch}`}
                   src={activePreview.previewUrl}
                   title={activePreview.title}
                   className={`prototype-preview-frame${previewIframeLoaded ? " is-loaded" : ""}`}

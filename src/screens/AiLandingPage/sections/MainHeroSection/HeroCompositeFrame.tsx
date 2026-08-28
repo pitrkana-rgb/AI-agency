@@ -110,9 +110,10 @@ const HeroScreenCarousel = ({
   );
 };
 
-export function useHeroPreviewCarousel(enabled = true) {
-  const [activeIdx, setActiveIdx] = useState(0);
+export function useHeroPreviewCarousel(enabled = true, initialIdx = 0) {
   const count = HERO_PROJECT_IDS.length;
+  const safeInitial = count > 0 ? ((initialIdx % count) + count) % count : 0;
+  const [activeIdx, setActiveIdx] = useState(safeInitial);
   const pauseUntilRef = useRef(0);
 
   useEffect(() => {
