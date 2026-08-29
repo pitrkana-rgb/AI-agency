@@ -21,6 +21,15 @@ const REALIZACE_CARD_STAGGER_MS = 250;
 const realizaceEntranceTotalMs = (cardCount: number) =>
   REALIZACE_CARD_STAGGER_MS * Math.max(0, cardCount - 1);
 const PREVIEW_MOBILE_FRAME_WIDTH_PX = 430;
+/** Desktop studio modal vertical layout (top reserve + controls band). */
+const STUDIO_MODAL_TOP_VH = 6.25;
+const STUDIO_MODAL_BOTTOM_VH = 2.2;
+/** Trim preview height on desktop (modal is bottom-anchored). */
+const STUDIO_MODAL_HEIGHT_TRIM_PX = 30;
+const STUDIO_CONTROLS_VH = 5.25;
+const STUDIO_CONTROLS_MIN_PX = 60;
+const STUDIO_CONTROLS_MAX_PX = 72;
+const STUDIO_MODAL_CHROME_VH = STUDIO_MODAL_TOP_VH + STUDIO_MODAL_BOTTOM_VH;
 /** Fade out before swapping iframe on prev/next project switch. */
 const PREVIEW_PROJECT_SWITCH_MS = 180;
 type PreviewViewport = "desktop" | "mobile";
@@ -34,6 +43,7 @@ const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   danzezula: "on-dark",
   dentist: "on-light",
   "jan-novak": "on-dark",
+  reality: "on-light",
 };
 
 /** Per-prototype chrome pinned over thumbnail luminance detection. */
@@ -43,6 +53,7 @@ const PREVIEW_CHROME_OVERRIDE: Partial<Record<string, PreviewChrome>> = {
   danzezula: "on-dark",
   dentist: "on-light",
   "jan-novak": "on-dark",
+  reality: "on-light",
 };
 
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
@@ -122,11 +133,11 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://danielzezula.vercel.app/",
   },
   {
-    title: "Dentio",
+    title: "Kateřina Voříšková – Reality",
     description:
-      "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
-    imageId: "dentist",
-    previewUrl: "https://dentio.vercel.app/",
+      "Moderní web pro realitní makléřku s prezentací služeb, realizovaných prodejů a poptávkou na odhad ceny nemovitosti.",
+    imageId: "reality",
+    previewUrl: "https://domov-snadno.vercel.app/",
   },
   {
     title: "Jan Novák - Fitness",
@@ -134,6 +145,13 @@ const cards: PrototypeCard[] = [
       "Landing page osobního trenéra zaměřená na získávání nových klientů. Přehledně představuje tréninky, výsledky spolupráce a umožňuje zájemcům snadno odeslat nezávaznou poptávku.",
     imageId: "jan-novak",
     previewUrl: "https://fitness-trainer-alpha.vercel.app/",
+  },
+  {
+    title: "Dentio",
+    description:
+      "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
+    imageId: "dentist",
+    previewUrl: "https://dentio.vercel.app/",
   },
 ];
 
@@ -167,11 +185,11 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://danielzezula.vercel.app/",
   },
   {
-    title: "Dentio",
+    title: "Kateřina Voříšková – Reality",
     description:
-      "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
-    imageId: "dentist",
-    previewUrl: "https://dentio.vercel.app/",
+      "A modern website for a real estate agent presenting services, completed sales, and property valuation inquiries.",
+    imageId: "reality",
+    previewUrl: "https://domov-snadno.vercel.app/",
   },
   {
     title: "Jan Novák - Fitness",
@@ -179,6 +197,13 @@ const cardsEn: PrototypeCard[] = [
       "A personal trainer landing page focused on acquiring new clients. It clearly presents training options, client results, and lets prospects send a no-obligation inquiry with ease.",
     imageId: "jan-novak",
     previewUrl: "https://fitness-trainer-alpha.vercel.app/",
+  },
+  {
+    title: "Dentio",
+    description:
+      "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
+    imageId: "dentist",
+    previewUrl: "https://dentio.vercel.app/",
   },
 ];
 
@@ -968,11 +993,11 @@ export const RealizaceSection = (): JSX.Element => {
           top: auto;
           left: 50%;
           right: auto;
-          bottom: 2.2vh;
+          bottom: ${STUDIO_MODAL_BOTTOM_VH}vh;
           transform: translateX(-50%);
           width: min(95vw, 1840px);
-          height: calc(100dvh - 12.5vh);
-          max-height: calc(100dvh - 12.5vh);
+          height: calc(100dvh - ${STUDIO_MODAL_TOP_VH}vh - ${STUDIO_MODAL_HEIGHT_TRIM_PX}px);
+          max-height: calc(100dvh - ${STUDIO_MODAL_TOP_VH}vh - ${STUDIO_MODAL_HEIGHT_TRIM_PX}px);
           overflow: hidden;
           background: transparent;
           border-radius: 18px;
@@ -989,7 +1014,7 @@ export const RealizaceSection = (): JSX.Element => {
         }
         .prototype-preview-overlay--studio .prototype-preview-nav{
           position: absolute;
-          top: calc(12.5vh + (100dvh - 14.7vh) / 2);
+          top: calc(${STUDIO_MODAL_TOP_VH}vh + (100dvh - ${STUDIO_MODAL_CHROME_VH}vh) / 2 + ${STUDIO_MODAL_HEIGHT_TRIM_PX / 2}px);
           transform: translateY(-50%);
           z-index: 6;
           width: 46px;
@@ -1239,9 +1264,9 @@ export const RealizaceSection = (): JSX.Element => {
           top: 0;
           left: 0;
           right: 0;
-          height: 10.5vh;
-          min-height: 76px;
-          max-height: 104px;
+          height: ${STUDIO_CONTROLS_VH}vh;
+          min-height: ${STUDIO_CONTROLS_MIN_PX}px;
+          max-height: ${STUDIO_CONTROLS_MAX_PX}px;
           padding: 0 clamp(20px, 3vw, 40px);
           display: grid;
           grid-template-columns: 1fr auto 1fr;

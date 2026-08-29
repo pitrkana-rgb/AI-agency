@@ -31,6 +31,7 @@ const SOURCES = [
   { id: "danzezula", file: join(root, "Images", "Project_images", "Danzezula-desktop.png") },
   { id: "dentist", file: join(root, "Images", "Project_images", "Dentist-desktop.png") },
   { id: "jan-novak", file: join(root, "Images", "Project_images", "Fitness-desktop.png") },
+  { id: "reality", file: join(root, "Images", "Project_images", "Reality-desktop.png") },
 ];
 
 for (const { id, file } of SOURCES) {

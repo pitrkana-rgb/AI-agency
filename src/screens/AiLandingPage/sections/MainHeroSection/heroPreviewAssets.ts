@@ -37,7 +37,8 @@ export const HERO_PROJECT_IDS = [
   "profitherm",
   "bazar-sport-motokros",
   "black-beard",
-  "danzezula",
+  "reality",
   "dentist",
   "fitness",
+  "danzezula",
 ] as const;
