@@ -13,7 +13,6 @@ import { useLanguage } from "../../../../i18n/LanguageContext";
 import { pk } from "../../../../design/pkLandingColors";
 import pcFrameUrl from "../../../../../Images/PC_frame.png";
 import { HeroCompositeFrame, HeroFrameDots, useHeroPreviewCarousel } from "../MainHeroSection/HeroCompositeFrame";
-import { HERO_PROJECT_IDS } from "../MainHeroSection/heroPreviewAssets";
 import { OfferResponsiveAsset } from "./OfferResponsiveAsset";
 import { preloadOfferSlideMedia } from "./offerMediaPreload";
 import type { BeforeAfterConfig, Slide, SlideFeature } from "./offerSlideTypes";
@@ -419,12 +418,8 @@ export const CoNabizimeSection = (): JSX.Element => {
   const isEn = language === "en";
   const activeSlides = isEn ? slidesEn : slides;
   const activeSlide = activeSlides[activeIdx];
-  const offerFitnessHeroIdx = HERO_PROJECT_IDS.indexOf("fitness");
   const { activeIdx: offerHeroPreviewIdx, selectIdx: selectOfferHeroPreview } =
-    useHeroPreviewCarousel(
-      activeSlide.id === "tvorba-webu",
-      offerFitnessHeroIdx >= 0 ? offerFitnessHeroIdx : 0,
-    );
+    useHeroPreviewCarousel(activeSlide.id === "tvorba-webu", 0);
   const [cardVisible, setCardVisible] = useState(true);
   const switchTimeoutRef = useRef<number | null>(null);
   const touchStartX = useRef<number>(0);
@@ -1215,7 +1210,7 @@ export const CoNabizimeSection = (): JSX.Element => {
           background: rgb(15 23 42 / 0.22);
         }
         .offer-hero-frame-dots .hero-frame-dot[data-active="true"]{
-          background: var(--pk-brand-4);
+          background: var(--pk-ink);
         }
 
         /* kebab-case required — camelCase is ignored in plain <style> (was blocking font-weight) */

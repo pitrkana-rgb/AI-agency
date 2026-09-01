@@ -44,6 +44,7 @@ const PREVIEW_CHROME_FALLBACK: Record<string, PreviewChrome> = {
   dentist: "on-light",
   "jan-novak": "on-dark",
   reality: "on-light",
+  barber: "on-dark",
 };
 
 /** Per-prototype chrome pinned over thumbnail luminance detection. */
@@ -54,6 +55,7 @@ const PREVIEW_CHROME_OVERRIDE: Partial<Record<string, PreviewChrome>> = {
   dentist: "on-light",
   "jan-novak": "on-dark",
   reality: "on-light",
+  barber: "on-dark",
 };
 
 const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =>
@@ -133,11 +135,11 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://danielzezula.vercel.app/",
   },
   {
-    title: "Kateřina Voříšková – Reality",
+    title: "Dentio",
     description:
-      "Moderní web pro realitní makléřku s prezentací služeb, realizovaných prodejů a poptávkou na odhad ceny nemovitosti.",
-    imageId: "reality",
-    previewUrl: "https://domov-snadno.vercel.app/",
+      "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
+    imageId: "dentist",
+    previewUrl: "https://dentio.vercel.app/",
   },
   {
     title: "Jan Novák - Fitness",
@@ -147,11 +149,18 @@ const cards: PrototypeCard[] = [
     previewUrl: "https://fitness-trainer-alpha.vercel.app/",
   },
   {
-    title: "Dentio",
+    title: "Kateřina Voříšková – Reality",
     description:
-      "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
-    imageId: "dentist",
-    previewUrl: "https://dentio.vercel.app/",
+      "Moderní web pro realitní makléřku s prezentací služeb, realizovaných prodejů a poptávkou na odhad ceny nemovitosti.",
+    imageId: "reality",
+    previewUrl: "https://domov-snadno.vercel.app/",
+  },
+  {
+    title: "Black-beard",
+    description:
+      "Moderní web barbershopu s přehledným ceníkem, prezentací barberů a online rezervací termínů. Přehledně představuje služby a umožňuje zákazníkům snadno zarezervovat střih.",
+    imageId: "barber",
+    previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
 
@@ -185,11 +194,11 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://danielzezula.vercel.app/",
   },
   {
-    title: "Kateřina Voříšková – Reality",
+    title: "Dentio",
     description:
-      "A modern website for a real estate agent presenting services, completed sales, and property valuation inquiries.",
-    imageId: "reality",
-    previewUrl: "https://domov-snadno.vercel.app/",
+      "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
+    imageId: "dentist",
+    previewUrl: "https://dentio.vercel.app/",
   },
   {
     title: "Jan Novák - Fitness",
@@ -199,11 +208,18 @@ const cardsEn: PrototypeCard[] = [
     previewUrl: "https://fitness-trainer-alpha.vercel.app/",
   },
   {
-    title: "Dentio",
+    title: "Kateřina Voříšková – Reality",
     description:
-      "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
-    imageId: "dentist",
-    previewUrl: "https://dentio.vercel.app/",
+      "A modern website for a real estate agent presenting services, completed sales, and property valuation inquiries.",
+    imageId: "reality",
+    previewUrl: "https://domov-snadno.vercel.app/",
+  },
+  {
+    title: "Black-beard",
+    description:
+      "A modern barbershop website with a clear price list, barber profiles, and online booking. It presents services clearly and lets customers reserve a haircut with ease.",
+    imageId: "barber",
+    previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
 

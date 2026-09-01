@@ -32,13 +32,14 @@ export const heroMobileSrcSet = (projectId: string) =>
 export const heroMobileDefaultSrc = (projectId: string) =>
   webpDefaultSrc(heroMobileBasePath(projectId), 640);
 
-/** Carousel order in hero frame. */
+/** Carousel order in hero frame (matches Realizace section). */
 export const HERO_PROJECT_IDS = [
+  "black-beard",
   "profitherm",
   "bazar-sport-motokros",
-  "black-beard",
-  "reality",
+  "danzezula",
   "dentist",
   "fitness",
-  "danzezula",
+  "reality",
+  "barber",
 ] as const;
