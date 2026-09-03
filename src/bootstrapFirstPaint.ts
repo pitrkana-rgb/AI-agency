@@ -2,6 +2,7 @@
  * Hold React mount until critical Montserrat faces are ready (or a short cap).
  * Prevents FOUT on first paint without a long blank loading screen.
  */
+import { restoreConsentFromStorage } from "./utils/gtmDataLayer";
 
 const FONT_READY_CAP_MS = 240;
 
@@ -11,6 +12,9 @@ const loadFace = (spec: string): Promise<FontFace[]> => {
 };
 
 export async function prepareFirstPaint(): Promise<void> {
+  // Restore consent for returning visitors before any GTM tags evaluate.
+  restoreConsentFromStorage();
+
   document.documentElement.classList.add("pk-bootstrapping");
 
   try {

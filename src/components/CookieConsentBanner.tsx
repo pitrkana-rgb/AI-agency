@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../i18n/LanguageContext";
 import { pk } from "../design/pkLandingColors";
+import { pushConsentUpdate } from "../utils/gtmDataLayer";
 
 const STORAGE_KEY = "cookie-consent";
 
@@ -25,6 +26,7 @@ export const CookieConsentBanner = (): JSX.Element | null => {
     } catch {
       /* ignore */
     }
+    pushConsentUpdate(value === "all");
     setVisible(false);
   };
 
