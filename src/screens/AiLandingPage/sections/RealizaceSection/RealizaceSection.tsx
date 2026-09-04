@@ -159,7 +159,7 @@ const cards: PrototypeCard[] = [
     title: "Kateřina Voříšková – Reality",
     category: "Realitní makléřka",
     description:
-      "profesionální prezentace služeb, realizovaných prodejů a získávání nových poptávek na prodej nemovitostí.",
+      "profesionální prezentace služeb, realizovaných prodejů a získávání nových poptávek.",
     imageId: "reality",
     previewUrl: "https://domov-snadno.vercel.app/",
   },
@@ -226,7 +226,7 @@ const cardsEn: PrototypeCard[] = [
     title: "Kateřina Voříšková – Reality",
     category: "Real estate agent",
     description:
-      "a professional presentation of services, completed sales, and new property sale inquiries.",
+      "a professional presentation of services, completed sales, and new inquiries.",
     imageId: "reality",
     previewUrl: "https://domov-snadno.vercel.app/",
   },
