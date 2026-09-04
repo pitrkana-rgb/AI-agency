@@ -7,12 +7,12 @@ export const faqData = [
   {
     question: "Kolik stojí vytvoření webu?",
     answer:
-      "Cena webových stránek na míru závisí na rozsahu projektu, funkcích a celkové náročnosti řešení. Menší firemní weby začínají přibližně od nižších desítek tisíc korun, rozsáhlejší webové aplikace nacením individuálně podle zadání. Součástí je vždy konzultace, návrh řešení a transparentní cenová nabídka bez skrytých poplatků.",
+      "Každý projekt je individuální a výsledná cena závisí na rozsahu, funkcích a náročnosti řešení. Základní přehled cen najdete v sekci Ceník. Před zahájením spolupráce vždy dostanete konkrétní cenovou nabídku bez skrytých poplatků.",
   },
   {
     question: "Co všechno je zahrnuto v ceně?",
     answer:
-      "Součástí projektu bývá návrh designu, vývoj webu, responzivní optimalizace, základní SEO nastavení, kontaktní formuláře, optimalizace rychlosti, napojení analytiky a spuštění webu. Přesný rozsah vždy přizpůsobím konkrétním potřebám projektu.",
+      "Součástí projektu je návrh designu, vývoj webu, responzivní zobrazení, základní SEO nastavení, kontaktní formuláře, optimalizace rychlosti, napojení analytiky a spuštění webu. Přesný rozsah vždy předem stanovím podle konkrétního projektu.",
   },
   {
     question: "Zatím nemám obsah, co s tím?",
@@ -20,34 +20,34 @@ export const faqData = [
       "To vůbec nevadí. Pomohu vám s návrhem struktury webu, doporučením obsahu i směřováním textace tak, aby web působil profesionálně a podporoval získávání poptávek.",
   },
   {
-    question: "Můžete navrhnout logo mého webu?",
+    question: "Budu po spuštění platit nějaké měsíční poplatky?",
     answer:
-      "Ano. Pomohu vám vytvořit moderní vizuální identitu včetně loga a základního brandingu, který bude odpovídat stylu vašeho podnikání.",
+      "Neplatíte mi žádný povinný měsíční paušál za správu webu. Po spuštění vám web předám a další správu nebo úpravy řešíme pouze tehdy, pokud je budete potřebovat. Samostatně se mohou platit pouze běžné externí služby, například doména nebo hosting.",
   },
   {
     question: "Budu si moci web snadno upravovat?",
     answer:
-      "Ano. Web připravuji tak, aby byla běžná správa jednoduchá i bez technických znalostí. Texty, fotografie nebo obsah můžete upravovat sami. Po spuštění vám vše osobně vysvětlím.",
+      "Ano. Web připravuji tak, aby byla běžná správa jednoduchá i bez technických znalostí. Texty, fotografie a další běžný obsah si můžete upravovat sami a po spuštění vám vše osobně ukážu.",
   },
   {
-    question: "Je možné platit zálohovou fakturou?",
+    question: "Jak probíhá platba za web?",
     answer:
-      "Ano. Projekty standardně rozděluji do jasných etap s transparentním způsobem fakturace, aby byla spolupráce jednoduchá a přehledná pro obě strany.",
+      "Platbu lze rozdělit do jednotlivých etap projektu. Přesný způsob fakturace si vždy domluvíme předem, aby byly podmínky jasné ještě před zahájením práce.",
   },
   {
     question: "Potřebuji vlastní doménu a webhosting?",
     answer:
-      "Pokud ještě nemáte vlastní doménu nebo hosting, pomohu vám s výběrem i kompletním nastavením. Web připravím tak, aby byl rychlý, bezpečný a připravený pro SEO i Google Ads kampaně.",
+      "Ne. Pokud doménu nebo hosting ještě nemáte, pomohu vám s jejich výběrem i kompletním nastavením. Pokud už je máte, web jednoduše napojím na vaše stávající řešení.",
   },
   {
     question: "Jak dlouho trvá vytvoření webových stránek?",
     answer:
-      "Většinu webových stránek dokážu spustit přibližně do 14 dnů od schválení návrhu. Menší projekty mohou být hotové i rychleji, rozsáhlejší webové aplikace individuálně podle náročnosti projektu.",
+      "Většinu webových stránek dokážu dokončit přibližně do 14 dnů od schválení návrhu a dodání potřebných podkladů. Menší projekty mohou být hotové rychleji, rozsáhlejší weby a webové aplikace individuálně podle náročnosti.",
   },
   {
     question: "Jsou webové stránky připravené pro SEO?",
     answer:
-      "Ano. Každý web vytvářím s důrazem na technické SEO, rychlost načítání, responzivitu a správnou strukturu obsahu. Web je připravený pro dohledatelnost ve vyhledávání Google i pro reklamní kampaně.",
+      "Ano. Každý web připravuji s důrazem na technické SEO, rychlost načítání, responzivitu a správnou strukturu obsahu. Web tak má kvalitní technický základ pro dohledatelnost ve vyhledávačích i pro využití v Google Ads kampaních.",
   },
 ] as const;
 
@@ -60,12 +60,12 @@ export const faqDataEn = [
   {
     question: "How much does a website cost?",
     answer:
-      "Pricing depends on scope, features, and overall complexity. Smaller corporate sites typically start in the lower tens of thousands of CZK; larger web applications are quoted individually. Every project includes consultation, a solution proposal, and a transparent quote with no hidden fees.",
+      "Every project is individual and the final price depends on scope, features, and complexity. You can find a basic price overview in the Pricing section. Before we start, you always receive a concrete quote with no hidden fees.",
   },
   {
     question: "What is included in the price?",
     answer:
-      "Projects usually include design, development, responsive optimization, baseline SEO, contact forms, performance tuning, analytics setup, and go-live. The exact scope is always tailored to your needs.",
+      "The project includes design, website development, responsive layout, baseline SEO setup, contact forms, performance optimization, analytics integration, and go-live. I always define the exact scope upfront for each project.",
   },
   {
     question: "I do not have content yet. What should I do?",
@@ -73,33 +73,33 @@ export const faqDataEn = [
       "That is fine. I help with site structure, content recommendations, and messaging direction so the site looks professional and supports lead generation.",
   },
   {
-    question: "Can you design a logo for my website?",
+    question: "Will I pay any monthly fees after launch?",
     answer:
-      "Yes. I can help you build a modern visual identity, including a logo and core branding that matches your business style.",
+      "You do not pay me any mandatory monthly website management fee. After launch I hand the site over to you, and further management or edits happen only if you need them. Separate external services such as domain or hosting may still apply.",
   },
   {
     question: "Will I be able to edit my website easily?",
     answer:
-      "Yes. I build sites so day-to-day management is straightforward without technical skills. You can update text, photos, and content yourself, and I walk you through everything at launch.",
+      "Yes. I build sites so everyday management is simple even without technical skills. You can update text, photos, and other regular content yourself, and I personally show you how after launch.",
   },
   {
-    question: "Can I pay with a deposit invoice?",
+    question: "How does payment for the website work?",
     answer:
-      "Yes. I typically split projects into clear milestones with transparent invoicing so collaboration stays simple for both sides.",
+      "Payment can be split across project stages. We always agree on the exact invoicing approach in advance so the terms are clear before work begins.",
   },
   {
     question: "Do I need my own domain and hosting?",
     answer:
-      "If you do not have a domain or hosting yet, I help you choose and set everything up. I prepare the site to be fast, secure, and ready for SEO and Google Ads campaigns.",
+      "No. If you do not have a domain or hosting yet, I help you choose and set everything up. If you already have them, I simply connect the website to your existing setup.",
   },
   {
     question: "How long does it take to build a website?",
     answer:
-      "Most websites go live in about 14 days after the design is approved. Smaller projects can be faster; larger web applications depend on complexity.",
+      "I can complete most websites in about 14 days after the design is approved and the needed materials are provided. Smaller projects can be faster; larger sites and web applications depend on complexity.",
   },
   {
     question: "Is the website SEO-ready?",
     answer:
-      "Yes. Every site is built with technical SEO, fast loading, responsive layout, and sound content structure in mind — ready for Google search visibility and ad campaigns.",
+      "Yes. Every website is built with technical SEO, fast loading, responsive layout, and sound content structure in mind. That gives you a solid technical foundation for search visibility and Google Ads campaigns.",
   },
 ] as const;

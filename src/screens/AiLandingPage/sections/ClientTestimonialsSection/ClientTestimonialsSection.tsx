@@ -454,8 +454,8 @@ export const ClientTestimonialsSection = (): JSX.Element => {
               <p className="gr-stats-sub">{isEn ? `${GOOGLE_REVIEW_COUNT} Google reviews` : `${GOOGLE_REVIEW_COUNT} Google recenzí`}</p>
               <p className="gr-stats-note">
                 {isEn
-                  ? "Clients value my professionalism, speed, and results that drive real growth."
-                  : "Moji klienti oceňují profesionalitu, rychlost a výsledky, které přinášejí skutečný růst."}
+                  ? "See what clients say about websites I created or modernized for them."
+                  : "Podívejte se na zkušenosti klientů, pro které jsem vytvořil nebo modernizoval webové stránky"}
               </p>
               <a
                 className="gr-stats-link"

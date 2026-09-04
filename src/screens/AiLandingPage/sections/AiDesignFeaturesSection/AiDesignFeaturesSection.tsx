@@ -33,7 +33,7 @@ const steps: StepItem[] = [
   },
   {
     num: "04",
-    title: "Předání a správa",
+    title: "Předání webu",
     description:
       "Web vám osobně vysvětlím, ukážu statistiky návštěvnosti a naučím vás, jak jej jednoduše upravovat.",
   },
@@ -60,7 +60,7 @@ const stepsEn: StepItem[] = [
   },
   {
     num: "04",
-    title: "Handover and management",
+    title: "Website handover",
     description:
       "I personally walk you through the website, show key metrics, and teach you how to edit it easily.",
   },

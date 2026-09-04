@@ -56,14 +56,14 @@ const benefitsCs: Benefit[] = [
     side: "right",
   },
   {
-    title: "Moderní AI automatizace",
+    title: "Chytré Využití AI",
     description:
-      "Využívám pokročilé AI nástroje a automatizace, které šetří čas, zvyšují efektivitu a urychlují celý proces.",
+      "Moderní AI nástroje využívám tam, kde dávají smysl – pro rychlejší tvorbu, optimalizaci a efektivnější výsledné řešení.",
     icon: aiIcon,
     side: "right",
   },
   {
-    title: "Výborný poměr cena / výkon",
+    title: "Bez měsíčních poplatků",
     description:
       "Získáte moderní a profesionální řešení bez zbytečných nákladů navíc, které často bývají součástí agenturních služeb.",
     icon: cenikIcon,
@@ -101,14 +101,14 @@ const benefitsEn: Benefit[] = [
     side: "right",
   },
   {
-    title: "Modern AI automation",
+    title: "Smart use of AI",
     description:
-      "I use advanced AI tools and automation that save time, increase efficiency, and speed up the whole process.",
+      "I use modern AI tools where they make sense — for faster creation, optimization, and a more effective final solution.",
     icon: aiIcon,
     side: "right",
   },
   {
-    title: "Excellent value for money",
+    title: "No monthly fees",
     description:
       "You get a modern, professional solution without the extra costs that often come with agency services.",
     icon: cenikIcon,

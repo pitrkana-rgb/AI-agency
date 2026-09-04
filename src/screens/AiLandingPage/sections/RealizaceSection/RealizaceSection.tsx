@@ -94,6 +94,7 @@ const detectPreviewChromeFromImage = (imageId: string): Promise<PreviewChrome> =
 
 type PrototypeCard = {
   title: string;
+  category: string;
   description: string;
   imageId: string;
   previewUrl: string;
@@ -108,57 +109,65 @@ const isPreviewMobileScreen = (): boolean =>
 const cards: PrototypeCard[] = [
   {
     title: "Trifer",
+    category: "Výrobní společnost",
     description:
-      "Firemní web zaměřený na výrobu a montáž ocelových konstrukcí pro firmy i soukromé zákazníky. Moderní prezentace služeb s důrazem na získávání nových poptávek.",
+      "firemní prezentace služeb v oblasti ocelových konstrukcí zaměřená na získávání nových poptávek.",
     imageId: "black-beard",
     previewUrl: "https://laser-steel-structures.vercel.app/",
   },
   {
     title: "Profitherm Solution",
+    category: "Stavební společnost",
     description:
-      "Web zaměřený na dotační programy a rekonstrukce domů na klíč. Jasně vysvětluje služby, buduje důvěru a pomáhá přivádět kvalitní poptávky od majitelů nemovitostí.",
+      "prezentace rekonstrukcí a dotačních programů s důrazem na důvěryhodnost a získávání poptávek.",
     imageId: "profitherm",
     previewUrl: "https://profithermsolution.cz/",
   },
   {
     title: "Bazar-Sport-Motokros",
+    category: "Sportovní bazar",
     description:
-      "Web pro sportovní bazar se zaměřením na lyže a zimní výbavu, v létě doplněný o kola a cyklistiku. Přehledná nabídka služeb s možností snadno publikovat novinky.",
+      "moderní prezentace služeb, nabídky sortimentu a pravidelně publikovaných novinek.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
   {
     title: "Zezula Finance",
+    category: "Finanční poradce",
     description:
-      "Komplexní finanční služby pro jednodušší cestu k financování. Kalkulátor úvěrů, přehledná nabídka řešení a možnost ověřit bonitu zdarma.",
+      "profesionální prezentace služeb doplněná o kalkulátor úvěrů a možnost ověření bonity.",
     imageId: "danzezula",
     previewUrl: "https://danielzezula.vercel.app/",
   },
   {
     title: "Dentio",
+    category: "Zubní ordinace",
     description:
-      "Moderní web zubní ordinace s důrazem na přehlednost a důvěryhodnost. Jasně představuje služby a umožňuje pacientům snadno se objednat online.",
+      "přehledná prezentace služeb s důrazem na důvěryhodnost a snadné online objednání.",
     imageId: "dentist",
     previewUrl: "https://dentio.vercel.app/",
   },
   {
-    title: "Jan Novák - Fitness",
+    title: "Jan Novák – Fitness",
+    category: "Fitness trenér",
     description:
-      "Landing page osobního trenéra zaměřená na získávání nových klientů. Přehledně představuje tréninky, výsledky spolupráce a umožňuje zájemcům snadno odeslat nezávaznou poptávku.",
+      "osobní prezentace tréninků a služeb zaměřená na získávání nových klientů.",
     imageId: "jan-novak",
     previewUrl: "https://fitness-trainer-alpha.vercel.app/",
   },
   {
     title: "Kateřina Voříšková – Reality",
+    category: "Realitní makléřka",
     description:
-      "Moderní web pro realitní makléřku s prezentací služeb, realizovaných prodejů a poptávkou na odhad ceny nemovitosti.",
+      "profesionální prezentace služeb, realizovaných prodejů a získávání nových poptávek na prodej nemovitostí.",
     imageId: "reality",
     previewUrl: "https://domov-snadno.vercel.app/",
   },
   {
     title: "Black-beard",
+    category: "Barbershop",
     description:
-      "Moderní web barbershopu s přehledným ceníkem, prezentací barberů a online rezervací termínů. Přehledně představuje služby a umožňuje zákazníkům snadno zarezervovat střih.",
+      "moderní prezentace služeb a barberů s přehledným ceníkem a možností online rezervace termínu.",
     imageId: "barber",
     previewUrl: "https://black-beard-chi.vercel.app/",
   },
@@ -167,61 +176,77 @@ const cards: PrototypeCard[] = [
 const cardsEn: PrototypeCard[] = [
   {
     title: "Trifer",
+    category: "Manufacturing company",
     description:
-      "A company website focused on the manufacture and assembly of steel structures for businesses and private clients. A modern presentation of services focused on generating new inquiries.",
+      "a company presentation of steel structure services focused on generating new inquiries.",
     imageId: "black-beard",
     previewUrl: "https://laser-steel-structures.vercel.app/",
   },
   {
     title: "Profitherm Solution",
+    category: "Construction company",
     description:
-      "A website focused on grant programs and turnkey home renovations. It explains services clearly, builds trust, and brings quality inquiries from property owners.",
+      "a presentation of renovations and grant programs focused on trust and generating inquiries.",
     imageId: "profitherm",
     previewUrl: "https://profithermsolution.cz/",
   },
   {
     title: "Bazar-Sport-Motokros",
+    category: "Sports shop",
     description:
-      "A sports shop site focused on skis and winter gear, with bikes and cycling equipment in summer. A clear offer of services with an easy way to publish news.",
+      "a modern presentation of services, product range, and regularly published news.",
     imageId: "bazar-sport-motokros",
     previewUrl: "https://ski-spot-landing.vercel.app/",
   },
   {
     title: "Zezula Finance",
+    category: "Financial advisor",
     description:
-      "Comprehensive financial services for a simpler path to financing. Loan calculator, a clear offer of solutions, and a free creditworthiness check.",
+      "a professional services presentation with a loan calculator and creditworthiness check.",
     imageId: "danzezula",
     previewUrl: "https://danielzezula.vercel.app/",
   },
   {
     title: "Dentio",
+    category: "Dental clinic",
     description:
-      "A modern dental clinic website focused on clarity and trust. It clearly presents services and lets patients book appointments online with ease.",
+      "a clear presentation of services focused on trust and easy online booking.",
     imageId: "dentist",
     previewUrl: "https://dentio.vercel.app/",
   },
   {
-    title: "Jan Novák - Fitness",
+    title: "Jan Novák – Fitness",
+    category: "Fitness trainer",
     description:
-      "A personal trainer landing page focused on acquiring new clients. It clearly presents training options, client results, and lets prospects send a no-obligation inquiry with ease.",
+      "a personal presentation of training and services focused on acquiring new clients.",
     imageId: "jan-novak",
     previewUrl: "https://fitness-trainer-alpha.vercel.app/",
   },
   {
     title: "Kateřina Voříšková – Reality",
+    category: "Real estate agent",
     description:
-      "A modern website for a real estate agent presenting services, completed sales, and property valuation inquiries.",
+      "a professional presentation of services, completed sales, and new property sale inquiries.",
     imageId: "reality",
     previewUrl: "https://domov-snadno.vercel.app/",
   },
   {
     title: "Black-beard",
+    category: "Barbershop",
     description:
-      "A modern barbershop website with a clear price list, barber profiles, and online booking. It presents services clearly and lets customers reserve a haircut with ease.",
+      "a modern presentation of services and barbers with a clear price list and online booking.",
     imageId: "barber",
     previewUrl: "https://black-beard-chi.vercel.app/",
   },
 ];
+
+const RealizaceCardDescription = ({ card }: { card: PrototypeCard }): JSX.Element => (
+  <>
+    <strong className="prototype-desc-category">{card.category}</strong>
+    {" – "}
+    {card.description}
+  </>
+);
 
 const RealizaceMobileCard = ({
   card,
@@ -263,7 +288,9 @@ const RealizaceMobileCard = ({
       <div className="prototype-mobile-heading">
         <h3 className="prototype-mobile-title">{card.title}</h3>
       </div>
-      <p className="prototype-mobile-body">{card.description}</p>
+      <p className="prototype-mobile-body">
+        <RealizaceCardDescription card={card} />
+      </p>
     </article>
   );
 };
@@ -310,7 +337,9 @@ const RealizaceItem = ({
       <div className="prototype-item-heading">
         <h3 className="prototype-item-title">{card.title}</h3>
       </div>
-      <p className="prototype-item-desc">{card.description}</p>
+      <p className="prototype-item-desc">
+        <RealizaceCardDescription card={card} />
+      </p>
     </article>
   );
 };
@@ -321,9 +350,9 @@ export const RealizaceSection = (): JSX.Element => {
   const isEn = language === "en";
   const t = isEn
     ? {
-        heading: "I create websites that deliver results",
+        heading: "Selected website projects",
         subheading:
-          "Fast, tailored, and focused on results. I build modern websites that look great, rank on Google, and help win new customers.",
+          "Browse website examples for companies and entrepreneurs across different industries. Each design is tailored to the service, audience, and business goal.",
         previewBack: "Back to showcase",
         previewBackShort: "Back",
         viewportDesktop: "Desktop layout",
@@ -335,9 +364,9 @@ export const RealizaceSection = (): JSX.Element => {
         previewNext: "Next project",
       }
     : {
-        heading: "Tvořím webové stránky, které přinášejí výsledky",
+        heading: "Vybrané realizace webových stránek",
         subheading:
-          "Rychle, na míru a s důrazem na výsledky. Tvořím moderní webové stránky, které skvěle vypadají, jsou vidět na Googlu a pomáhají získávat nové zákazníky.",
+          "Prohlédněte si ukázky webů pro firmy a podnikatele z různých oborů. Každý návrh přizpůsobuji konkrétní službě, cílové skupině a obchodnímu cíli.",
         previewBack: "Zpět na ukázky",
         previewBackShort: "Zpět",
         viewportDesktop: "Rozložení pro počítač",
@@ -951,11 +980,14 @@ export const RealizaceSection = (): JSX.Element => {
         .prototype-item-desc{
           margin: 0;
           font-family: "Montserrat", sans-serif;
-          font-weight: 500;
+          font-weight: 400;
           font-size: 14px;
           line-height: 1.65;
           color: var(--pk-ink);
           text-align: center;
+        }
+        .prototype-desc-category{
+          font-weight: 700;
         }
         .prototype-preview-overlay{
           position: fixed;
@@ -1469,19 +1501,21 @@ export const RealizaceSection = (): JSX.Element => {
         .pk-mobile-preview-click-hint{
           display: inline-flex;
           align-items: center;
-          gap: 8px;
+          gap: 9.6px;
           position: absolute;
-          right: 11px;
-          bottom: 11px;
+          left: 50%;
+          top: 50%;
+          right: auto;
+          bottom: auto;
           z-index: 2;
           max-width: calc(100% - 22px);
-          padding: 8px 12px 8px 10px;
-          border-radius: 11px;
+          padding: 9.6px 14.4px 9.6px 12px;
+          border-radius: 13.2px;
           background: rgb(0 0 0 / 0.47);
           color: #fff;
           font-family: "Montserrat", sans-serif;
           font-weight: 500;
-          font-size: 15.18px;
+          font-size: 18.22px;
           line-height: 1.2;
           letter-spacing: 0.01em;
           pointer-events: none;
@@ -1490,12 +1524,17 @@ export const RealizaceSection = (): JSX.Element => {
             0 1px 3px rgb(0 0 0 / 0.55),
             0 0 14px rgb(0 0 0 / 0.4);
           filter: drop-shadow(0 2px 10px rgb(0 0 0 / 0.3));
+          transform: translate(-50%, -50%) scale(0.92);
+          opacity: 1;
+          transition:
+            opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
           animation: pkMobilePreviewHintPulse 3.2s ease-in-out infinite;
         }
         .pk-mobile-preview-click-hint__icon{
           flex-shrink: 0;
-          width: 24px;
-          height: 24px;
+          width: 28.8px;
+          height: 28.8px;
         }
         .pk-mobile-preview-click-hint__label{
           white-space: nowrap;
@@ -1503,17 +1542,40 @@ export const RealizaceSection = (): JSX.Element => {
         @keyframes pkMobilePreviewHintPulse{
           0%, 100%{
             opacity: 0.78;
-            transform: scale(0.98);
+            transform: translate(-50%, -50%) scale(0.98);
           }
           50%{
             opacity: 1;
-            transform: scale(1.03);
+            transform: translate(-50%, -50%) scale(1.03);
+          }
+        }
+        @media (min-width: 1025px){
+          .pk-mobile-preview-click-hint{
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.88);
+            animation: none;
+          }
+          .prototype-item:hover .pk-mobile-preview-click-hint,
+          .prototype-item:focus-visible .pk-mobile-preview-click-hint{
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
           }
         }
         @media (prefers-reduced-motion: reduce){
           .pk-mobile-preview-click-hint{
             animation: none;
             opacity: 0.9;
+            transition: none;
+          }
+          @media (min-width: 1025px){
+            .pk-mobile-preview-click-hint{
+              opacity: 0;
+            }
+            .prototype-item:hover .pk-mobile-preview-click-hint,
+            .prototype-item:focus-visible .pk-mobile-preview-click-hint{
+              opacity: 1;
+              transform: translate(-50%, -50%) scale(1);
+            }
           }
         }
         @media (max-width: 1024px){
@@ -1619,7 +1681,7 @@ export const RealizaceSection = (): JSX.Element => {
           .prototype-mobile-body{
             margin: 0;
             font-family: "Montserrat", sans-serif;
-            font-weight: 500;
+            font-weight: 400;
             font-size: 14px;
             line-height: 1.55;
             color: var(--pk-ink);

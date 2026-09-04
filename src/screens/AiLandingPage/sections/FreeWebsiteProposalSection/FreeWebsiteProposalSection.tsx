@@ -61,14 +61,16 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           { text: "Get a free website proposal", tone: "plain" as const },
           { text: "in 3 days, no strings attached", tone: "gradient" as const },
         ],
+        subheading:
+          "First you’ll see how your new website can look. Only then decide whether you want to continue.",
         steps: [
           {
-            title: "Fill out a form",
+            title: "Fill out a request",
             body: "Tell me a few details about your project.",
             icon: "form" as const,
           },
           {
-            title: "Proposal in 3 days",
+            title: "I’ll prepare a proposal",
             body: "I’ll prepare a homepage concept for your website.",
             icon: "monitor" as const,
           },
@@ -80,6 +82,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         ],
         scribble: "Non-binding & free",
         cta: "I want a free proposal",
+        trustLine: "No payment • No commitment • Reply within 24h",
       }
     : {
         headingLinesDesktop: [
@@ -92,14 +95,16 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           { text: "Získejte návrh webu zdarma", tone: "plain" as const },
           { text: "do 3 dnů bez závazků", tone: "gradient" as const },
         ],
+        subheading:
+          "Nejdřív uvidíte, jak může váš nový web vypadat. Až potom se rozhodnete, zda chcete pokračovat.",
         steps: [
           {
-            title: "Vyplňte formulář",
+            title: "Vyplníte poptávku",
             body: "Řekněte mi pár informací o vašem projektu.",
             icon: "form" as const,
           },
           {
-            title: "Návrh do 3 dnů",
+            title: "Připravím návrh",
             body: "Připravím návrh úvodní stránky vašeho webu.",
             icon: "monitor" as const,
           },
@@ -111,6 +116,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         ],
         scribble: "Nezávazně a zdarma",
         cta: "Chci návrh zdarma",
+        trustLine: "Bez platby • Bez závazku • Odpověď do 24 h",
       };
 
   return (
@@ -174,6 +180,9 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
               ))}
             </span>
           </h2>
+          <p className="free-proposal-subheading free-proposal-anim free-proposal-anim--subheading">
+            {t.subheading}
+          </p>
         </div>
 
         <ol className="free-proposal-steps" aria-label={isEn ? "How it works" : "Jak to funguje"}>
@@ -233,6 +242,9 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           >
             {t.cta}
           </button>
+          <p className="free-proposal-trust free-proposal-anim free-proposal-anim--cta">
+            {t.trustLine}
+          </p>
         </div>
       </div>
 
@@ -257,7 +269,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           z-index: 1;
           max-width: 1400px;
           margin: 0 auto;
-          padding: 32px 24px 48px;
+          padding: 48px 24px 68px;
           display: grid;
           grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.55fr) minmax(250px, 0.85fr);
           gap: 36px 36px;
@@ -268,6 +280,15 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         }
         .free-proposal-heading {
           margin: 0;
+        }
+        .free-proposal-subheading {
+          margin: 18px 0 0;
+          max-width: 34em;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 400;
+          font-size: 15px;
+          line-height: 1.55;
+          color: rgb(255 255 255 / 0.72);
         }
         .free-proposal-heading-desktop {
           display: contents;
@@ -358,11 +379,18 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           width: 100%;
           max-width: 100%;
           text-align: center;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          line-clamp: 2;
-          overflow: hidden;
+          overflow: visible;
+        }
+        .free-proposal-trust {
+          margin: 14px 0 0;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 1.4;
+          letter-spacing: 0.01em;
+          color: rgb(255 255 255 / 0.68);
+          text-align: center;
+          white-space: nowrap;
         }
         .free-proposal-cta-col {
           position: relative;
@@ -525,7 +553,7 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
           .free-proposal-inner {
             grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.45fr) minmax(190px, 0.72fr);
             gap: 18px 18px;
-            padding: 28px 20px 40px;
+            padding: 40px 20px 56px;
           }
           .free-proposal-heading {
             font-size: clamp(22px, 2.6vw, 34px);
@@ -556,8 +584,10 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
             font-size: 13px;
             line-height: 1.35;
             max-width: none;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
+          }
+          .free-proposal-trust {
+            white-space: normal;
+            font-size: 12px;
           }
           .free-proposal-cta-col {
             padding-left: 16px;
@@ -590,12 +620,17 @@ export const FreeWebsiteProposalSection = (): JSX.Element => {
         @media (max-width: 768px) {
           .free-proposal-inner {
             grid-template-columns: 1fr;
-            padding: 20px 24px;
+            padding: 32px 24px 40px;
             gap: 30px;
           }
           .free-proposal-copy,
-          .free-proposal-heading {
+          .free-proposal-heading,
+          .free-proposal-subheading {
             text-align: center;
+          }
+          .free-proposal-subheading {
+            margin-left: auto;
+            margin-right: auto;
           }
           .free-proposal-heading-desktop {
             display: none;

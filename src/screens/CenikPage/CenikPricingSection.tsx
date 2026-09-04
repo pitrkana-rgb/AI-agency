@@ -351,7 +351,7 @@ export const CenikPricingSection = (): JSX.Element => {
     ? {
         heading: "Digital services pricing",
         subheading:
-          "Choose a solution based on the scope of your project. The prices listed are indicative — every project is unique and the final price is always set individually according to its scope and requirements.",
+          "Every website is custom-built. Below you’ll find indicative prices by project scope — I always prepare a concrete quote in advance.",
         popular: "Most popular solution",
         showMore: "Show more",
         showLess: "Show less",
@@ -362,7 +362,7 @@ export const CenikPricingSection = (): JSX.Element => {
     : {
         heading: "Ceník digitálních služeb",
         subheading:
-          "Vyberte si řešení podle rozsahu vašeho projektu. Uvedené ceny jsou orientační – každý projekt je unikátní a finální cenu vždy stanovujeme individuálně podle jeho rozsahu a požadavků.",
+          "Každý web tvořím na míru. Níže najdete orientační ceny podle rozsahu projektu – konkrétní nabídku vždy připravím předem.",
         popular: "Nejoblíbenější řešení",
         showMore: "Zobrazit více",
         showLess: "Zobrazit méně",

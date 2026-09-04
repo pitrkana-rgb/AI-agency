@@ -156,18 +156,18 @@ export const MainHeroSection = (): JSX.Element => {
   const t = language === "en" ? {
     headlineLine1: "Tailored websites,",
     headlineLine2Accent: "that bring you customers",
-    subheadingLine1: "I build modern websites and apps for your business —",
-    subheadingLine2: "focused on speed, SEO, and higher conversions.",
+    subheadingLine1: "Professional websites for companies and entrepreneurs",
+    subheadingLine2: "focused on speed, SEO, and new customers.",
     ctaPrimary: "Request a quote",
     trustUnderCta: "Reply within 24h and a free consultation",
     scribble: "Free website proposal in 3 days",
   } : {
     headlineLine1: "Webové stránky na míru,",
     headlineLine2Accent: "které přivádějí zákazníky",
-    subheadingLine1: "Moderní webové stránky a aplikace na míru",
-    subheadingLine2: "se zaměřením na rychlost, SEO a vyšší konverze.",
+    subheadingLine1: "Profesionální webové stránky pro firmy a podnikatele",
+    subheadingLine2: "se zaměřením na rychlost, SEO a nové zákazníky.",
     ctaPrimary: "Nezávazně poptat",
-    trustUnderCta: "Odpověď do 24h a konzultace zdarma",
+    trustUnderCta: "Odpověď do 24 h a konzultace zdarma",
     scribble: "Návrh webu zdarma do 3 dnů",
   };
   const typingMessages = language === "en" ? HERO_TYPING_MESSAGES_EN : HERO_TYPING_MESSAGES_CS;
@@ -463,59 +463,65 @@ export const MainHeroSection = (): JSX.Element => {
           >
             {t.ctaPrimary}
           </button>
-          <span className="hero-cta-scribble" aria-hidden="true">
+          <span className="hero-cta-scribble hero-cta-scribble--desktop" aria-hidden="true">
             {t.scribble}
           </span>
         </div>
 
-        <p
-          className="hero-trust-under-cta"
-          style={{
-            marginTop: "14px",
-            marginBottom: 0,
-            fontFamily: "'Montserrat', sans-serif",
-            fontWeight: 500,
-            fontSize: "clamp(13px, 1.6vw, 15px)",
-            lineHeight: 1.45,
-            color: pk.onDark,
-            textAlign: "center",
-            maxWidth: "640px",
-          }}
-        >
-          {t.trustUnderCta}
-        </p>
+        <div className="hero-trust-block">
+          <p
+            className="hero-trust-under-cta"
+            style={{
+              marginTop: "14px",
+              marginBottom: 0,
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 500,
+              fontSize: "clamp(13px, 1.6vw, 15px)",
+              lineHeight: 1.45,
+              color: pk.onDark,
+              textAlign: "center",
+              maxWidth: "640px",
+            }}
+          >
+            {t.trustUnderCta}
+          </p>
 
-        <div
-          className="hero-google-overview"
-          style={{
-            marginTop: "22px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            justifyContent: "center",
-          }}
-        >
-          <div aria-hidden="true" style={{ width: 28, height: 28, flexShrink: 0 }}>
-            <svg viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
-              <path fill={pk.brandGoogleBlue} d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill={pk.brandGoogleGreen} d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill={pk.brandGoogleYellow} d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill={pk.brandGoogleRed} d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 18, color: pk.onDark92, lineHeight: 1 }}>
-              5.0
+          <div
+            className="hero-google-overview"
+            style={{
+              marginTop: "22px",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              justifyContent: "center",
+            }}
+          >
+            <div aria-hidden="true" style={{ width: 28, height: 28, flexShrink: 0 }}>
+              <svg viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+                <path fill={pk.brandGoogleBlue} d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill={pk.brandGoogleGreen} d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill={pk.brandGoogleYellow} d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill={pk.brandGoogleRed} d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
             </div>
-            <div aria-label="5 out of 5" style={{ display: "inline-flex", gap: 3, color: pk.ratingStar }}>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-              ))}
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 18, color: pk.onDark92, lineHeight: 1 }}>
+                5.0
+              </div>
+              <div aria-label="5 out of 5" style={{ display: "inline-flex", gap: 3, color: pk.ratingStar }}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+
+        <span className="hero-cta-scribble hero-cta-scribble--mobile" aria-hidden="true">
+          {t.scribble}
+        </span>
 
         </div>
             </div>
@@ -604,6 +610,9 @@ export const MainHeroSection = (): JSX.Element => {
         .hero-cta-scribble {
           display: none;
         }
+        .hero-cta-scribble--mobile {
+          display: none !important;
+        }
         @media (min-width: 901px) {
           .hero-cta-row {
             display: flex;
@@ -614,7 +623,7 @@ export const MainHeroSection = (): JSX.Element => {
             width: auto;
             max-width: none;
           }
-          .hero-cta-scribble {
+          .hero-cta-scribble--desktop {
             display: inline-block;
             flex-shrink: 0;
             font-family: "Caveat", cursive !important;
@@ -633,19 +642,20 @@ export const MainHeroSection = (): JSX.Element => {
               opacity 0.35s linear;
             will-change: clip-path, opacity;
           }
-          .hero-section-mobile.play-entrance .hero-cta-scribble {
+          .hero-section-mobile.play-entrance .hero-cta-scribble--desktop {
             opacity: 1;
             clip-path: inset(0 0 0 0);
             transition-delay: 2600ms;
           }
-          .hero-section-mobile.hero-entrance-done .hero-cta-scribble {
+          .hero-section-mobile.hero-entrance-done .hero-cta-scribble--desktop {
             opacity: 1;
             clip-path: inset(0 0 0 0);
             transition: none;
           }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero-cta-scribble {
+          .hero-cta-scribble--desktop,
+          .hero-cta-scribble--mobile {
             opacity: 1 !important;
             clip-path: inset(0 0 0 0) !important;
             transition: none !important;
@@ -909,8 +919,8 @@ export const MainHeroSection = (): JSX.Element => {
         @media (max-width: 768px) {
           .hero-section-mobile{
             min-height: auto !important;
-            padding-top: 100px !important;
-            padding-bottom: 20px !important;
+            padding-top: 112px !important;
+            padding-bottom: 36px !important;
             margin-top: 0 !important;
           }
           .hero-rating-pill { display: none !important; }
@@ -918,7 +928,7 @@ export const MainHeroSection = (): JSX.Element => {
           .hero-mobile-frame{
             display:block !important;
             width: min(520px, 100%);
-            margin: 10px auto 18px;
+            margin: 2px auto 26px;
             opacity: 0.98;
             filter: drop-shadow(0 18px 40px var(--pk-slate-tint-16));
           }
@@ -952,7 +962,7 @@ export const MainHeroSection = (): JSX.Element => {
             width: 100% !important;
             max-width: 100% !important;
             padding: 0 !important;
-            margin-top: 20px !important;
+            margin-top: 24px !important;
           }
           /* Override entrance inline-block so CTA can span the offer-width rail */
           .hero-actions-wrap {
@@ -983,17 +993,29 @@ export const MainHeroSection = (): JSX.Element => {
             line-height: 1.5 !important;
             margin-left: auto !important;
             margin-right: auto !important;
-            margin-bottom: 20px !important;
+            margin-bottom: 22px !important;
           }
           .hero-subheading-line {
             white-space: normal;
           }
+          .hero-trust-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+          }
           .hero-trust-under-cta {
+            margin-top: 0 !important;
             margin-left: auto !important;
             margin-right: auto !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
           }
           .hero-google-overview {
+            margin-top: 0 !important;
             justify-content: center !important;
+            gap: 10px !important;
           }
           .hero-typing-inner {
             display: inline-flex;
@@ -1025,8 +1047,38 @@ export const MainHeroSection = (): JSX.Element => {
             width: 100%;
             max-width: 100%;
           }
-          .hero-cta-scribble {
+          .hero-cta-scribble--desktop {
             display: none !important;
+          }
+          .hero-cta-scribble--mobile {
+            display: block !important;
+            font-family: "Caveat", cursive !important;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 21px;
+            line-height: 1;
+            white-space: nowrap;
+            color: #fff;
+            pointer-events: none;
+            transform: rotate(-4deg);
+            margin: 14px auto 0;
+            text-align: center;
+            clip-path: inset(0 100% 0 0);
+            opacity: 0;
+            transition:
+              clip-path 2s linear,
+              opacity 0.35s linear;
+            will-change: clip-path, opacity;
+          }
+          .hero-section-mobile.play-entrance .hero-cta-scribble--mobile {
+            opacity: 1;
+            clip-path: inset(0 0 0 0);
+            transition-delay: 2600ms;
+          }
+          .hero-section-mobile.hero-entrance-done .hero-cta-scribble--mobile {
+            opacity: 1;
+            clip-path: inset(0 0 0 0);
+            transition: none;
           }
           .hero-primary-btn {
             flex: 1 1 auto;
@@ -1043,6 +1095,12 @@ export const MainHeroSection = (): JSX.Element => {
             white-space: nowrap !important;
             min-height: 37px !important;
             justify-content: center;
+          }
+        }
+        /* Very short phones: keep scribble from crowding the trust stack */
+        @media (max-width: 768px) and (max-height: 700px) {
+          .hero-cta-scribble--mobile {
+            display: none !important;
           }
         }
         @media (prefers-reduced-motion: reduce) {
