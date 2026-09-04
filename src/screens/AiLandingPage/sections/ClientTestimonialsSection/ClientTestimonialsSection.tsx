@@ -890,7 +890,7 @@ export const ClientTestimonialsSection = (): JSX.Element => {
           /* Logo + stats stay side-by-side on mobile */
           .gr-left-panel {
             max-width: none;
-            margin-bottom: 15px;
+            margin-bottom: 22px;
             margin-left: auto;
             margin-right: auto;
             flex-direction: column !important;
@@ -907,15 +907,27 @@ export const ClientTestimonialsSection = (): JSX.Element => {
             justify-content: center !important;
           }
           .gr-stats-rating-value {
-            display: none !important;
+            display: block !important;
+            font-size: 22px !important;
           }
           .gr-stats-score {
-            display: inline !important;
-            font-size: 19.2px !important;
+            display: none !important;
           }
           .gr-stats-rating-row svg {
-            width: 31px !important;
-            height: 31px !important;
+            width: 26px !important;
+            height: 26px !important;
+          }
+          .gr-stats-sub {
+            margin-top: 2px;
+          }
+          .gr-stats-note {
+            display: block !important;
+            text-align: center !important;
+            margin: 12px auto 0 !important;
+            max-width: min(36ch, 100%) !important;
+            font-size: 15.4px !important;
+            line-height: 1.5 !important;
+            font-weight: 500;
           }
           .gr-stats-link {
             display: none !important;
@@ -937,8 +949,8 @@ export const ClientTestimonialsSection = (): JSX.Element => {
             box-sizing: border-box;
           }
           .gr-google-logo-inline {
-            height: 33.6px !important;
-            max-height: 33.6px !important;
+            height: 32px !important;
+            max-height: 32px !important;
           }
           .gr-carousel-mobile {
             width: 100%;
@@ -947,10 +959,7 @@ export const ClientTestimonialsSection = (): JSX.Element => {
             align-items: center;
           }
           .google-reviews-section {
-            padding: 56px 0 !important;
-          }
-          .gr-stats-note {
-            display: none !important;
+            padding: 56px 0 64px !important;
           }
           .gr-carousel-viewport {
             padding: 20px 0 0;
